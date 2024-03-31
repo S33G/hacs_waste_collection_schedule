@@ -62,7 +62,9 @@ class Source:
         timestamp = time_ns() // 1_000_000  # epoch time in milliseconds
         s.get(
             "https://contact.lincoln.gov.uk/apibroker/domain/contact.lincoln.gov.uk",
-            params={"_": timestamp, "sid": sid},
+            params={
+                "_": timestamp,
+                "sid": sid},
         )
 
         # This request retrieves the schedule
@@ -91,9 +93,8 @@ class Source:
             json=payload,
         )
 
-        rowdata = json.loads(schedule_request.content)["integration"]["transformed"][
-            "rows_data"
-        ]
+        rowdata = json.loads(schedule_request.content)[
+            "integration"]["transformed"]["rows_data"]
 
         # Extract bin types and next collection dates
         entries = []

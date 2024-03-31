@@ -64,8 +64,8 @@ class Source:
 
         self._session = requests.Session()
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) "
-            + "Gecko/20100101 Firefox/115.0",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) " +
+            "Gecko/20100101 Firefox/115.0",
             "Accept-Encoding": "gzip, deflate",
             "Accept": "*/*",
             "Connection": "keep-alive",
@@ -86,7 +86,8 @@ class Source:
             json.loads(response.json()["d"])["list"][0]["value"],
         )
 
-        self.__address_id = json.loads(response.json()["d"])["list"][0]["value"]
+        self.__address_id = json.loads(response.json()["d"])[
+            "list"][0]["value"]
 
     @property
     def _address_id(self) -> int:
@@ -103,9 +104,9 @@ class Source:
         entries: list[Collection] = []
 
         response = self._session.post(
-            url=self._api_url.format(endpoint="GetAffaldsplanMateriel_mitAffald"),
-            json={"adrid": self._address_id, "common": False},
-        )
+            url=self._api_url.format(
+                endpoint="GetAffaldsplanMateriel_mitAffald"), json={
+                "adrid": self._address_id, "common": False}, )
 
         response.raise_for_status()
 
@@ -113,7 +114,8 @@ class Source:
         waste_schemes = json.loads(response.json()["d"])["list"]
 
         if not waste_schemes:
-            raise ValueError("No waste schemes found, check address or address_id")
+            raise ValueError(
+                "No waste schemes found, check address or address_id")
 
         for entry in waste_schemes:
             if not entry["afhentningsbestillingmateriel"] and re.search(

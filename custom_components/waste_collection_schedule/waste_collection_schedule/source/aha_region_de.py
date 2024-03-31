@@ -46,8 +46,11 @@ LOGGER = logging.getLogger(__name__)
 
 class Source:
     def __init__(
-        self, gemeinde: str, strasse: str, hnr: str | int, zusatz: str | int = ""
-    ):
+            self,
+            gemeinde: str,
+            strasse: str,
+            hnr: str | int,
+            zusatz: str | int = ""):
         self._gemeinde: str = gemeinde
         self._strasse: str = strasse
         self._hnr: str = str(hnr)
@@ -57,8 +60,11 @@ class Source:
     def fetch(self):
         # find strassen_id
         r = requests.get(
-            API_URL, params={"gemeinde": self._gemeinde, "von": "A", "bis": "["}
-        )
+            API_URL,
+            params={
+                "gemeinde": self._gemeinde,
+                "von": "A",
+                "bis": "["})
         r.raise_for_status()
 
         strassen_id = None
@@ -68,9 +74,11 @@ class Source:
             .find_all("option")
         )
         for select in selects:
-            if select.text.lower().replace(" ", "") == self._strasse.lower().replace(
-                " ", ""
-            ):
+            if select.text.lower().replace(
+                    " ",
+                    "") == self._strasse.lower().replace(
+                    " ",
+                    ""):
                 strassen_id = select["value"]
                 break
 
@@ -132,6 +140,10 @@ class Source:
 
             for d in dates:
                 bin_type = d[1].replace("Abfuhr", "").strip()
-                entries.append(Collection(d[0], bin_type, ICON_MAP.get(bin_type)))
+                entries.append(
+                    Collection(
+                        d[0],
+                        bin_type,
+                        ICON_MAP.get(bin_type)))
 
         return entries

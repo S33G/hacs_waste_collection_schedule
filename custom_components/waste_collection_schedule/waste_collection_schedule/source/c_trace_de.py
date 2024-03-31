@@ -8,7 +8,8 @@ URL = "https://c-trace.de/"
 
 
 def EXTRA_INFO():
-    return [{"title": s["title"], "url": s["url"]} for s in SERVICE_MAP.values()]
+    return [{"title": s["title"], "url": s["url"]}
+            for s in SERVICE_MAP.values()]
 
 
 TEST_CASES = {
@@ -157,8 +158,13 @@ BASE_URL = "https://{subdomain}.c-trace.de"
 
 class Source:
     def __init__(
-        self, strasse, hausnummer, gemeinde="", ort="", ortsteil="", service=None
-    ):
+            self,
+            strasse,
+            hausnummer,
+            gemeinde="",
+            ort="",
+            ortsteil="",
+            service=None):
         # Compatibility handling for Bremen which was the first supported
         # district and didn't require to set a service name.
         if service is None:
@@ -210,7 +216,8 @@ class Source:
             "Gemeinde": self._gemeinde,
             "Strasse": self._strasse,
             "Hausnr": self._hausnummer,
-            "Abfall": "|".join(str(i) for i in range(0, 99)),  # return all waste types
+            # return all waste types
+            "Abfall": "|".join(str(i) for i in range(0, 99)),
         }
         if self._ortsteil:
             args["Ortsteil"] = self._ortsteil

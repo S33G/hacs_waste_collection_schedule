@@ -18,9 +18,11 @@ SEARCH_URLS = {
 }
 COLLECTIONS = {
     "Household waste",
-    "Mixed dry recycling (blue lidded bin)",  # some addresses may not have a black box collection
+    # some addresses may not have a black box collection
+    "Mixed dry recycling (blue lidded bin)",
     "Mixed dry recycling (blue lidded bin) and glass (black box or basket)",
-    "Chargeable garden waste",  # some addresses also have a chargeable garden waste collection
+    # some addresses also have a chargeable garden waste collection
+    "Chargeable garden waste",
 }
 ICON_MAP = {
     "Household waste": "mdi:trash-can",
@@ -70,7 +72,8 @@ class Source:
 
         entries = []
         for collection in COLLECTIONS:
-            for tag in soup.find_all(attrs={"data-original-title": collection}):
+            for tag in soup.find_all(
+                    attrs={"data-original-title": collection}):
                 entries.append(
                     Collection(
                         datetime.strptime(

@@ -65,7 +65,7 @@ class Source:
             labels = cell.find_all("label")
             if labels:
                 date = datetime.strptime(labels[1].text, "%d/%m/%Y").date()
-                
+
                 if "general waste" in labels[2].text.lower():
                     type = "General Waste"
                 elif "mixed recycling" in labels[2].text.lower():

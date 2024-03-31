@@ -31,7 +31,8 @@ class Source:
     ):  # argX correspond to the args dict in the source configuration
         self._uprn = uprn
         self._postcode = postcode
-        self._housenumberorname = str(housenumberorname) if housenumberorname else None
+        self._housenumberorname = str(
+            housenumberorname) if housenumberorname else None
 
     def fetch(self):
         entries = []
@@ -52,7 +53,8 @@ class Source:
                     f"No UPRN found for {self._postcode} {self._housenumberorname}"
                 )
 
-        # Get the collection days based on the UPRN (either supplied through arguments or searched for above)
+        # Get the collection days based on the UPRN (either supplied through
+        # arguments or searched for above)
         args = {"uprn": self._uprn}
         r = session.get(SEARCH_URLS["collection_search"], params=args)
         r.raise_for_status()

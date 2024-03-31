@@ -38,7 +38,8 @@ class Source:
         )
         html_addresses = postcode_search_request.content
         addresses = bs4.BeautifulSoup(html_addresses, "html.parser")
-        addresses_select = addresses.find("select", {"id": "brlu-selected-address"})
+        addresses_select = addresses.find(
+            "select", {"id": "brlu-selected-address"})
 
         found_address = None
         for address in addresses_select.find_all("option"):
@@ -69,6 +70,10 @@ class Source:
             bin_days = bin_by_type.find_all("td")[-1].get_text(separator="\n")
             for bin_day in bin_days.split("\n"):
                 bin_datetime = datetime.strptime(bin_day, "%A %d %b %Y").date()
-                entries.append(Collection(t=bin_type, date=bin_datetime, icon=icon))
+                entries.append(
+                    Collection(
+                        t=bin_type,
+                        date=bin_datetime,
+                        icon=icon))
 
         return entries

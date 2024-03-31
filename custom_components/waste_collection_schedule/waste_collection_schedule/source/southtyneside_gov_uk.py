@@ -10,7 +10,7 @@ URL = "https://southtyneside.gov.uk"
 HEADERS = {
     "Content-Type": "application/json; charset=UTF-8",
     "Referer": "https://www.southtyneside.gov.uk/article/1023/Bin-collection-dates",
-    "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0",
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0",
 }
 API = "https://www.southtyneside.gov.uk/apiserver/ajaxlibrary"
 TEST_CASES = {
@@ -27,7 +27,7 @@ ICON_MAP = {
 
 class Source:
     def __init__(self, postcode, uprn):
-        self._postcode = str(postcode).replace(" ","")
+        self._postcode = str(postcode).replace(" ", "")
         self._uprn = str(uprn).zfill(12)
 
     def fetch(self):
@@ -66,18 +66,18 @@ class Source:
         )
         r2 = s.post(API, headers=HEADERS, data=payload)
         json_data = json.loads(r2.text)["result"]["SortedCollections"]
-        
+
         entries = []
         for item in json_data:
             for monthyear in item["Collections"]:
                 entries.append(
                     Collection(
                         date=datetime.strptime(
-                            monthyear["DateofCollection"], "%Y-%m-%dT00:00:00").date(),
+                            monthyear["DateofCollection"],
+                            "%Y-%m-%dT00:00:00").date(),
                         t=monthyear["TypeClass"],
-                        icon=ICON_MAP.get(monthyear["TypeClass"].upper()),
-                    )
-                )
+                        icon=ICON_MAP.get(
+                            monthyear["TypeClass"].upper()),
+                    ))
 
         return entries
-

@@ -36,7 +36,9 @@ class Source:
         s = requests.Session()
         r = s.get(
             "https://www.iris-salten.no/xmlhttprequest.php",
-            params={"service": "irisapi.realestates", "address": self._address},
+            params={
+                "service": "irisapi.realestates",
+                "address": self._address},
         )
         r.raise_for_status()
         responses = r.json()

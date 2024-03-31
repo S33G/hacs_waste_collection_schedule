@@ -100,9 +100,7 @@ class Source:
             for bin in week["bins"]:
                 entries.append(
                     Collection(
-                        date=datetime.datetime.fromisoformat(week["date"]).date(),
-                        t=bin["type"],
-                        icon=ICON_MAP.get(bin["type"]),
-                    )
-                )
+                        date=datetime.datetime.fromisoformat(
+                            week["date"]).date(), t=bin["type"], icon=ICON_MAP.get(
+                            bin["type"]), ))
         return entries

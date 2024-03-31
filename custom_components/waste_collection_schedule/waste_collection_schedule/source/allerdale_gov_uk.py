@@ -70,7 +70,8 @@ class Source:
 
         soup = BeautifulSoup(r.text, features="html.parser")
 
-        # get first address (if you don't enter enough argument values this won't find the right address)
+        # get first address (if you don't enter enough argument values this
+        # won't find the right address)
         alink = soup.find("div", id="property_list").find("a")
 
         if alink is None:

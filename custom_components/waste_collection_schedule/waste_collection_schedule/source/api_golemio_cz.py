@@ -68,7 +68,11 @@ _CZ_DAY_TO_WEEKDAY = {
 _LOGGER = logging.getLogger(__name__)
 
 
-def _generate_next_picks(next_pick: date, pick_days: str, frequency: int, count=10):
+def _generate_next_picks(
+        next_pick: date,
+        pick_days: str,
+        frequency: int,
+        count=10):
     """
     Yield expected pick dates from given `next_pick`, `pick_day` and `frequency`.
 
@@ -93,9 +97,8 @@ def _generate_next_picks(next_pick: date, pick_days: str, frequency: int, count=
     period_duration = frequency // 10
     times_per_week = frequency % 10
 
-    weekdays = [
-        _CZ_DAY_TO_WEEKDAY[day] for day in map(str.strip, pick_days.split(", "))
-    ]
+    weekdays = [_CZ_DAY_TO_WEEKDAY[day]
+                for day in map(str.strip, pick_days.split(", "))]
 
     if times_per_week != len(weekdays):
         _LOGGER.warning(
@@ -147,7 +150,9 @@ class Source:
                 "range": self._radius,
                 "limit": 1000,
             },
-            headers={"X-Access-Token": self._api_key, "Accept": "application/json"},
+            headers={
+                "X-Access-Token": self._api_key,
+                "Accept": "application/json"},
         )
 
         r.raise_for_status()
@@ -164,7 +169,8 @@ class Source:
                 frequency = container["cleaning_frequency"]
                 next_pick = frequency.get("next_pick")
                 if not next_pick:
-                    # some containers have no next pick date, show warning if they are not ignored
+                    # some containers have no next pick date, show warning if
+                    # they are not ignored
                     _LOGGER.warning(
                         "No next pick date for container ID %s (%s), add it to ignored_containers.",
                         container["container_id"],

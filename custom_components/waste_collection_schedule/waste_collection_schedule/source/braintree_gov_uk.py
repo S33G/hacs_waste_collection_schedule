@@ -29,20 +29,22 @@ class Source:
 
     def initialize_form_data(self):
         self.form_data = {
-            "qe15dda0155d237d1ea161004d1839e3369ed4831_0_0": (None, self.post_code),
-            "page": (None, 5730),
-        }
+            "qe15dda0155d237d1ea161004d1839e3369ed4831_0_0": (
+                None, self.post_code), "page": (
+                None, 5730), }
 
     def fetch(self):
-        self.initialize_form_data()  # Re-initialize form data before each fetch otherwise subsequent fetchs fail 
+        # Re-initialize form data before each fetch otherwise subsequent fetchs
+        # fail
+        self.initialize_form_data()
         address_lookup = requests.post(
             "https://www.braintree.gov.uk/xfp/form/554", files=self.form_data
         )
         address_lookup.raise_for_status()
         addresses = {}
-        for address in BeautifulSoup(address_lookup.text, "html.parser").find_all(
-            "option"
-        ):
+        for address in BeautifulSoup(
+                address_lookup.text,
+                "html.parser").find_all("option"):
             if len(address["value"]) > 5:  # Skip the first option
                 addresses[address["value"]] = address.text.strip()
         id = next(
@@ -50,25 +52,29 @@ class Source:
             for address in addresses
             if addresses[address].startswith(self.house_number)
         )
-        self.form_data["qe15dda0155d237d1ea161004d1839e3369ed4831_1_0"] = (None, id)
+        self.form_data["qe15dda0155d237d1ea161004d1839e3369ed4831_1_0"] = (
+            None, id)
         self.form_data["next"] = (None, "Next")
         collection_lookup = requests.post(
             "https://www.braintree.gov.uk/xfp/form/554", files=self.form_data
         )
         collection_lookup.raise_for_status()
         entries = []
-        for results in BeautifulSoup(collection_lookup.text, "html.parser").find_all(
-            "div", class_="date_display"
-        ):
+        for results in BeautifulSoup(
+                collection_lookup.text,
+                "html.parser").find_all(
+                "div",
+                class_="date_display"):
             try:
                 collection_type, collection_date = results.text.strip().split("\n")
                 entries.append(
                     Collection(
-                        date=parser.parse(collection_date, dayfirst=True).date(),
+                        date=parser.parse(
+                            collection_date,
+                            dayfirst=True).date(),
                         t=collection_type,
                         icon=ICON_MAP.get(collection_type),
-                    )
-                )
+                    ))
             except (StopIteration, TypeError):
                 pass
         return entries

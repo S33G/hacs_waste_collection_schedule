@@ -117,7 +117,10 @@ class Source:
         # get token
         params = {"key": self._key, "modus": MODUS_KEY, "waction": "init"}
 
-        r = requests.post("https://api.abfall.io", params=params, headers=HEADERS)
+        r = requests.post(
+            "https://api.abfall.io",
+            params=params,
+            headers=HEADERS)
 
         # add all hidden input fields to form data
         # There is one hidden field which acts as a token:
@@ -139,13 +142,17 @@ class Source:
             args[f"f_id_abfalltyp_{i}"] = self._abfallarten[i]
 
         args["f_abfallarten_index_max"] = len(self._abfallarten)
-        args["f_abfallarten"] = ",".join(map(lambda x: str(x), self._abfallarten))
+        args["f_abfallarten"] = ",".join(
+            map(lambda x: str(x), self._abfallarten))
 
         now = datetime.datetime.now()
         date2 = now + datetime.timedelta(days=365)
         args["f_zeitraum"] = f"{now.strftime('%Y%m%d')}-{date2.strftime('%Y%m%d')}"
 
-        params = {"key": self._key, "modus": MODUS_KEY, "waction": "export_ics"}
+        params = {
+            "key": self._key,
+            "modus": MODUS_KEY,
+            "waction": "export_ics"}
 
         # get csv file
         r = requests.post(

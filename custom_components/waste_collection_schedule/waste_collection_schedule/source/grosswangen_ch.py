@@ -39,14 +39,20 @@ class Source:
 
         entries = []
 
-        for tag in soup.find_all(class_="InstList-institution InstDetail-termin"):
+        for tag in soup.find_all(
+                class_="InstList-institution InstDetail-termin"):
             for typ in tag.find_all("strong"):
                 # print(typ.string)
                 waste_type = typ.string
             for date in tag.find_all("span", class_="mobile"):
                 # print(date.string[-8:])
-                waste_date = datetime.strptime(date.string[-8:], "%d.%m.%y").date()
+                waste_date = datetime.strptime(
+                    date.string[-8:], "%d.%m.%y").date()
 
-            entries.append(Collection(waste_date, waste_type, ICON_MAP.get(waste_type)))
+            entries.append(
+                Collection(
+                    waste_date,
+                    waste_type,
+                    ICON_MAP.get(waste_type)))
 
         return entries

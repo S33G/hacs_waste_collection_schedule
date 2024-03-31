@@ -52,7 +52,6 @@ class Source:
                     date=datetime.datetime.fromisoformat(collection_date).date(),
                     t=collection_type["waste_type"],
                     icon=collection_type["icon"],
-                )
-            )
+                ))
 
         return entries

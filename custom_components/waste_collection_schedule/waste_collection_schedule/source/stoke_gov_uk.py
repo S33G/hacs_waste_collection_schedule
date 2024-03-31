@@ -47,6 +47,10 @@ class Source:
             date_time = bin_round.find("DateTime").text.split(" ")[0]
 
             date = datetime.strptime(date_time, DATE_FORMAT).date()
-            entries.append(Collection(date=date, t=bin, icon=ICON_MAP.get(bintype)))
+            entries.append(
+                Collection(
+                    date=date,
+                    t=bin,
+                    icon=ICON_MAP.get(bintype)))
 
         return entries

@@ -8,7 +8,8 @@ from waste_collection_schedule.service.ICS import ICS
 # Using verify=False works, but is not ideal. The following links may provide a better way of dealing with this:
 # https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html#ssl-warnings
 # https://urllib3.readthedocs.io/en/1.26.x/user-guide.html#ssl
-# These two lines areused to suppress the InsecureRequestWarning when using verify=False
+# These two lines areused to suppress the InsecureRequestWarning when
+# using verify=False
 import urllib3
 urllib3.disable_warnings()
 
@@ -40,6 +41,8 @@ SERVLET = (
 )
 
 # Parser for HTML input (hidden) text
+
+
 class HiddenInputParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -58,8 +61,11 @@ class HiddenInputParser(HTMLParser):
 
 class Source:
     def __init__(
-        self, city: str, street: str, house_number: int, address_suffix: str = ""
-    ):
+            self,
+            city: str,
+            street: str,
+            house_number: int,
+            address_suffix: str = ""):
         self._city = city
         self._street = street
         self._hnr = house_number
@@ -71,7 +77,9 @@ class Source:
 
         r = session.get(
             SERVLET,
-            params={"SubmitAction": "wasteDisposalServices", "InFrameMode": "TRUE"},
+            params={
+                "SubmitAction": "wasteDisposalServices",
+                "InFrameMode": "TRUE"},
             verify=False,
         )
         r.raise_for_status()

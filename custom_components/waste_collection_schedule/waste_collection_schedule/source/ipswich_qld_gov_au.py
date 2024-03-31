@@ -9,8 +9,12 @@ TITLE = "Ipswich City Council"
 DESCRIPTION = "Source for Ipswich City Council rubbish collection."
 URL = "https://www.ipswich.qld.gov.au"
 TEST_CASES = {
-    "Camira State School": {"street": "184-202 Old Logan Rd", "suburb": "Camira"},
-    "Random": {"street": "50 Brisbane Road", "suburb": "Redbank"},
+    "Camira State School": {
+        "street": "184-202 Old Logan Rd",
+        "suburb": "Camira"},
+    "Random": {
+        "street": "50 Brisbane Road",
+        "suburb": "Redbank"},
 }
 
 
@@ -112,7 +116,9 @@ class Source:
             "address": f"{address}+QLD%2C+Australia",
         }
 
-        r = requests.get("https://console.whatbinday.com/api/search", params=params)
+        r = requests.get(
+            "https://console.whatbinday.com/api/search",
+            params=params)
         p = IpswichGovAuParser()
         p.feed(r.text)
         return p.entries

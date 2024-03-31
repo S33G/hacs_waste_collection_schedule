@@ -17,7 +17,11 @@ from custom_components.waste_collection_schedule.waste_collection_schedule.sourc
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(
+        hass,
+        config,
+        async_add_entities,
+        discovery_info=None):
     """Set up calendar platform."""
     # We only want this platform to be set up via discovery.
     if discovery_info is None:
@@ -124,4 +128,5 @@ class WasteCollectionCalendar(CalendarEntity):
 
 
 def calc_unique_calendar_id(shell: SourceShell, type: str = None):
-    return shell.unique_id + ("_" + type if type is not None else "") + "_calendar"
+    return shell.unique_id + \
+        ("_" + type if type is not None else "") + "_calendar"

@@ -18,6 +18,7 @@ ICON_MAP = {
     "GARDEN": "mdi:leaf",
 }
 
+
 class Source:
     def __init__(self, uprn):
         self._uprn = str(uprn)
@@ -25,30 +26,39 @@ class Source:
     def fetch(self):
         r = requests.get(
             "https://my.redbridge.gov.uk/RecycleRefuse",
-            params = {"uprn" : self._uprn}
+            params={"uprn": self._uprn}
         )
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")
 
-        services = soup.findAll("div", {"class": re.compile(".*CollectionDay")})
+        services = soup.findAll(
+            "div", {"class": re.compile(".*CollectionDay")})
 
         entries = []
 
         for service in services:
             waste_type = service.find("h3").text
 
-            month = service.find("div", {"class" : re.compile(".*-collection-month")}).text
-            day = service.find("div", {"class" : re.compile(".*-collection-day-numeric")}).text
+            month = service.find(
+                "div", {
+                    "class": re.compile(".*-collection-month")}).text
+            day = service.find(
+                "div", {
+                    "class": re.compile(".*-collection-day-numeric")}).text
             year = datetime.now().year
             try:
-                date = datetime.strptime('{day} {month} {year}'.format(day=day, month=month, year=year), "%d %B %Y")
-            except:
+                date = datetime.strptime(
+                    '{day} {month} {year}'.format(
+                        day=day, month=month, year=year), "%d %B %Y")
+            except BaseException:
                 continue
 
             # if month is less than current month, year++
             if (date.month < datetime.now().month):
-                date = datetime.strptime('{day} {month} {year}'.format(day=day, month=month, year=year+1), "%d %B %Y")
+                date = datetime.strptime(
+                    '{day} {month} {year}'.format(
+                        day=day, month=month, year=year + 1), "%d %B %Y")
 
             entries.append(
                 Collection(

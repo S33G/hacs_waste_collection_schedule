@@ -60,13 +60,15 @@ class Source:
             "div", class_='tab-content').findChildren('div', recursive=False)
         for waste_type_container in waste_type_containers:
             waste_type = waste_type_container.get('id')
-            years = [int(y.text) for y in waste_type_container.findChildren("h3", recursive=False)]
-            
+            years = [int(y.text) for y in waste_type_container.findChildren(
+                "h3", recursive=False)]
+
             dates_per_year = [c.text.replace(". ", ".").split(
             ) for c in waste_type_container.find_all("div", class_='cols')]
 
             for (year, dates) in zip(years, dates_per_year):
-                for (day, month) in [split_german_date(date) for date in dates]:
+                for (day, month) in [split_german_date(date)
+                                     for date in dates]:
                     entries.append(
                         Collection(
                             date=datetime.date(year, month, day),

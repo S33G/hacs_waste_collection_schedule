@@ -71,7 +71,8 @@ class Source:
 
                     bins = day.find_all("img", alt=True)
                     for bin in bins:
-                        b = bin.get("alt").replace("_Icon", "").replace("_", " ")
+                        b = bin.get("alt").replace(
+                            "_Icon", "").replace("_", " ")
                         entries.append(
                             Collection(
                                 date=dt,

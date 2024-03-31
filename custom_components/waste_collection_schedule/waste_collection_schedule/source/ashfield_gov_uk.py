@@ -45,7 +45,9 @@ class Source:
     def fetch(self):
         if not self._uprn:
             # look up the UPRN for the address
-            q = str(API_URLS["address_search"]).format(postcode=self._post_code)
+            q = str(
+                API_URLS["address_search"]).format(
+                postcode=self._post_code)
             r = requests.get(q)
             r.raise_for_status()
             addresses = r.json()["data"]

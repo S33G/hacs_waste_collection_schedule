@@ -10,15 +10,13 @@ DESCRIPTION = "Source for Wyndham City Council rubbish collection."
 URL = "https://wyndham.vic.gov.au"
 TEST_CASES = {
     "Truganina South Primary School": {
-        "street_address": "3-19 Parkvista Drive TRUGANINA 3029"
-    },
-    "Westbourne Grammar School": {"street_address": "300 Sayers Road TRUGANINA 3029"},
+        "street_address": "3-19 Parkvista Drive TRUGANINA 3029"},
+    "Westbourne Grammar School": {
+        "street_address": "300 Sayers Road TRUGANINA 3029"},
     "Werribee Mercy Hospital": {
-        "street_address": "300-310 Princes Highway WERRIBEE 3030"
-    },
+        "street_address": "300-310 Princes Highway WERRIBEE 3030"},
     "Wyndham Park Primary School": {
-        "street_address": "59-77 Kookaburra Avenue WERRIBEE 3030"
-    },
+        "street_address": "59-77 Kookaburra Avenue WERRIBEE 3030"},
 }
 
 API_URL = "https://digital.wyndham.vic.gov.au/myWyndham/"
@@ -41,11 +39,13 @@ class Source:
         response.raise_for_status()
         response = session.get(
             "https://digital.wyndham.vic.gov.au/myWyndham/ajax/address-search-suggestions.asp?",
-            params=dict(ASEARCH=self._street_address),
+            params=dict(
+                ASEARCH=self._street_address),
         )
         response.raise_for_status()
         html = response.content
-        property_address = BeautifulSoup(html, "html.parser").find("li").get_text()
+        property_address = BeautifulSoup(
+            html, "html.parser").find("li").get_text()
         _LOGGER.debug("Fetched Property Address: %s", property_address)
         if (
             property_address == "No match found."
@@ -53,16 +53,17 @@ class Source:
         ):
             raise Exception(
                 f"Address search for '{self._street_address}' returned no results. Check your address on "
-                f"https://digital.wyndham.vic.gov.au/myWyndham/ "
-            )
+                f"https://digital.wyndham.vic.gov.au/myWyndham/ ")
 
-        property_number = BeautifulSoup(html, "html.parser").find("span").get_text()
+        property_number = BeautifulSoup(
+            html, "html.parser").find("span").get_text()
         _LOGGER.debug("Fetched Property Number: %s", property_number)
         response = session.get(
             "https://digital.wyndham.vic.gov.au/myWyndham/init-map-data.asp",
             params=dict(
-                propnum=property_number, radius="1000", mapfeatures="23,37,22,33,35"
-            ),
+                propnum=property_number,
+                radius="1000",
+                mapfeatures="23,37,22,33,35"),
         )
         response.raise_for_status()
         wasteApiResult = response.content

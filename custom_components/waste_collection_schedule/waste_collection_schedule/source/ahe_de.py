@@ -7,8 +7,14 @@ TITLE = "AHE Ennepe-Ruhr-Kreis"
 DESCRIPTION = "Source for AHE Ennepe-Ruhr-Kreis."
 URL = "https://ahe.de"
 TEST_CASES = {
-    "58300 Ahornstraße 1": {"plz": "58300", "strasse": "Ahornstraße", "hnr": 1},
-    "58313 Alte Straße 1": {"plz": 58313, "strasse": "alte STraße", "hnr": "1"},
+    "58300 Ahornstraße 1": {
+        "plz": "58300",
+        "strasse": "Ahornstraße",
+        "hnr": 1},
+    "58313 Alte Straße 1": {
+        "plz": 58313,
+        "strasse": "alte STraße",
+        "hnr": "1"},
 }
 
 

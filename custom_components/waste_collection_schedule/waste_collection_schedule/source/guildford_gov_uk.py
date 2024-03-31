@@ -40,16 +40,20 @@ class Source:
         r = requests.post(API_URL, params=params)
         r.raise_for_status()
 
-        # If the cookie isn't accepted you get an error message back telling you the cookie it _is_ expecting (Which was nice)
+        # If the cookie isn't accepted you get an error message back telling
+        # you the cookie it _is_ expecting (Which was nice)
         if "exceptionMessage" in r.text:
             # But the error is one long string, no JSON :(
             str = r.text.split(" ")
             current = 0
             while current < len(str):
-                # Having split the string in a space delimited list, walk through lookin for the cookie it was expecting
+                # Having split the string in a space delimited list, walk
+                # through lookin for the cookie it was expecting
                 if str[current] == "Expected:":
                     framework = str[current + 1]
-                    # Having updated the cookie, try the POST request again. It should work (As we're providing the cookie it told us to use !)
+                    # Having updated the cookie, try the POST request again. It
+                    # should work (As we're providing the cookie it told us to
+                    # use !)
                     params = (
                         "message=%7B%22actions%22%3A%5B%7B%22id%22%3A%22291%3Ba%22%2C%22descriptor%22%3A%22apex%3A%2F%2FBinScheduleDisplayCmpController%2FACTION%24GetBinSchedules%22%2C%22callingDescriptor%22%3A%22markup%3A%2F%2Fc%3ABinScheduleDisplay%22%2C%22params%22%3A%7B%22database%22%3A%22domestic%22%2C%22UPRN%22%3A%22"
                         + self._uprn

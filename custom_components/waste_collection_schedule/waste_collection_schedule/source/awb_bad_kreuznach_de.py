@@ -149,7 +149,8 @@ class Source:
                 raise ValueError("Nummer not found")
 
         from_time = datetime.now()
-        from_time = from_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        from_time = from_time.replace(
+            hour=0, minute=0, second=0, microsecond=0)
         from_time = from_time - timedelta(days=1)
 
         to_time = from_time + timedelta(days=365)
@@ -190,7 +191,8 @@ class Source:
         moved: list[(str, date)] = []
 
         for holiday in data["data"]["holidayViews"]:
-            holiday_date = datetime.fromtimestamp(holiday["holiday"] / 1000).date()
+            holiday_date = datetime.fromtimestamp(
+                holiday["holiday"] / 1000).date()
             for collection_name, collections in collection_dates.items():
                 for collection in collections:
                     if (

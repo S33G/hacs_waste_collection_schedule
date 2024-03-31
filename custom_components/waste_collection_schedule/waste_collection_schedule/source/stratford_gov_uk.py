@@ -24,7 +24,8 @@ ICON_MAP = {
     "Food waste": "mdi:food-apple",
 }
 # order of BINS is important, it's the order they appear left-to-right in the table.
-# these names have been chosen to accurately reflect naming convention on Stratford.gov
+# these names have been chosen to accurately reflect naming convention on
+# Stratford.gov
 BINS = ["Food waste", "Recycling", "Refuse", "Garden waste"]
 
 API_URL = (
@@ -38,7 +39,8 @@ DATE_FORMAT = "%A, %d/%m/%Y"  # format of the date string in the collection tabl
 class Source:
     def __init__(self, uprn):
         # fill in the address with blanks, dont need it
-        # self._payload += "&frmUPRN=" + uprn # only need to provide uprn. but we DO need to have the keys for the rest of the address.
+        # self._payload += "&frmUPRN=" + uprn # only need to provide uprn. but
+        # we DO need to have the keys for the rest of the address.
         self._payload = {
             "frmAddress1": "",
             "frmAddress2": "",
@@ -65,12 +67,16 @@ class Source:
             # there are 4 bins per row, this gets them
             all_bins = row.find_all("td", class_="text-center")
 
-            # each bin may be "checked" to show it can be collected on that date
+            # each bin may be "checked" to show it can be collected on that
+            # date
             for idx, cell in enumerate(all_bins):
                 if cell.find("img", class_="check-img"):
 
                     entries.append(
-                        Collection(date=date, t=BINS[idx], icon=ICON_MAP.get(BINS[idx]))
-                    )
+                        Collection(
+                            date=date,
+                            t=BINS[idx],
+                            icon=ICON_MAP.get(
+                                BINS[idx])))
 
         return entries

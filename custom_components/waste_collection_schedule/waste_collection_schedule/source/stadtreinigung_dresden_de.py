@@ -26,7 +26,10 @@ class Source:
             params={
                 "STANDORT": self._standort,
                 "DATUM_VON": now.strftime("%d.%m.%Y"),
-                "DATUM_BIS": (now + datetime.timedelta(days=365)).strftime("%d.%m.%Y"),
+                "DATUM_BIS": (
+                    now +
+                    datetime.timedelta(
+                        days=365)).strftime("%d.%m.%Y"),
             },
         )
 

@@ -35,7 +35,7 @@ class Source:
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         }
         session.headers.update(headers)
-        
+
         response = session.get("https://www.melton.vic.gov.au/Home")
         response = session.get("https://www.melton.vic.gov.au/Home")
         response.raise_for_status()
@@ -65,7 +65,8 @@ class Source:
 
         response = session.get(
             "https://www.melton.vic.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

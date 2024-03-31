@@ -64,25 +64,32 @@ class Source:
         s = requests.Session()
 
         if self._uprn:
-            # GET request returns page containing links to separate collection schedules
+            # GET request returns page containing links to separate collection
+            # schedules
             params = {"uprn": self._uprn}
             r = s.get(API_URL, params=params, headers=HEADERS)
             r.raise_for_status()
             responseContent = r.text
             soup = BeautifulSoup(responseContent, "html.parser")
 
-            # For each next-date class get the text within the date-string class
+            # For each next-date class get the text within the date-string
+            # class
             schedule_details = soup.findAll("div", {"class": "round-info"})
 
-            # Extract links to collection schedule pages and iterate through the pages
+            # Extract links to collection schedule pages and iterate through
+            # the pages
             entries = []
             for item in schedule_details:
-                schedule_date = item.find("span", {"class": "date-string"}).text.strip()
-                schedule_type = item.find("div", {"class": "round-name"}).text.strip()
+                schedule_date = item.find(
+                    "span", {"class": "date-string"}).text.strip()
+                schedule_type = item.find(
+                    "div", {"class": "round-name"}).text.strip()
                 # Format is 22 March 2023 - convert to date
-                collection_date = datetime.strptime(schedule_date, "%d %B %Y").date()
+                collection_date = datetime.strptime(
+                    schedule_date, "%d %B %Y").date()
 
-                # If the type contains "Blue bin or bag" or "Blue" then set the type to "BLUE"
+                # If the type contains "Blue bin or bag" or "Blue" then set the
+                # type to "BLUE"
                 if "bag" in schedule_type.lower() or "blue" in schedule_type.lower():
                     entries.append(
                         Collection(
@@ -92,7 +99,8 @@ class Source:
                         )
                     )
 
-                # If the type contains "caddy" or "brown" then set the type to "BROWN"
+                # If the type contains "caddy" or "brown" then set the type to
+                # "BROWN"
                 if "caddy" in schedule_type.lower() or "brown" in schedule_type.lower():
                     entries.append(
                         Collection(
@@ -102,7 +110,8 @@ class Source:
                         )
                     )
 
-                # If the type contains "Non-Recyclable" then set the type to "BLACK", compare in lowecase
+                # If the type contains "Non-Recyclable" then set the type to
+                # "BLACK", compare in lowecase
                 if "non-recyclable" in schedule_type.lower():
                     entries.append(
                         Collection(

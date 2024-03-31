@@ -46,7 +46,8 @@ class Source:
         for result in results:
             result_row = result.find_all("td")
             if len(result_row) >= 2:
-                date = datetime.strptime(result_row[1].text, "%A, %d %B %Y").date()
+                date = datetime.strptime(
+                    result_row[1].text, "%A, %d %B %Y").date()
 
                 collection_text = result_row[0].text.strip()
                 entries.append(

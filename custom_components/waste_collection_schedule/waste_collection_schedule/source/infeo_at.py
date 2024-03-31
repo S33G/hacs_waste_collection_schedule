@@ -27,20 +27,37 @@ EXTRA_INFO = [
     },
 ]
 TEST_CASES = {
-    "Bogeschütz": {"customer": "bogenschütz", "zone": "Dettenhausen"},
-    "ikb": {"customer": "ikb", "city": "Innsbruck", "street": "Achselkopfweg", "housenumber": "1"},
-    "salzburg": {"customer": "salzburg", "city": "Salzburg", "street": "Adolf-Schemel-Straße", "housenumber": "13"},
+    "Bogeschütz": {
+        "customer": "bogenschütz",
+        "zone": "Dettenhausen"},
+    "ikb": {
+        "customer": "ikb",
+        "city": "Innsbruck",
+        "street": "Achselkopfweg",
+        "housenumber": "1"},
+    "salzburg": {
+        "customer": "salzburg",
+        "city": "Salzburg",
+                "street": "Adolf-Schemel-Straße",
+                "housenumber": "13"},
 }
 
+
 class Source:
-    def __init__(self, customer, zone=None, city=None, street=None, housenumber=None):
+    def __init__(
+            self,
+            customer,
+            zone=None,
+            city=None,
+            street=None,
+            housenumber=None):
         self._customer = customer
         self._zone = zone
         self._city = city
         self._street = street
         self._housenumber = None if housenumber is None else str(housenumber)
         self._ics = ICS()
-    
+
     def fetch(self):
         baseUrl = f"https://services.infeo.at/awm/api/{self._customer}/wastecalendar"
         issueUrl = (
@@ -74,7 +91,7 @@ class Source:
                 "calendarId": calendarYearId,
             }
 
-            if self._zone != None:
+            if self._zone is not None:
 
                 # get available zones for calendar year
                 url = f"{baseUrl}/zones"
@@ -117,10 +134,10 @@ class Source:
 
                 for d in dates:
                     entries.append(Collection(d[0], d[1]))
-                    
+
             # we will use city, street and housenumber instead of zone
             else:
-                
+
                 # CITY
                 # get available cities for calendar year
                 url = f"{baseUrl}/cities"
@@ -150,12 +167,12 @@ class Source:
 
                 # STREET
                 # get available streets for calendar year
-                
+
                 params = {
                     "calendarId": calendarYearId,
                     "cityId": cityId,
                 }
-                
+
                 url = f"{baseUrl}/streets"
                 response = requests.get(url, params=params)
                 response.raise_for_status()
@@ -183,7 +200,7 @@ class Source:
 
                 # HOUSENUMBER
                 # get available housenumbers for calendar year
-                
+
                 params = {
                     "calendarId": calendarYearId,
                     "streetId": streetId,
@@ -231,7 +248,6 @@ class Source:
 
                 for d in dates:
                     entries.append(Collection(d[0], d[1]))
-
 
         # validate that we processed some data and show an error if not
         if len(entries) <= 0:

@@ -77,7 +77,8 @@ class Source:
             # pprint(f)
             icon_name = re.sub(r"^.*?/(\w+)\.\w{3,4}$", "\\1", f["Ikon"])
             icon = ICON_MAP.get(icon_name)
-            type[f["Id"]] = {"name": f["Navn"], "image": f["Ikon"], "icon": icon}
+            type[f["Id"]] = {"name": f["Navn"],
+                             "image": f["Ikon"], "icon": icon}
 
         args = {
             "gatenavn": self._street_name,

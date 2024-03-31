@@ -33,7 +33,9 @@ class Source:
         soup = BeautifulSoup(r.text, features="html.parser")
 
         # Extract form submission url
-        form = soup.find("form", attrs={"id": "WASTECOLLECTIONCALENDARV5_FORM"})
+        form = soup.find(
+            "form", attrs={
+                "id": "WASTECOLLECTIONCALENDARV5_FORM"})
         form_url = form["action"]
 
         # Submit form
@@ -47,7 +49,9 @@ class Source:
         # Extract collection dates
         soup = BeautifulSoup(r.text, features="html.parser")
         entries = []
-        tables = soup.find_all("table", attrs={"class": "bin-collection-dates"})
+        tables = soup.find_all(
+            "table", attrs={
+                "class": "bin-collection-dates"})
         # Data is presented in two tables side-by-side
         for table in tables:
             # Each collection is a table row
@@ -57,7 +61,8 @@ class Source:
                 # Ignore the header row
                 if len(cells) == 2:
                     date = datetime.strptime(cells[0].text, "%d %B %Y").date()
-                    # Maintain backwards compatibility - it used to be General Waste and now it is General waste
+                    # Maintain backwards compatibility - it used to be General
+                    # Waste and now it is General waste
                     type = cells[1].text.title()
                     entries.append(
                         Collection(

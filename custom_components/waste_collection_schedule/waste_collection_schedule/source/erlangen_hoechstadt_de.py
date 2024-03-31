@@ -35,7 +35,11 @@ class Source:
         city = self._city.upper()
         street = self._street
 
-        payload = {"ort": city, "strasse": street, "abfallart": "Alle", "jahr": year}
+        payload = {
+            "ort": city,
+            "strasse": street,
+            "abfallart": "Alle",
+            "jahr": year}
         r = requests.get(
             "https://www.erlangen-hoechstadt.de/komx/surface/dfxabfallics/GetAbfallIcs",
             params=payload,

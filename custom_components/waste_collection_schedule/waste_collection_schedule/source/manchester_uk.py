@@ -36,7 +36,9 @@ class Source:
 
         r = requests.post(
             API_URL,
-            data={"mcc_bin_dates_uprn": self._uprn, "mcc_bin_dates_submit": "Go"},
+            data={
+                "mcc_bin_dates_uprn": self._uprn,
+                "mcc_bin_dates_submit": "Go"},
         )
 
         soup = BeautifulSoup(r.text, features="html.parser")

@@ -83,7 +83,8 @@ class Source:
         r.raise_for_status()
         r.encoding = "utf-8"
 
-        step1_action_url, args = self._get_html_form_infos(r.text, "abfuhrkalender")
+        step1_action_url, args = self._get_html_form_infos(
+            r.text, "abfuhrkalender")
 
         # add the address information
         args["tx_awmabfuhrkalender_abfuhrkalender[strasse]"] = self._street
@@ -104,7 +105,8 @@ class Source:
         if download_link := page_soup.find("a", {"class": "downloadics"}):
             ics_action_url = download_link.get("href")
         else:
-            action_url, args = self._get_html_form_infos(r.text, "abfuhrkalender")
+            action_url, args = self._get_html_form_infos(
+                r.text, "abfuhrkalender")
 
             error_message = ""
 
@@ -113,7 +115,8 @@ class Source:
                     f"tx_awmabfuhrkalender_abfuhrkalender[leerungszyklus][{key}]"
                     not in args
                 ):
-                    if self.__getattribute__(f"_{key.lower()}_collect_cycle") == "":
+                    if self.__getattribute__(
+                            f"_{key.lower()}_collect_cycle") == "":
                         cycle_options = {}
                         cycle_options = page_soup.find(
                             "form", id="abfuhrkalender"
@@ -140,7 +143,8 @@ class Source:
             if download_link := page_soup.find("a", {"class": "downloadics"}):
                 ics_action_url = download_link.get("href")
             else:
-                raise ValueError("Unknown error getting ics link with cycle options.")
+                raise ValueError(
+                    "Unknown error getting ics link with cycle options.")
 
         # Download the ics.file
         r = s.get(f"{URL}{urllib.parse.unquote(ics_action_url)}")
@@ -156,7 +160,8 @@ class Source:
 
         return entries
 
-    def _get_html_form_infos(self, html: str, form_name: str) -> Tuple[str, dict]:
+    def _get_html_form_infos(
+            self, html: str, form_name: str) -> Tuple[str, dict]:
         """Return a tuple with form action url and hidden form fields."""
         # collect the url where we post to
         page_soup = BeautifulSoup(html, "html.parser")

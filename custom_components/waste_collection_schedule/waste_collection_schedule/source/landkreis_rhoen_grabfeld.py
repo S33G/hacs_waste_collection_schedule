@@ -16,10 +16,12 @@ TEST_CASES = {
 
 API_URL = 'https://fs-api-rg.offizium.com/abfalltermine'
 
-EVENT_BLACKLIST = ['Wertstoffhof Mellrichstadt',
-                   'Wertstoffhof Bad Königshofen', 'Wertstoffzentrum Bad Neustadt',
-                   'Wertstoffsammelstelle Ostheim',
-                   'Wertstoffsammelstelle Bischofsheim']
+EVENT_BLACKLIST = [
+    'Wertstoffhof Mellrichstadt',
+    'Wertstoffhof Bad Königshofen',
+    'Wertstoffzentrum Bad Neustadt',
+    'Wertstoffsammelstelle Ostheim',
+    'Wertstoffsammelstelle Bischofsheim']
 
 ICON_MAP = {
     "Restmüll/Gelber Sack/Biotonne": "mdi:trash-can",

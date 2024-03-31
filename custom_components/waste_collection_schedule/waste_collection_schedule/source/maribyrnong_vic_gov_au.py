@@ -106,7 +106,10 @@ class Source:
                     # Only consider recycle and organic events
                     if waste_type in ["recycle", "organic"]:
                         # Every collection day includes rubbish
-                        entries.append(Collection(date=collection_date, t="rubbish"))
+                        entries.append(
+                            Collection(
+                                date=collection_date,
+                                t="rubbish"))
 
                         entries.append(
                             Collection(

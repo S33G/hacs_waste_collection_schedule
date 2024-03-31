@@ -66,6 +66,10 @@ class Source:
             waste_type = waste_types[row[2]]["desc"]
             icon = waste_types[row[2]]["icon"]
 
-            entries.append(Collection(pickup_date.date(), waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    pickup_date.date(),
+                    waste_type,
+                    icon=icon))
 
         return entries

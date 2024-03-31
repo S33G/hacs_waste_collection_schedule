@@ -13,9 +13,18 @@ def EXTRA_INFO():
 
 
 TEST_CASES = {
-    "ACV Group": {"company": "acv", "post_code": "6721MH", "house_number": 1},
-    "Meerlanden": {"company": "meerlanden", "post_code": "1435BX", "house_number": 650},
-    "Almere": {"company": "almere", "post_code": "1318NG", "house_number": 15},
+    "ACV Group": {
+        "company": "acv",
+        "post_code": "6721MH",
+        "house_number": 1},
+    "Meerlanden": {
+        "company": "meerlanden",
+        "post_code": "1435BX",
+        "house_number": 650},
+    "Almere": {
+        "company": "almere",
+        "post_code": "1318NG",
+        "house_number": 15},
 }
 
 
@@ -138,9 +147,14 @@ class Source:
         data = {
             "uniqueAddressID": dataList["UniqueId"],
             "startDate": datetime.now().strftime("%Y-%m-%d"),
-            "endDate": (datetime.now() + timedelta(days=365)).strftime("%Y-%m-%d"),
+            "endDate": (
+                datetime.now() +
+                timedelta(
+                    days=365)).strftime("%Y-%m-%d"),
             "companyCode": self._company_code,
-            "community": dataList.get("Community", ""),
+            "community": dataList.get(
+                "Community",
+                ""),
         }
         r = requests.post(f"{self._url}/api/GetCalendar", data=data)
         d = r.json()
@@ -150,8 +164,9 @@ class Source:
             for date in wasteType["pickupDates"]:
                 entries.append(
                     Collection(
-                        date=datetime.strptime(date, "%Y-%m-%dT%H:%M:%S").date(),
+                        date=datetime.strptime(
+                            date,
+                            "%Y-%m-%dT%H:%M:%S").date(),
                         t=wasteType["_pickupTypeText"],
-                    )
-                )
+                    ))
         return entries

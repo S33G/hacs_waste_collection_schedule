@@ -8,19 +8,18 @@ from waste_collection_schedule.service.ICS import ICS
 TITLE = "Städteservice Raunheim Rüsselsheim"
 DESCRIPTION = "Städteservice Raunheim Rüsselsheim"
 URL = "https://www.staedteservice.de"
-TEST_CASES = {
-    "Rüsselsheim": {"city": "Rüsselsheim", "street_number": "411", "house_number": "3"},
-    "Raunheim": {
-        "city": "Raunheim",
-        "street_name": "wilhelm-Busch-Straße",
-        "house_number": 3,
-    },
-    "Raunheim Rober-Koch-Straße 10 /1": {
-        "city": "Raunheim",
-        "street_name": "Robert-Koch-Straße",
-        "house_number": "10 /1",
-    },
-}
+TEST_CASES = {"Rüsselsheim": {"city": "Rüsselsheim",
+                              "street_number": "411",
+                              "house_number": "3"},
+              "Raunheim": {"city": "Raunheim",
+                           "street_name": "wilhelm-Busch-Straße",
+                           "house_number": 3,
+                           },
+              "Raunheim Rober-Koch-Straße 10 /1": {"city": "Raunheim",
+                                                   "street_name": "Robert-Koch-Straße",
+                                                   "house_number": "10 /1",
+                                                   },
+              }
 
 API_URL = "https://portal.staedteservice.de/api/ZeigeAbfallkalender"
 
@@ -38,7 +37,12 @@ ICON_MAP = {
 
 
 class Source:
-    def __init__(self, city, street_number=None, street_name=None, house_number=""):
+    def __init__(
+            self,
+            city,
+            street_number=None,
+            street_name=None,
+            house_number=""):
         self.city = str(city)
         self.city_code = CITY_CODE_MAP[city]
 
@@ -73,8 +77,10 @@ class Source:
     def get_street(self, city_id) -> int:
         r = self._session.get(
             "https://portal.staedteservice.de/api/Strassen",
-            params={"$filter": f"Ort/OrteId eq {city_id}"},
-            headers={"Accept": "application/json, text/plain;q=0.5, */*;q=0.1"},
+            params={
+                "$filter": f"Ort/OrteId eq {city_id}"},
+            headers={
+                "Accept": "application/json, text/plain;q=0.5, */*;q=0.1"},
         )
         r.raise_for_status()
 

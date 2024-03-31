@@ -10,8 +10,9 @@ TITLE = "Lancaster City Council"
 DESCRIPTION = "Source for lancaster.gov.uk services for Lancaster City Council, UK."
 URL = "https://lancaster.gov.uk"
 TEST_CASES = {
-    "1 Queen Street Lancaster, LA1 1RS": {"house_number": 1, "postcode": "LA1 1RS"}
-}
+    "1 Queen Street Lancaster, LA1 1RS": {
+        "house_number": 1,
+        "postcode": "LA1 1RS"}}
 API_URLS = {"BASE": "https://lcc-wrp.whitespacews.com"}
 ICON_MAP = {
     "Domestic Waste": "mdi:trash-can",
@@ -46,7 +47,9 @@ class Source:
 
         # fill address form
         response = self._session.get(portal_link)
-        form = BeautifulSoup(response.text, features="html.parser").find("form")
+        form = BeautifulSoup(
+            response.text,
+            features="html.parser").find("form")
         form_url = dict(form.attrs).get("action")
         payload = {
             "address_name_number": self._house_number,
@@ -80,9 +83,8 @@ class Source:
                     f"Skipped {services_sub[i + 1].text.strip()} as it does not match time format"
                 )
                 continue
-            bin_type = BeautifulSoup(services_sub[i + 2].text, features="lxml").find(
-                "p"
-            )
+            bin_type = BeautifulSoup(
+                services_sub[i + 2].text, features="lxml").find("p")
             entries.append(
                 Collection(
                     date=dt,

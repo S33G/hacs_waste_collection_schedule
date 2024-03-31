@@ -47,7 +47,12 @@ API_URL = "https://www.zakb.de/online-service/abfallkalender/"
 
 
 class Source:
-    def __init__(self, ort: str, strasse: str, hnr: str | int, hnr_zusatz: str = ""):
+    def __init__(
+            self,
+            ort: str,
+            strasse: str,
+            hnr: str | int,
+            hnr_zusatz: str = ""):
         self._ort: str = ort.replace(" ", "+")
         self._strasse: str = strasse.replace(" ", "+")
         self._hnr: str = str(hnr)
@@ -91,11 +96,19 @@ class Source:
 
         # make request to get ical file
         r = session.post(
-            API_URL, data={"submitAction": "filedownload_ICAL", "pageName": "Terminliste"})
+            API_URL,
+            data={
+                "submitAction": "filedownload_ICAL",
+                "pageName": "Terminliste"})
         r.raise_for_status()
 
         dates = self._ics.convert(r.text)
         entries = []
         for d in dates:
-            entries.append(Collection(d[0], d[1].strip(), ICON_MAP.get(d[1].strip())))
+            entries.append(
+                Collection(
+                    d[0],
+                    d[1].strip(),
+                    ICON_MAP.get(
+                        d[1].strip())))
         return entries

@@ -126,12 +126,10 @@ class Source:
         submitted_widget_group_id = soup.findAll(
             "input", {"name": "submitted_widget_group_id"}
         )[-1].attrs["value"]
-        submission_token = soup.find("input", {"name": "submission_token"}).attrs[
-            "value"
-        ]
-        submitted_page_id = soup.find("input", {"name": "submitted_page_id"}).attrs[
-            "value"
-        ]
+        submission_token = soup.find(
+            "input", {"name": "submission_token"}).attrs["value"]
+        submitted_page_id = soup.find(
+            "input", {"name": "submitted_page_id"}).attrs["value"]
 
         # Use postcode and houseID to find address
         addressID = "0"
@@ -151,8 +149,7 @@ class Source:
                 {
                     "/wasteservices/w/webpage/bin-day-enter-address": {},
                     "_global": SESSION_STORAGE,
-                }
-            ),
+                }),
             "action_cell_id": "PCL0005629EECEC1",
             "action_page_id": "PAG0000898EECEC1",
             "form_check_ajax": csrf_token,
@@ -223,10 +220,11 @@ class Source:
 
             entries.append(
                 Collection(
-                    date=datetime.strptime(waste_date, "%d/%m/%Y %H:%M").date(),
+                    date=datetime.strptime(
+                        waste_date,
+                        "%d/%m/%Y %H:%M").date(),
                     t=waste_type,
                     icon=ICON_MAP.get(waste_type),
-                )
-            )
+                ))
 
         return entries

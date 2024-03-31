@@ -88,7 +88,7 @@ class Source:
 
         r = requests.get(report["filePath"])
         r.raise_for_status()
-        table = r.text[r.text.find("<table") : r.text.rfind("</table>") + 8]
+        table = r.text[r.text.find("<table"): r.text.rfind("</table>") + 8]
         tree = xml.etree.ElementTree.fromstring(table)
         year = datetime.date.today().year
 
@@ -100,10 +100,12 @@ class Source:
                         for day in cell.text.split(","):
                             entries.append(
                                 Collection(
-                                    datetime.date(year, row_index - 1, int(day)),
+                                    datetime.date(
+                                        year,
+                                        row_index - 1,
+                                        int(day)),
                                     NAME_MAP[cell_index],
                                     ICON_MAP[cell_index],
-                                )
-                            )
+                                ))
 
         return entries

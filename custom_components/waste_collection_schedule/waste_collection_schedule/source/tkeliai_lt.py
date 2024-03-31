@@ -47,10 +47,12 @@ class Source:
             for date in collection["dates"].keys():
                 entries.append(
                     Collection(
-                        date=datetime.datetime.strptime(date, "%Y-%m-%d").date(),
+                        date=datetime.datetime.strptime(
+                            date,
+                            "%Y-%m-%d").date(),
                         t=collection["title"],
-                        icon=ICON_MAP.get(collection["title"]),
-                    )
-                )
+                        icon=ICON_MAP.get(
+                            collection["title"]),
+                    ))
 
         return entries

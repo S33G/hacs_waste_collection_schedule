@@ -8,7 +8,10 @@ TITLE = "Shellharbour City Council"
 DESCRIPTION = "Source script for shellharbourwaste.com.au"
 URL = "https://shellharbourwaste.com.au"
 COUNTRY = "au"
-TEST_CASES = {"TestName1": {"zoneID": "Monday A"}, "TestName2": {"zoneID": "Friday A"}}
+TEST_CASES = {
+    "TestName1": {
+        "zoneID": "Monday A"}, "TestName2": {
+            "zoneID": "Friday A"}}
 
 API_URL = "https://www.shellharbourwaste.com.au/waste-collection"
 
@@ -43,7 +46,8 @@ class Source:
         entries = []
         for entry in collections:
             waste_type = entry.find("h3", class_="waste-block__title").text
-            date_string = entry.find("time", class_="waste-block__time").text.strip()
+            date_string = entry.find(
+                "time", class_="waste-block__time").text.strip()
             pickupdate = datetime.strptime(date_string, "%d/%m/%Y")
             entries.append(
                 Collection(

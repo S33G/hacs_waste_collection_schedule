@@ -95,7 +95,8 @@ def browse_sources():
     # retrieve all data from sources
     for f in files:
         # iterate through all *.py files in waste_collection_schedule/source
-        module = importlib.import_module(f"waste_collection_schedule.source.{f}")
+        module = importlib.import_module(
+            f"waste_collection_schedule.source.{f}")
         modules[f] = module
 
         title = module.TITLE
@@ -105,8 +106,11 @@ def browse_sources():
         filename = f"/doc/source/{f}.md"
         if title is not None:
             sources.append(
-                SourceInfo(filename=filename, title=title, url=url, country=country)
-            )
+                SourceInfo(
+                    filename=filename,
+                    title=title,
+                    url=url,
+                    country=country))
 
         extra_info = getattr(module, "EXTRA_INFO", [])
         if callable(extra_info):

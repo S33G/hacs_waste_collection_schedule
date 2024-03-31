@@ -57,7 +57,11 @@ class HiddenInputParser(HTMLParser):
 
 
 class Source:
-    def __init__(self, street: str, house_number: int, address_suffix: str = ""):
+    def __init__(
+            self,
+            street: str,
+            house_number: int,
+            address_suffix: str = ""):
         self._street = street
         self._hnr = house_number
         self._suffix = address_suffix
@@ -78,7 +82,9 @@ class Source:
 
         r = session.get(
             API_URL,
-            params={"SubmitAction": "wasteDisposalServices", "InFrameMode": "TRUE"},
+            params={
+                "SubmitAction": "wasteDisposalServices",
+                "InFrameMode": "TRUE"},
         )
         r.raise_for_status()
         r.encoding = "utf-8"
@@ -124,5 +130,8 @@ class Source:
 
         entries = []
         for d in dates:
-            entries.append(Collection(d[0], d[1], ICON_MAP.get(d[1].split(" ")[0])))
+            entries.append(
+                Collection(
+                    d[0], d[1], ICON_MAP.get(
+                        d[1].split(" ")[0])))
         return entries

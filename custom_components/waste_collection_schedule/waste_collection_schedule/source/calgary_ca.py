@@ -10,7 +10,8 @@ DESCRIPTION = "Source for Calgary waste collection"
 URL = "https://www.calgary.ca"
 
 # ADDRESSES MUST BE ALL CAPS and INCLUDE A QUADRANT
-TEST_CASES = {"42 AUBURN SHORES WY SE": {"street_address": "42 AUBURN SHORES WY SE"}}
+TEST_CASES = {"42 AUBURN SHORES WY SE": {
+    "street_address": "42 AUBURN SHORES WY SE"}}
 
 SCHEDULE_LOOKUP_URL = "https://data.calgary.ca/resource/jq4t-b745.json"
 
@@ -52,7 +53,8 @@ class Source:
             week = single_date.isocalendar()[1]
             week_modulus = week % 2
 
-            # return true if the week moduls corresponds to the collection interval
+            # return true if the week moduls corresponds to the collection
+            # interval
             if (interval == "EVEN") and (week_modulus == 0):
                 return True
             elif (interval == "ODD") and (week_modulus == 1):
@@ -76,9 +78,11 @@ class Source:
 
             current_date = datetime.now()
             commodity = entry["commodity"]
-            summer_start = datetime.strptime(entry["summer_start"], date_format)
+            summer_start = datetime.strptime(
+                entry["summer_start"], date_format)
             summer_end = datetime.strptime(entry["summer_end"], date_format)
-            winter_start = datetime.strptime(entry["winter_start"], date_format)
+            winter_start = datetime.strptime(
+                entry["winter_start"], date_format)
             winter_end = datetime.strptime(entry["winter_end"], date_format)
             collection_day_summer = entry["collection_day_summer"]
             collection_day_winter = entry["collection_day_winter"]
@@ -90,17 +94,33 @@ class Source:
                 # don't need to include dates already passed
                 if single_date < current_date:
                     continue
-                # if the collection interval is satisfied and if the weekday is the same as the collection day then add the entry
-                if self.collect(single_date, collection_day_summer, clect_int_summer):
+                # if the collection interval is satisfied and if the weekday is
+                # the same as the collection day then add the entry
+                if self.collect(
+                        single_date,
+                        collection_day_summer,
+                        clect_int_summer):
                     icon = ICON_MAP.get(commodity)
-                    entries.append(Collection(single_date.date(), commodity, icon=icon))
+                    entries.append(
+                        Collection(
+                            single_date.date(),
+                            commodity,
+                            icon=icon))
 
             for single_date in self.daterange(winter_start, winter_end):
                 # don't need to include dates already passed
                 if single_date < current_date:
                     continue
-                # if the collection interval is satisfied and if the weekday is the same as the collection day then add the entry
-                if self.collect(single_date, collection_day_winter, clect_int_winter):
+                # if the collection interval is satisfied and if the weekday is
+                # the same as the collection day then add the entry
+                if self.collect(
+                        single_date,
+                        collection_day_winter,
+                        clect_int_winter):
                     icon = ICON_MAP.get(commodity)
-                    entries.append(Collection(single_date.date(), commodity, icon=icon))
+                    entries.append(
+                        Collection(
+                            single_date.date(),
+                            commodity,
+                            icon=icon))
         return entries

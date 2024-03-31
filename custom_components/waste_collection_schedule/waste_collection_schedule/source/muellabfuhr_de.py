@@ -39,7 +39,11 @@ class Source:
         self._district = district
         self._street = street
 
-    def make_request(self, clientid, location_id, endpoint="?includeChildren=true"):
+    def make_request(
+            self,
+            clientid,
+            location_id,
+            endpoint="?includeChildren=true"):
         url = (
             URL
             + "/api-portal/mandators/"

@@ -8,8 +8,10 @@ TITLE = "Knox City Council"
 DESCRIPTION = "Source for Knox City Council rubbish collection."
 URL = "https://www.knox.vic.gov.au/"
 TEST_CASES = {
-    "Lorna Café": {"street_address": "1053 Burwood Highway, FERNTREE GULLY VIC 3156"},
-    "Country Cob Bakery": {"street_address": "951 Mountain Highway, BORONIA VIC 3155"},
+    "Lorna Café": {
+        "street_address": "1053 Burwood Highway, FERNTREE GULLY VIC 3156"},
+    "Country Cob Bakery": {
+        "street_address": "951 Mountain Highway, BORONIA VIC 3155"},
 }
 
 _LOGGER = logging.getLogger(__name__)
@@ -76,7 +78,9 @@ class Source:
         response.raise_for_status()
 
         rubbishCollectionApiResult = response.json()
-        _LOGGER.debug("Rubblish Collection API result: %s", rubbishCollectionApiResult)
+        _LOGGER.debug(
+            "Rubblish Collection API result: %s",
+            rubbishCollectionApiResult)
 
         entries = []
 
@@ -85,8 +89,7 @@ class Source:
             if key.endswith(dateString):
                 name = key.replace(dateString, "")
                 waste_type = (
-                    WASTE_TYPES[name].display_name if name in WASTE_TYPES else name
-                )
+                    WASTE_TYPES[name].display_name if name in WASTE_TYPES else name)
                 date = extract_date(value)
                 icon = WASTE_TYPES[name].icon if name in WASTE_TYPES else None
                 entries.append(Collection(date=date, t=waste_type, icon=icon))

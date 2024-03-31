@@ -54,7 +54,11 @@ class Source:
             waste_type = waste_type_info["class"][1].capitalize()
             pickup_date = self.get_date(waste_type_info)
             icon = ICON_MAP.get(waste_type)
-            entries.append(Collection(date=pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries
 

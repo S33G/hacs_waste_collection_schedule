@@ -35,21 +35,25 @@ class Source:
         s = requests.Session()
         r = s.get(
             "https://data.okc.gov/services/portal/api/data/records/Address%20Trash%20Services",
-            params={"recordID": self._recordID},
+            params={
+                "recordID": self._recordID},
             headers=HEADERS,
         )
 
         try:
             json_data = json.loads(r.text)
         except Exception as e:
-            raise Exception("Invalid response returned from data.okc.gov") from e
+            raise Exception(
+                "Invalid response returned from data.okc.gov") from e
         else:
             waste_types = []
             # Build list of collection categories
             for item in json_data["Fields"][
                 3:-1
             ]:  # limit to those entries containing collection info
-                waste_types.append(item["FieldName"].replace("Next_", "").split("_")[0])
+                waste_types.append(
+                    item["FieldName"].replace(
+                        "Next_", "").split("_")[0])
             # Build list of collection days/dates
             waste_dates = []
             action_day = datetime.now().replace(
@@ -64,7 +68,9 @@ class Source:
                             action_day += timedelta(days=+1)
                         waste_dates.append(action_day.date())
                     else:
-                        waste_dates.append(datetime.strptime(item, "%b %d, %Y").date())
+                        waste_dates.append(
+                            datetime.strptime(
+                                item, "%b %d, %Y").date())
             schedule = list(zip(waste_types, waste_dates))
 
             entries = []

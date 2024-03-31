@@ -71,7 +71,8 @@ class Source:
 
         payload_str = urllib.parse.urlencode(payload, encoding="utf8")
         # request for the wasteschedule
-        wasteschedule = requests.get(API_URLS["collection"], params=payload_str)
+        wasteschedule = requests.get(
+            API_URLS["collection"], params=payload_str)
         wasteschedule.raise_for_status()
 
         data = json.loads(wasteschedule.text)
@@ -81,12 +82,14 @@ class Source:
             if "v" in i["NextWastePickup"]:
                 date_parts = i["NextWastePickup"].split()
                 month = MONTH_MAP[date_parts[1]]
-                date_joined = "-".join([date_parts[0], str(month), date_parts[2]])
+                date_joined = "-".join([date_parts[0],
+                                       str(month), date_parts[2]])
                 date = datetime.strptime(date_joined, "v%W-%m-%Y").date()
             elif not i["NextWastePickup"]:
                 continue
             else:
-                date = datetime.strptime(i["NextWastePickup"], "%Y-%m-%d").date()
+                date = datetime.strptime(
+                    i["NextWastePickup"], "%Y-%m-%d").date()
 
             entries.append(
                 Collection(

@@ -45,7 +45,12 @@ class Source:
         self._house_number = house_number
         self._ics = ICS()
 
-    def get_calendar(self, village: int, street: int, house_number: int, area: int):
+    def get_calendar(
+            self,
+            village: int,
+            street: int,
+            house_number: int,
+            area: int):
         post_data = {
             "input_ort": "",
             "input_ortsteil": "Ortsteil",
@@ -70,7 +75,11 @@ class Source:
         # convert text into ICS object
         return self._ics.convert(ics)
 
-    def get_from_proxy(self, village: int = 0, street: int = 0, input: str = ""):
+    def get_from_proxy(
+            self,
+            village: int = 0,
+            street: int = 0,
+            input: str = ""):
         post_data = {
             "input": input,
             "ort_id": village,
@@ -80,11 +89,13 @@ class Source:
             "server": 0
         }
         data = requests.post(DATA_URL, data=post_data).text
-        data = re.findall("<li id = '.*?_\d+'onClick='get_value\(\".*?\",\d+,\d+\)'>" +
-                          "<span style = 'display:none;'>(\d+)</span>" +
-                          "<span style = 'display:none;'>(\d+)</span>" +
-                          "<span>(.*?)</span>" +
-                          "</li>", data)
+        data = re.findall(
+            "<li id = '.*?_\\d+'onClick='get_value\\(\".*?\",\\d+,\\d+\\)'>" +
+            "<span style = 'display:none;'>(\\d+)</span>" +
+            "<span style = 'display:none;'>(\\d+)</span>" +
+            "<span>(.*?)</span>" +
+            "</li>",
+            data)
         return [data[0][0], data[0][1]]
 
     def get_ids(self):

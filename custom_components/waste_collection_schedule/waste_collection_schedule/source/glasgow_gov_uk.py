@@ -64,18 +64,22 @@ class Source:
         r = session.get(f"{API_URL}{self._uprn}")
         entries = entries + self._parseBins(r.text)
 
-        # get next month otherwise at end of month you will have no future collection dates
+        # get next month otherwise at end of month you will have no future
+        # collection dates
         soup = BeautifulSoup(r.text, features="html.parser")
         nextlink = soup.find("a", title="Go to the next month")
         if len(nextlink) > 0:
-            match = re.search(r"__doPostBack\('(.*?)','(.*?)'", nextlink["href"])
+            match = re.search(
+                r"__doPostBack\('(.*?)','(.*?)'", nextlink["href"])
             data = {
                 "__EVENTTARGET": match.group(1),
                 "__EVENTARGUMENT": match.group(2),
-                "__EVENTVALIDATION": soup.find("input", id="__EVENTVALIDATION")[
-                    "value"
-                ],
-                "__VIEWSTATE": soup.find("input", id="__VIEWSTATE")["value"],
+                "__EVENTVALIDATION": soup.find(
+                    "input",
+                    id="__EVENTVALIDATION")["value"],
+                "__VIEWSTATE": soup.find(
+                    "input",
+                    id="__VIEWSTATE")["value"],
             }
             r = session.post(f"{API_URL}{self._uprn}", data=data)
 

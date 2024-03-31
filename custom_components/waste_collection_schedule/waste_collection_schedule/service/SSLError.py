@@ -1,9 +1,10 @@
-#Work around SSL UNSAFE_LEGACY_RENEGOTIATION_DISABLED errors using method discussed in
+# Work around SSL UNSAFE_LEGACY_RENEGOTIATION_DISABLED errors using method discussed in
 # https://stackoverflow.com/questions/71603314/ssl-error-unsafe-legacy-renegotiation-disabled
 
 import requests
 import ssl
 import urllib3
+
 
 class CustomHttpAdapter (requests.adapters.HTTPAdapter):
     # "Transport adapter" that allows us to use custom ssl_context.
@@ -24,4 +25,3 @@ def get_legacy_session():
     session = requests.session()
     session.mount('https://', CustomHttpAdapter(ctx))
     return session
-

@@ -80,8 +80,7 @@ class Source:
     @staticmethod
     def _parse_response_input(text):
         parsed = re.findall(
-            '<INPUT\\sNAME="([^"]+?)"\\sID="[^"]+?"(?:\\sVALUE="([^"]*?)")?', text
-        )
+            '<INPUT\\sNAME="([^"]+?)"\\sID="[^"]+?"(?:\\sVALUE="([^"]*?)")?', text)
         return {k: v for k, v in parsed}
 
     def _address(self):
@@ -93,7 +92,8 @@ class Source:
         }
 
     def _headers(self):
-        return {"Content-Type": f"multipart/form-data; boundary=----{self._boundary}"}
+        return {
+            "Content-Type": f"multipart/form-data; boundary=----{self._boundary}"}
 
     def _payload(self, last_request, action="", period="", **kwargs):
         payload = self._parse_response_input(last_request)
@@ -107,11 +107,15 @@ class Source:
         payload = self._payload(
             init_request, action="CITYCHANGED", period=calendar, **kwargs
         )
-        city_response = session.post(API_URL, headers=self._headers(), data=payload)
+        city_response = session.post(
+            API_URL, headers=self._headers(), data=payload)
         payload = self._payload(
-            city_response.text, action="forward", period=calendar, **self._address()
-        )
-        final_response = session.post(API_URL, headers=self._headers(), data=payload)
+            city_response.text,
+            action="forward",
+            period=calendar,
+            **self._address())
+        final_response = session.post(
+            API_URL, headers=self._headers(), data=payload)
         if error := re.findall(
             'informationItemsText_1">([^<]+?)<', final_response.text
         ):
@@ -127,7 +131,9 @@ class Source:
         init_request = session.get(
             f"{API_URL}?SubmitAction=wasteDisposalServices&InFrameMode=true"
         ).text
-        if calendars := re.findall('NAME="Zeitraum" VALUE="([^"]+?)"', init_request):
+        if calendars := re.findall(
+            'NAME="Zeitraum" VALUE="([^"]+?)"',
+                init_request):
             dates = [
                 date
                 for calendar in calendars
@@ -140,7 +146,9 @@ class Source:
             name = TYPES[next(x for x in list(TYPES) if x in bin_type)]
             entries.append(
                 Collection(
-                    datetime.strptime(date, "%d.%m.%Y").date(), name, ICON_MAP.get(name)
-                )
-            )
+                    datetime.strptime(
+                        date,
+                        "%d.%m.%Y").date(),
+                    name,
+                    ICON_MAP.get(name)))
         return entries

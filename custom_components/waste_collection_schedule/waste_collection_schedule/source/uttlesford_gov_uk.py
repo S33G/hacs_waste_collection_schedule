@@ -15,7 +15,10 @@ TEST_CASES = {
 
 API_URL = "http://bins.uttlesford.gov.uk/collections.php?house={house}"
 
-ICON_MAP = {"black": "mdi:trash-can", "green": "mdi:recycle", "brown": "mdi:food-apple"}
+ICON_MAP = {
+    "black": "mdi:trash-can",
+    "green": "mdi:recycle",
+    "brown": "mdi:food-apple"}
 
 PICTURE_MAP = {
     "black": "https://bins.uttlesford.gov.uk/img/result-black.png",
@@ -61,11 +64,13 @@ class Source:
             datestr = trimsuffix(datestr) + " " + today.strftime("%Y")
             date = datetime.datetime.strptime(datestr, "%A %d %B %Y")
 
-            # As they don't show the year we need to check if it should actually be next year
+            # As they don't show the year we need to check if it should
+            # actually be next year
             if date.date() < today:
                 date = date.replace(year=today.year + 1)
 
-            # As all the image alt text etc is wrong on the website we have to go by the image itself
+            # As all the image alt text etc is wrong on the website we have to
+            # go by the image itself
             if "green" in image["src"]:
                 collectiontxt = "green"
             else:
@@ -79,7 +84,8 @@ class Source:
                     icon=ICON_MAP.get(collectiontxt),
                 )
             )
-            # Add a second collection entry as all collections include the brown food bin
+            # Add a second collection entry as all collections include the
+            # brown food bin
             collectiontxt = "brown"
             entries.append(
                 Collection(

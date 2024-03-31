@@ -28,7 +28,8 @@ class Source:
 
     def fetch(self):
 
-        response = get_legacy_session().get(f"https://online.aberdeenshire.gov.uk/Apps/Waste-Collections/Routes/Route/{self._uprn}")
+        response = get_legacy_session().get(
+            f"https://online.aberdeenshire.gov.uk/Apps/Waste-Collections/Routes/Route/{self._uprn}")
         soup = BeautifulSoup(response.text, "html.parser")
 
         entries = []
@@ -38,10 +39,12 @@ class Source:
             td = item.findAll("td")
             entries.append(
                 Collection(
-                    date=datetime.strptime(td[0].text.split(" ")[0], "%d/%m/%Y").date(),
+                    date=datetime.strptime(
+                        td[0].text.split(" ")[0],
+                        "%d/%m/%Y").date(),
                     t=td[1].text,
-                    icon=ICON_MAP.get(td[1].text),
-                )
-            )
+                    icon=ICON_MAP.get(
+                        td[1].text),
+                ))
 
         return entries

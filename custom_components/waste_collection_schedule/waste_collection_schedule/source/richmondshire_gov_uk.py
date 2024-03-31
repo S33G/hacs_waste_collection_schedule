@@ -36,9 +36,11 @@ class Source:
         for id in ids:
             entries.append(
                 Collection(
-                    date=datetime.strptime(id["start"], "%Y-%m-%dT%H:%M:%S").date(),
+                    date=datetime.strptime(
+                        id["start"],
+                        "%Y-%m-%dT%H:%M:%S").date(),
                     t=id["title"],
-                    icon=ICON_MAP.get(id["title"]),
-                )
-            )
+                    icon=ICON_MAP.get(
+                        id["title"]),
+                ))
         return entries

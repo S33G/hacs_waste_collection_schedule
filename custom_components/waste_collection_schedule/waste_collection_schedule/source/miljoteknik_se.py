@@ -90,9 +90,14 @@ class Source:
             json_entry = json.loads(
                 re.sub(r"(title|start):", r'"\1":', entry.replace("'", '"'))
             )
-            # Same icon always, due to two bins both being various recycled things
+            # Same icon always, due to two bins both being various recycled
+            # things
             icon = "mdi:recycle"
             waste_type = json_entry["title"].split(":")[1].lstrip()
             pickup_date = datetime.fromisoformat(json_entry["start"]).date()
-            entries.append(Collection(date=pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=pickup_date,
+                    t=waste_type,
+                    icon=icon))
         return entries

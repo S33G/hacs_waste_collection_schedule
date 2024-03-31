@@ -14,7 +14,10 @@ TEST_CASES = {
     "Test_003": {"uprn": "90164803"},
     "Test_004": {"uprn": 90092621},
 }
-ICON_MAP = {"RECYCLING": "mdi:recycle", "GARDEN": "mdi:leaf", "REFUSE": "mdi:trash-can"}
+ICON_MAP = {
+    "RECYCLING": "mdi:recycle",
+    "GARDEN": "mdi:leaf",
+    "REFUSE": "mdi:trash-can"}
 REGEX = {
     "DATES": r"(\d+ \w{3})",
     "DAYS": r"every: (Monday|Tuesday|Wednesday|Thursday|Friday)",
@@ -91,7 +94,9 @@ class Source:
         )
         soup = BeautifulSoup(r.text, "html.parser")
 
-        panel = soup.find("div", {"aria-label": "Refuse and Recycling Collection"})
+        panel = soup.find(
+            "div", {
+                "aria-label": "Refuse and Recycling Collection"})
         panel_data = panel.find("div", {"class": "atPanelData"})
         waste_data = panel_data.text.split("Next")[
             1:
@@ -118,9 +123,11 @@ class Source:
                     dt = xmas_map.get(dt, dt)
                     self.append_entries(dt, "Garden", entries)
 
-        # Refuse collections only have a DAY not a date, so work out dates for the next few collections
+        # Refuse collections only have a DAY not a date, so work out dates for
+        # the next few collections
         refuse_day = re.findall(REGEX["DAYS"], panel_data.text)[0]
-        refuse_date = today + timedelta((int(DAYS[refuse_day]) - today.weekday()) % 7)
+        refuse_date = today + \
+            timedelta((int(DAYS[refuse_day]) - today.weekday()) % 7)
         for i in range(0, 4):
             temp_date = (refuse_date + timedelta(days=7 * i)).date()
             temp_date = xmas_map.get(temp_date, temp_date)

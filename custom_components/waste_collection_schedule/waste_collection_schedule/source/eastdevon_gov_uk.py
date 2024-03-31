@@ -39,7 +39,9 @@ class Source:
         for b, d in zip(bins, dates):
             # check cases where no date is given for a collection
             if d:
-                bin_type = b.text.replace(" collection", "").replace("Your ", "")
+                bin_type = b.text.replace(
+                    " collection", "").replace(
+                    "Your ", "")
                 entries.append(
                     Collection(
                         date=datetime.strptime(d.text, "%A%d %B %Y").date(),

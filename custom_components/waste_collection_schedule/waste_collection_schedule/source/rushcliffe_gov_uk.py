@@ -73,7 +73,8 @@ class Source:
     def __compare(self, a: str, b: str) -> bool:
         a = a.strip().replace(" ", "").replace(",", "")
         b = b.strip().replace(" ", "").replace(",", "")
-        return a.lower() == b.lower() or a.lower().startswith(b.lower()) or b.lower().startswith(a.lower())
+        return a.lower() == b.lower() or a.lower().startswith(
+            b.lower()) or b.lower().startswith(a.lower())
 
     def __get_viewstate_and_validation(self, text: str) -> tuple[str, str]:
         if "__VIEWSTATE" not in text or "__EVENTVALIDATION" not in text:
@@ -82,7 +83,7 @@ class Source:
         text_arr = text.split("|")
         viewstate_index = text_arr.index("__VIEWSTATE")
         event_val_index = text_arr.index("__EVENTVALIDATION")
-        return (text_arr[viewstate_index+1], text_arr[event_val_index+1])
+        return (text_arr[viewstate_index + 1], text_arr[event_val_index + 1])
 
     def fetch(self):
         s = requests.Session()
@@ -101,7 +102,8 @@ class Source:
         viewstate = soup.find("input", {"name": "__VIEWSTATE"})
         validation = soup.find("input", {"name": "__EVENTVALIDATION"})
 
-        if viewstate == None or not viewstate.get("value") or validation == None or not validation.get("value"):
+        if viewstate is None or not viewstate.get(
+                "value") or validation is None or not validation.get("value"):
             raise Exception("Invalid response")
 
         args["__VIEWSTATE"], args["__EVENTVALIDATION"] = viewstate.get(

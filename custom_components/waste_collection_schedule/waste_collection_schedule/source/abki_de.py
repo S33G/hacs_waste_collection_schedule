@@ -41,13 +41,15 @@ class Source:
         # get street id
         params = f'filter[logic]=and&filter[filters][0][value]={self._street}&filter[filters][0][field]=Strasse&filter[filters][0][operator]=startswith&filter[filters][0][ignoreCase]=true'
         r = session.get(
-            "https://abki.de/abki-services/strassennamen", params=params)  # , params=params)
+            "https://abki.de/abki-services/strassennamen",
+            params=params)  # , params=params)
         r.raise_for_status()
 
         streets = r.json()
         if len(streets) > 1:
             _LOGGER.warning(
-                "Multiple streets found please be more specific, using first one: "+streets[0]["Strasse"])
+                "Multiple streets found please be more specific, using first one: " +
+                streets[0]["Strasse"])
         if len(streets) < 1:
             raise ValueError("No street found", self._street)
 
@@ -60,23 +62,32 @@ class Source:
         numbers = r.json()
         number_id, standort_id = None, None
         for number in numbers:
-            if number["NUMBER"].lower().replace(" ", "").replace("-", "") == self._number.lower().replace(" ", "").replace("-", ""):
+            if number["NUMBER"].lower().replace(
+                " ",
+                "").replace(
+                "-",
+                "") == self._number.lower().replace(
+                " ",
+                "").replace(
+                "-",
+                    ""):
                 number_id = number["id"]
                 standort_id = number["IDSTANDORT"]
                 break
-        
+
         if number_id is None:
             raise ValueError("No number found", self._number)
 
         # get ics file link
-        r = session.get("https://abki.de/abki-services/leerungen-data", params={
-            "Zeitraum": now.year,
-            "Strasse_input": self._street,
-            "Strasse": street_id,
-            "IDSTANDORT_input": 2,
-            "IDSTANDORT": standort_id,
-            "Hausnummernwahl": number_id
-        })
+        r = session.get(
+            "https://abki.de/abki-services/leerungen-data",
+            params={
+                "Zeitraum": now.year,
+                "Strasse_input": self._street,
+                "Strasse": street_id,
+                "IDSTANDORT_input": 2,
+                "IDSTANDORT": standort_id,
+                "Hausnummernwahl": number_id})
         r.raise_for_status()
         request_data = r.json()["dataFile"]
 
@@ -88,19 +99,20 @@ class Source:
         # if december, also try to get next year
         if now.month == 12:
             try:
-                r = session.get("https://abki.de/abki-services/leerungen-data", params={
-                    "Zeitraum": now.year+1,
-                    "Strasse_input": self._street,
-                    "Strasse": street_id,
-                    "IDSTANDORT_input": 2,
-                    "IDSTANDORT": standort_id,
-                    "Hausnummernwahl": number_id
-                })
+                r = session.get(
+                    "https://abki.de/abki-services/leerungen-data",
+                    params={
+                        "Zeitraum": now.year + 1,
+                        "Strasse_input": self._street,
+                        "Strasse": street_id,
+                        "IDSTANDORT_input": 2,
+                        "IDSTANDORT": standort_id,
+                        "Hausnummernwahl": number_id})
                 r.raise_for_status()
                 request_data = r.json()["dataFile"]
                 r = session.get(ICAL_URL, params={"data": request_data})
                 dates += self._ics.convert(r.text)
-            except:
+            except BaseException:
                 pass
 
         entries = []

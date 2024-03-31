@@ -137,8 +137,12 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
 class WasteCollectionApi:
     def __init__(
-        self, hass, separator, fetch_time, random_fetch_time_offset, day_switch_time
-    ):
+            self,
+            hass,
+            separator,
+            fetch_time,
+            random_fetch_time_offset,
+            day_switch_time):
         self._hass = hass
         self._source_shells = []
         self._separator = separator
@@ -219,7 +223,8 @@ class WasteCollectionApi:
         return self._source_shells
 
     def get_shell(self, index):
-        return self._source_shells[index] if index < len(self._source_shells) else None
+        return self._source_shells[index] if index < len(
+            self._source_shells) else None
 
     @callback
     def _fetch_callback(self, *_):

@@ -63,7 +63,11 @@ class Source:
 
         # This request retrieves the schedule
         timestamp = time_ns() // 1_000_000  # epoch time in milliseconds
-        payload = {"formValues": {"Section 1": {"uprnCore": {"value": self._uprn}}}}
+        payload = {
+            "formValues": {
+                "Section 1": {
+                    "uprnCore": {
+                        "value": self._uprn}}}}
         schedule_request = s.post(
             "https://mycouncil.milton-keynes.gov.uk/apibroker/runLookup",
             headers=HEADERS,
@@ -81,7 +85,8 @@ class Source:
             json=payload,
         )
 
-        rowdata = schedule_request.json()["integration"]["transformed"]["rows_data"]
+        rowdata = schedule_request.json(
+        )["integration"]["transformed"]["rows_data"]
 
         # Extract bin types and next collection dates
         entries = []

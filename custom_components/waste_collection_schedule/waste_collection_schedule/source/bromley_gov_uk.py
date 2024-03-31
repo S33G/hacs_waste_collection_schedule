@@ -31,7 +31,8 @@ class Source:
 
     def fetch(self):
         s = requests.Session()
-        r = s.get(f"https://recyclingservices.bromley.gov.uk/waste/{self._property}")
+        r = s.get(
+            f"https://recyclingservices.bromley.gov.uk/waste/{self._property}")
 
         for _ in range(MAX_COUNT):
             r = s.get(
@@ -41,7 +42,8 @@ class Source:
                 dates = self._ics.convert(r.text)
                 break
             except ValueError:
-                time.sleep(2)  # identical to website behaviour (hx-trigger="every 2s")
+                # identical to website behaviour (hx-trigger="every 2s")
+                time.sleep(2)
 
         entries = []
         for item in dates:

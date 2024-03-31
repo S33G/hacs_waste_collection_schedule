@@ -71,28 +71,27 @@ class Source:
         service = ""
         schedule = {}
         for service_type in r1_json:
-            if hasattr(service_type, "__iter__") and service_type != "isColaAccount":
+            if hasattr(
+                    service_type,
+                    "__iter__") and service_type != "isColaAccount":
                 i = 0
                 for item in r1_json[service_type]:
                     for day in item["nextServiceDays"]:
                         dt = datetime.strptime(day, "%Y-%m-%d").date()
                         service = item["containerCategory"]
-                        schedule.update(
-                            {
-                                i: {
-                                    "date": dt,
-                                    "waste_type": item["wasteTypeDescription"],
-                                    "waste_description": item["productDescription"],
-                                    "service": service,
-                                }
-                            }
-                        )
+                        schedule.update({i: {"date": dt,
+                                             "waste_type": item["wasteTypeDescription"],
+                                             "waste_description": item["productDescription"],
+                                             "service": service,
+                                             }})
                         i += 1
 
         # Compile holidays that impact collections
         r2 = s.get(
             "https://www.republicservices.com/api/v3/holidaySchedules/schedules",
-            params={"latitude": latitude, "longitude": longitude},
+            params={
+                "latitude": latitude,
+                "longitude": longitude},
         )
         r2_json = json.loads(r2.text)["data"]
         day_offset = 0

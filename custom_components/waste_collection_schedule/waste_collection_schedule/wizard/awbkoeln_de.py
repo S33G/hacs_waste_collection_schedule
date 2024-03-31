@@ -33,13 +33,15 @@ def main():
             "building_number": d["building_number"],
         }
         choices.append(
-            (
-                f"{d['user_street_name']} {d['user_building_number']}, {d['zipcode']} Köln - {d['district']}",
-                value,
-            )
-        )
+            (f"{d['user_street_name']} {d['user_building_number']}, {d['zipcode']} Köln - {d['district']}",
+             value,
+             ))
 
-    questions = [inquirer.List("data", choices=choices, message="Select address")]
+    questions = [
+        inquirer.List(
+            "data",
+            choices=choices,
+            message="Select address")]
     answers = inquirer.prompt(questions)
 
     print("Copy the following statements into your configuration.yaml:\n")

@@ -4,8 +4,10 @@ import requests
 from waste_collection_schedule import Collection
 
 TITLE = "EAD Darmstadt"  # Title will show up in README.md and info.md
-DESCRIPTION = "Source script for waste collection in Darmstadt ead.darmstadt.de"  # Describe your source
-URL = "https://ead.darmstadt.de/"  # Insert url to service homepage. URL will show up in README.md and info.md
+# Describe your source
+DESCRIPTION = "Source script for waste collection in Darmstadt ead.darmstadt.de"
+# Insert url to service homepage. URL will show up in README.md and info.md
+URL = "https://ead.darmstadt.de/"
 TEST_CASES = {  # Insert arguments for test cases to be used by test_sources.py script
     "Stresemannstraße": {"street": "Stresemannstraße"},
     "Trondheimstraße": {"street": "Trondheimstraße"},

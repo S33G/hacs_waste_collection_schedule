@@ -51,7 +51,8 @@ class Source:
                 # Remove ' - A' suffix from waste type if present
                 waste_type = waste_type.replace(" - A", "")
 
-                # Check if waste type code is in the list of eligible waste types
+                # Check if waste type code is in the list of eligible waste
+                # types
                 if waste_type_code not in eligible_waste_types:
                     continue
                 # Append collection entry with date, type, and icon

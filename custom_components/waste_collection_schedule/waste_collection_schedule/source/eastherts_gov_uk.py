@@ -28,6 +28,7 @@ API_URL = "https://uhte-wrp.whitespacews.com/"
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class Source:
     def __init__(
         self,
@@ -43,13 +44,16 @@ class Source:
         self._address_postcode = address_postcode
 
         if address_name_numer is not None:
-            _LOGGER.warning("address_name_numer is deprecated. Use address_name_number instead.")
+            _LOGGER.warning(
+                "address_name_numer is deprecated. Use address_name_number instead.")
 
         if address_street is not None:
-            _LOGGER.warning("address_street is deprecated. Only address_name_number and address_postcode are required")
+            _LOGGER.warning(
+                "address_street is deprecated. Only address_name_number and address_postcode are required")
 
         if street_town is not None:
-            _LOGGER.warning("street_town is deprecated. Only address_name_number and address_postcode are required")
+            _LOGGER.warning(
+                "street_town is deprecated. Only address_name_number and address_postcode are required")
 
     def fetch(self):
         session = requests.Session()
@@ -80,7 +84,8 @@ class Source:
 
         soup = BeautifulSoup(r.text, features="html.parser")
 
-        # get first address (if you don't enter enough argument values this won't find the right address)
+        # get first address (if you don't enter enough argument values this
+        # won't find the right address)
         alink = soup.find("div", id="property_list").find("a")
 
         if alink is None:
@@ -107,13 +112,19 @@ class Source:
             entries.append(
                 Collection(
                     date=datetime.strptime(
-                        lis[1].text.replace("\n", ""), "%d/%m/%Y"
-                    ).date(),
-                    t=lis[2].text.replace("\n", ""),
+                        lis[1].text.replace(
+                            "\n",
+                            ""),
+                        "%d/%m/%Y").date(),
+                    t=lis[2].text.replace(
+                        "\n",
+                        ""),
                     icon=ICON_MAP.get(
-                        lis[2].text.replace("\n", "").replace(" Collection Service", "")
-                    ),
-                )
-            )
+                        lis[2].text.replace(
+                            "\n",
+                            "").replace(
+                                " Collection Service",
+                                "")),
+                ))
 
         return entries

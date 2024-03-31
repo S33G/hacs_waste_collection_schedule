@@ -236,7 +236,8 @@ class Source:
 
     def get_data(self, year):
         s = requests.Session()
-        # Select appropriate url, the "." allows stpoelten/stpoeltenland and krems/kremsstadt to be distinguished
+        # Select appropriate url, the "." allows stpoelten/stpoeltenland and
+        # krems/kremsstadt to be distinguished
         for item in EXTRA_INFO:
             if (self._district.lower() + ".") in item["url"]:
                 district_url = item["url"]
@@ -244,7 +245,8 @@ class Source:
         soup = BeautifulSoup(r0.text, "html.parser")
 
         # Get list of municipalities and weblinks
-        # kremsstadt lists collections for all municipals on the main page so skip that district
+        # kremsstadt lists collections for all municipals on the main page so
+        # skip that district
         if self._municipal:
             table = soup.find_all("div", {"class": "col-sm-9"})
             for item in table:
@@ -262,7 +264,8 @@ class Source:
         for day in schedule:
             txt = day.text.strip().split(" \u00a0")
             if self._calendars:  # Filter for calendar if there are multiple calendars
-                if any(cal.upper() in txt[2].upper() for cal in self._calendars):
+                if any(cal.upper() in txt[2].upper()
+                       for cal in self._calendars):
                     txt[2] = txt[2].split(":")[-1].strip()
                     self.append_entry(entries, txt)
             else:  # Process all other municipals

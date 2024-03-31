@@ -35,8 +35,7 @@ class Source:
         params = {"address": address}
         r = requests.get(
             "https://minasidor.juneavfall.se/FutureWebJuneBasic/SimpleWastePickup/GetWastePickupSchedule",
-            params=params
-        )
+            params=params)
         r.raise_for_status()
 
         data = r.json()

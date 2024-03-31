@@ -43,13 +43,17 @@ class Source:
         r.raise_for_status()
         serviceUrl = f"{SERVICE_URL}Default.aspx"
 
-        # get the default view (might not needed, but is a good check the login worked)
-        response = session.get('https://kundenportal.berlin-recycling.de/Default.aspx')
+        # get the default view (might not needed, but is a good check the login
+        # worked)
+        response = session.get(
+            'https://kundenportal.berlin-recycling.de/Default.aspx')
         if response.history:
-            raise Exception ('The default view request was redirected to ' + response.url)
-        
+            raise Exception(
+                'The default view request was redirected to ' +
+                response.url)
+
         headers = {
-                'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
 
         r = session.post(f"{serviceUrl}/GetDashboard", headers=headers)
@@ -65,7 +69,10 @@ class Source:
             "ClientParameters": "",
             "headrecid": ""
         }
-        r = session.post(f"{serviceUrl}/GetDatasetTableHead", json=request_data, headers=headers)
+        r = session.post(
+            f"{serviceUrl}/GetDatasetTableHead",
+            json=request_data,
+            headers=headers)
 
         data = json.loads(r.text)
         # load json again, because response is double coded
@@ -74,7 +81,7 @@ class Source:
         entries = []
         if "Object" not in data or "data" not in data["Object"]:
             raise Exception("No data found", data)
-        
+
         for d in data["Object"]["data"]:
             date = datetime.strptime(d["Task Date"], "%Y-%m-%d").date()
             entries.append(Collection(date, d["Material Description"]))

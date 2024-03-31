@@ -28,8 +28,9 @@ class Source:
 
     def fetch(self):
         response = requests.get(
-            "https://www.lichfielddc.gov.uk/bincalendar", params={"uprn": self._uprn}
-        )
+            "https://www.lichfielddc.gov.uk/bincalendar",
+            params={
+                "uprn": self._uprn})
         soup = BeautifulSoup(response.text, "html.parser")
 
         entries = []

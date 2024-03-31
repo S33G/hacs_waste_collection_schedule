@@ -20,8 +20,11 @@ TEST_CASES = {
 
 class Source(JumomindSource):
     def __init__(
-        self, city: str, street: str, house_number: int, address_suffix: str = ""
-    ):
+            self,
+            city: str,
+            street: str,
+            house_number: int,
+            address_suffix: str = ""):
         super().__init__(
             service_id="rhe",
             city=city,

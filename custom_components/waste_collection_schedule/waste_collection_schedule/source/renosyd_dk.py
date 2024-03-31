@@ -45,7 +45,8 @@ class Source:
 
         for item in data:
             for toemning in item.get("planlagtetømninger", []):
-                date = datetime.strptime(toemning["dato"], "%Y-%m-%dT%H:%M:%SZ").date()
+                date = datetime.strptime(
+                    toemning["dato"], "%Y-%m-%dT%H:%M:%SZ").date()
                 for fraktion in toemning["fraktioner"]:
                     entries.append(
                         Collection(

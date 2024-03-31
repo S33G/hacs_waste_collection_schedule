@@ -24,6 +24,7 @@ REGEX = {
     "LICENSEE": r"Licensee=(.+)&",
 }
 
+
 class Source:
     def __init__(self, uprn, postcode):
         self._uprn = str(uprn).zfill(12)
@@ -33,12 +34,14 @@ class Source:
         s = requests.Session()
 
         # get api_key and licensee
-        r1 = s.get("https://www.eastriding.gov.uk/templates/eryc_corptranet/js/eryc-bin-checker.js")
+        r1 = s.get(
+            "https://www.eastriding.gov.uk/templates/eryc_corptranet/js/eryc-bin-checker.js")
         api_key = re.findall(REGEX["API_KEY"], r1.text)[0]
         licensee = re.findall(REGEX["LICENSEE"], r1.text)[0]
 
         # retrieve schedule
-        r2 = s.get(f"https://wasterecyclingapi.eastriding.gov.uk/api/RecyclingData/CollectionsData?APIKey={api_key}&Licensee={licensee}&Postcode={self._postcode}")
+        r2 = s.get(
+            f"https://wasterecyclingapi.eastriding.gov.uk/api/RecyclingData/CollectionsData?APIKey={api_key}&Licensee={licensee}&Postcode={self._postcode}")
         r2_json = json.loads(r2.text)["dataReturned"]
 
         entries = []
@@ -48,10 +51,12 @@ class Source:
                 for key in ICON_MAP:
                     entries.append(
                         Collection(
-                            date=datetime.strptime(item[key], "%Y-%m-%dT00:00:00").date(),
-                            t=key.replace("Date", " Bin"), # api doesn't return a waste type, so make one up
+                            date=datetime.strptime(
+                                item[key], "%Y-%m-%dT00:00:00").date(),
+                            # api doesn't return a waste type, so make one up
+                            t=key.replace("Date", " Bin"),
                             icon=ICON_MAP.get(key),
+                        )
                     )
-                )
 
         return entries

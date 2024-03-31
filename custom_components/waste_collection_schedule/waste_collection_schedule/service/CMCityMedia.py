@@ -23,7 +23,8 @@ SERVICE_MAP = [
         "region": "Landkreis Schwäbisch Hall",
         "disabled": True,
         "icons": {
-            "16": "mdi:trash-can",  # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            "16": "mdi:trash-can",
             "12": "mdi:recycle",  # Gelbe Säcke
             "14": "mdi:package-variant",  # Papiertonne
         },
@@ -35,7 +36,8 @@ SERVICE_MAP = [
         "region": "Gemeinde Bühlerzell",
         "disabled": True,
         "icons": {
-            "44": "mdi:trash-can",  # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            "44": "mdi:trash-can",
             "42": "mdi:recycle",  # Gelbe Säcke
             "43": "mdi:package-variant",  # Papiertonne
         },
@@ -105,7 +107,8 @@ SERVICE_MAP = [
         "region": "Gemeinde Kappelrodeck",
         "disabled": True,
         "icons": {
-            "75": "mdi:trash-can",  # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            "75": "mdi:trash-can",
             "73": "mdi:recycle",  # Gelbe Säcke
             "74": "mdi:package-variant",  # Papiertonne
         },
@@ -116,7 +119,8 @@ SERVICE_MAP = [
         "name": "www.schutterwald.de - Müllkalender",
         "region": "Gemeinde Schutterwald",
         "icons": {
-            "67": "mdi:trash-can",  # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            "67": "mdi:trash-can",
             "65": "mdi:recycle",  # Gelbe Säcke
             "66": "mdi:package-variant",  # Papiertonne
         },
@@ -206,7 +210,8 @@ SERVICE_MAP = [
         "name": "Emmendingen App - Müllkalender",
         "region": "Stadt Emmendingen",
         "icons": {
-            "79": "mdi:trash-can",  # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            # Bio- und Restmüllabfuhr (60 l/120 l/240 l/1,1 m³)
+            "79": "mdi:trash-can",
             "77": "mdi:recycle",  # Gelbe Säcke
             "78": "mdi:package-variant",  # Papiertonne
         },

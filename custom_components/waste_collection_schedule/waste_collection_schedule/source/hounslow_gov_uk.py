@@ -43,9 +43,8 @@ class Source:
             collection_info = bin_cal_div.find_all("h4")
             for info in collection_info:
                 date_splitted = info.text.strip().split("-")
-                date_str = (
-                    date_splitted[1] if len(date_splitted) > 1 else date_splitted[0]
-                ).strip()
+                date_str = (date_splitted[1] if len(
+                    date_splitted) > 1 else date_splitted[0]).strip()
                 try:
                     date = datetime.strptime(date_str, "%d %b %Y").date()
                 except ValueError:

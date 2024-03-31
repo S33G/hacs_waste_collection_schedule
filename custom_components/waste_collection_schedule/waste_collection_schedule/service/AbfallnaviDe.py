@@ -232,7 +232,10 @@ class AbfallnaviDe:
         return self._get_dates("strassen", street_id, waste_types=None)
 
     def get_dates_by_house_number_id(self, house_number_id):
-        return self._get_dates("hausnummern", house_number_id, waste_types=None)
+        return self._get_dates(
+            "hausnummern",
+            house_number_id,
+            waste_types=None)
 
     def get_dates(self, city, street, house_number=None):
         """Get dates by strings only for convenience."""
@@ -248,7 +251,8 @@ class AbfallnaviDe:
 
         dates = []
         for street_id in street_ids:
-            # find house_number_id (which is optional: not all house number do have an id)
+            # find house_number_id (which is optional: not all house number do
+            # have an id)
             house_number_id = self.get_house_number_id(street_id, house_number)
 
             # return dates for specific house number of street if house number

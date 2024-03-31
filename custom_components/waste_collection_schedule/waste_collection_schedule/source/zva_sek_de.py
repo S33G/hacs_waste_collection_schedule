@@ -64,9 +64,10 @@ class Source:
             r = session.get(MAIN_URL.format(
                 year=year, file=f"abfallkalender-{year-1}.html"))
         r.raise_for_status()
-        
+
         soup = BeautifulSoup(r.text, features="html.parser")
-        for option in soup.find("select", {"name": "ak_bezirk"}).find_all("option"):
+        for option in soup.find("select",
+                                {"name": "ak_bezirk"}).find_all("option"):
             if option.text.lower() == self._bezirk.lower():
                 # removing solves problem with subsequen calls
                 # self._bezirk = option.get("value")
@@ -97,11 +98,13 @@ class Source:
 
         # get street id if steet given
         if self._street is not None:
-            r = session.get(API_URL.format(
-                file="get_strassen.php"), params={"ot_id": ortsteil_id.split("-")[0]})
+            r = session.get(
+                API_URL.format(
+                    file="get_strassen.php"), params={
+                    "ot_id": ortsteil_id.split("-")[0]})
             r.raise_for_status()
             last_street_id = None
-            for part in r.text.split(";")[2:-1]: 
+            for part in r.text.split(";")[2:-1]:
                 # part is "f.ak_strasse.options[5].text = 'Alte Kasseler Straße'" or "ak_strasse.options[6].value = '2'"
                 if ("length" in part):
                     continue
@@ -113,15 +116,23 @@ class Source:
             if not street_id:
                 raise Exception(f"street not found")
 
-        entries = self.get_calendar_data(year, bezirk_id, ortsteil_id, street_id, session)
+        entries = self.get_calendar_data(
+            year, bezirk_id, ortsteil_id, street_id, session)
         if datetime.now().month >= 11:
             try:
-                entries += self.get_calendar_data(year+1, bezirk_id, ortsteil_id, street_id, session)
+                entries += self.get_calendar_data(year +
+                                                  1, bezirk_id, ortsteil_id, street_id, session)
             except Exception as e:
                 pass
         return entries
-        
-    def get_calendar_data(self, year, bezirk_id, ortsteil_id,street_id, session):
+
+    def get_calendar_data(
+            self,
+            year,
+            bezirk_id,
+            ortsteil_id,
+            street_id,
+            session):
         args = {
             "year": str(year),
             "ak_bezirk": bezirk_id,

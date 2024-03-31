@@ -55,7 +55,8 @@ class Source:
                 elements[i + 1].get_text().split(":")[1]
             )  # get dates after colon
             waste_dates = waste_dates.strip().split(" ")  # convert to list
-            waste_dates[:] = [w for w in waste_dates if w]  # remove empty strings
+            # remove empty strings
+            waste_dates[:] = [w for w in waste_dates if w]
             for d in waste_dates:
                 entries.append(
                     Collection(

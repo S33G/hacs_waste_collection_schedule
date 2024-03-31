@@ -22,7 +22,8 @@ class Source:
 
     def fetch(self):
         s = requests.Session()
-        r = s.get(f"https://bincollection.newham.gov.uk/Details/Index/{self._property}")
+        r = s.get(
+            f"https://bincollection.newham.gov.uk/Details/Index/{self._property}")
 
         # Make a BS4 object
         soup = BeautifulSoup(r.text, features="html.parser")

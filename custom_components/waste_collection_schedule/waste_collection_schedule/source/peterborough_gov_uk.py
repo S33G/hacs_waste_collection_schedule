@@ -26,7 +26,8 @@ ICON_MAP = {
     "Empty Bin 240L Brown": "mdi:leaf",
 }
 
-#_LOGGER = logging.getLogger(__name__)
+# _LOGGER = logging.getLogger(__name__)
+
 
 class Source:
     def __init__(self, post_code=None, number=None, name=None, uprn=None):
@@ -39,28 +40,30 @@ class Source:
         now = datetime.datetime.now().date()
         if not self._uprn:
             # look up the UPRN for the address
-            q = str(API_URLS["address_search"]).format(postcode=self._post_code)
+            q = str(
+                API_URLS["address_search"]).format(
+                postcode=self._post_code)
             r = requests.get(q)
             r.raise_for_status()
             addresses = r.json()["premises"]
 
             if self._name:
-                self._uprn = [
-                    x["uprn"] for x in addresses if x["address"]["address1"].capitalize() == self._name.capitalize()
-                ][0]
+                self._uprn = [x["uprn"] for x in addresses if x["address"][
+                    "address1"].capitalize() == self._name.capitalize()][0]
             elif self._number:
                 self._uprn = [
-                    x["uprn"] for x in addresses if x["address"]["address2"] == str(self._number)
-                ][0]
+                    x["uprn"] for x in addresses if x["address"]["address2"] == str(
+                        self._number)][0]
 
             if not self._uprn:
-                raise Exception(f"Could not find address {self._post_code} {self._number}{self._name}")
+                raise Exception(
+                    f"Could not find address {self._post_code} {self._number}{self._name}")
 
         q = str(API_URLS["collection"]).format(
-                start=now,
-                end=(now + datetime.timedelta(14)),
-                uprn=self._uprn
-            )
+            start=now,
+            end=(now + datetime.timedelta(14)),
+            uprn=self._uprn
+        )
         r = requests.get(q)
         r.raise_for_status()
 

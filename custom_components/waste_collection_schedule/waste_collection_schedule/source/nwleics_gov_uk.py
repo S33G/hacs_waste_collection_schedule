@@ -3,9 +3,12 @@ from bs4 import BeautifulSoup
 from dateutil import parser
 from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 
-TITLE = "North West Leicestershire District Council"  # Title will show up in README.md and info.md
-DESCRIPTION = "Source for www.nwleics.gov.uk services for the city of North West Leicestershire District Council, UK"  # Describe your source
-URL = "https://nwleics.gov.uk/"  # Insert url to service homepage. URL will show up in README.md and info.md
+# Title will show up in README.md and info.md
+TITLE = "North West Leicestershire District Council"
+# Describe your source
+DESCRIPTION = "Source for www.nwleics.gov.uk services for the city of North West Leicestershire District Council, UK"
+# Insert url to service homepage. URL will show up in README.md and info.md
+URL = "https://nwleics.gov.uk/"
 TEST_CASES = {  # Insert arguments for test cases to be used by test_sources.py script
     "Dunmore": {"uprn": "10002359002"},
     "Station Road": {"uprn": 100030573554},

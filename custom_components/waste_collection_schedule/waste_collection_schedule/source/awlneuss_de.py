@@ -8,7 +8,8 @@ TITLE = "AWL Neuss"  # Title will show up in README.md and info.md
 DESCRIPTION = (
     "Source for Bürgerportal AWL Neuss waste collection."  # Describe your source
 )
-URL = "https://buergerportal.awl-neuss.de/"  # Insert url to service homepage. URL will show up in README.md and info.md
+# Insert url to service homepage. URL will show up in README.md and info.md
+URL = "https://buergerportal.awl-neuss.de/"
 TEST_CASES = {  # Insert arguments for test cases to be used by test_sources.py script
     "Neuss, Theodor-Heuss-Platz 13": {"street_code": 8650, "building_number": 13},
     "Neuss, Niederstrasse 42": {"street_code": 6810, "building_number": 42},
@@ -89,7 +90,8 @@ class Source:
                 for waste in wastes:
                     entries.append(
                         Collection(
-                            date=datetime.date(year, month, day),  # Collection date
+                            date=datetime.date(
+                                year, month, day),  # Collection date
                             t=waste,  # Collection type
                             icon=ICON_MAP.get(waste),  # Collection icon
                         )

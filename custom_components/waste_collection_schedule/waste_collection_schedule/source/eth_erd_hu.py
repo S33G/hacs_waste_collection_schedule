@@ -44,7 +44,11 @@ CITY_MAP = {
 
 
 class Source:
-    def __init__(self, city: str, street: str = "", house_number: int = 1) -> None:
+    def __init__(
+            self,
+            city: str,
+            street: str = "",
+            house_number: int = 1) -> None:
         self._city = city
         self._street = street
         self._house_number = house_number
@@ -60,7 +64,8 @@ class Source:
         if has_streets:
             r = session.post(
                 API_URL + "streets",
-                data={"sid": city_id},
+                data={
+                    "sid": city_id},
                 headers={
                     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
                     "X-Requested-With": "XMLHttpRequest",
@@ -70,9 +75,8 @@ class Source:
             streets = json.loads(r.text)["results"]
             available_streets = [item["text"] for item in streets]
             try:
-                street_id = [
-                    item for item in streets if item.get("text") == self._street
-                ][0]["id"]
+                street_id = [item for item in streets if item.get(
+                    "text") == self._street][0]["id"]
             except IndexError:
                 raise Exception(
                     "Street not found, available streets: "
@@ -85,9 +89,7 @@ class Source:
                 "wctown": city_id,
                 "wcstreet": street_id,
                 "wchousenumber": self._house_number,
-            }
-            if has_streets
-            else {
+            } if has_streets else {
                 "wctown": city_id,
             },
             headers={
@@ -108,10 +110,11 @@ class Source:
             for element in result["routelist"][trash_type_id]:
                 entries.append(
                     Collection(
-                        date=datetime.datetime.strptime(element, "%Y-%m-%d").date(),
+                        date=datetime.datetime.strptime(
+                            element,
+                            "%Y-%m-%d").date(),
                         t=trash_name,
                         icon=trash_icon,
-                    )
-                )
+                    ))
 
         return entries

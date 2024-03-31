@@ -9,20 +9,23 @@ DESCRIPTION = "Source for Seattle Public Utilities waste collection."
 URL = "https://myutilities.seattle.gov"
 COUNTRY = "us"
 TEST_CASES = {
-    "City Hall": {"street_address": "600 4th Ave"},
-    "Ballard Builders": {"street_address": "7022 12th Ave NW"},
-    "Carmona Court": {"street_address": "1127 17th Ave E"},
-    "2111 E John St": {"street_address":"2111 E John St","prem_code": "DRMGcnGxUEg+gu8pN8vesQ=="}
-}
+    "City Hall": {
+        "street_address": "600 4th Ave"}, "Ballard Builders": {
+            "street_address": "7022 12th Ave NW"}, "Carmona Court": {
+                "street_address": "1127 17th Ave E"}, "2111 E John St": {
+                    "street_address": "2111 E John St", "prem_code": "DRMGcnGxUEg+gu8pN8vesQ=="}}
 
 
 def get_service_icon(service_name):
-    switcher = {"Garbage": "trash-can", "Recycle": "recycle", "Food/Yard Waste": "leaf"}
+    switcher = {
+        "Garbage": "trash-can",
+        "Recycle": "recycle",
+        "Food/Yard Waste": "leaf"}
     return switcher.get(service_name, "trash-can")
 
 
 class Source:
-    def __init__(self, street_address, prem_code = None):
+    def __init__(self, street_address, prem_code=None):
         self._street_address = street_address
         self._prem_code = prem_code
 
@@ -38,8 +41,10 @@ class Source:
         # step 1 - Look up premCode if it wasn't explicitly provided
         if self._prem_code is None:
             find_address_payload = {
-                "address": {"addressLine1": self._street_address, "city": "", "zip": ""}
-            }
+                "address": {
+                    "addressLine1": self._street_address,
+                    "city": "",
+                    "zip": ""}}
 
             r = requests.post(
                 "https://myutilities.seattle.gov/rest/serviceorder/findaddress",
@@ -70,8 +75,8 @@ class Source:
         }
 
         r = requests.post(
-            "https://myutilities.seattle.gov/rest/auth/guest", data=token_payload
-        )
+            "https://myutilities.seattle.gov/rest/auth/guest",
+            data=token_payload)
 
         token_info = json.loads(r.text)
         token = token_info["access_token"]
@@ -96,7 +101,8 @@ class Source:
         )
 
         summary_info = json.loads(r.text)
-        # the description property in each service in swServices it's either 'Garbage', 'Recycle', or 'Food/Yard Waste'
+        # the description property in each service in swServices it's either
+        # 'Garbage', 'Recycle', or 'Food/Yard Waste'
 
         swServices = summary_info["accountSummaryType"]["swServices"][0]["services"]
         personId = summary_info["accountContext"]["personId"]
@@ -115,7 +121,8 @@ class Source:
 
         # fill out payload
         for service in swServices:
-            waste_calendar_payload["servicePoints"].append(service["servicePointId"])
+            waste_calendar_payload["servicePoints"].append(
+                service["servicePointId"])
 
         r = requests.post(
             "https://myutilities.seattle.gov/rest/solidwastecalendar",
@@ -138,6 +145,10 @@ class Source:
                 ).date()
                 service_icon = "mdi:" + get_service_icon(name)
 
-                entries.append(Collection(date=next_date, t=name, icon=service_icon))
+                entries.append(
+                    Collection(
+                        date=next_date,
+                        t=name,
+                        icon=service_icon))
 
         return entries

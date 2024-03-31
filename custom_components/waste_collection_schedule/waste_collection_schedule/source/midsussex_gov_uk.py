@@ -12,14 +12,21 @@ DESCRIPTION = (
 URL = "https://midsussex.gov.uk"
 
 TEST_CASES = {
-    "Test_001": {"house_number": "6", "street": "Withypitts", "postcode": "RH10 4PJ"},
+    "Test_001": {
+        "house_number": "6",
+        "street": "Withypitts",
+        "postcode": "RH10 4PJ"},
     "Test_002": {
         "house_name": "Oaklands",
         "street": "Oaklands Road",
         "postcode": "RH16 1SS",
     },
-    "Test_003": {"house_number": 9, "street": "Bolnore Road", "postcode": "RH16 4AB"},
-    "Test_004": {"address": "HAZELMERE REST HOME, 21 BOLNORE ROAD RH16 4AB"},
+    "Test_003": {
+        "house_number": 9,
+        "street": "Bolnore Road",
+        "postcode": "RH16 4AB"},
+    "Test_004": {
+        "address": "HAZELMERE REST HOME, 21 BOLNORE ROAD RH16 4AB"},
 }
 
 ICON_MAP = {
@@ -34,8 +41,12 @@ REGEX = r"([A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})"  # regex for UK postcode format
 
 class Source:
     def __init__(
-        self, house_name="", house_number="", street="", postcode="", address=""
-    ):
+            self,
+            house_name="",
+            house_number="",
+            street="",
+            postcode="",
+            address=""):
         self._house_name = str(house_name).upper()
         self._house_number = str(house_number)
         self._street = str(street).upper()
@@ -82,7 +93,9 @@ class Source:
 
         soup = BeautifulSoup(r1.text, features="html.parser")
         ufprt = soup.find("input", {"name": "ufprt"}).get("value")
-        token = soup.find("input", {"name": "__RequestVerificationToken"}).get("value")
+        token = soup.find(
+            "input", {
+                "name": "__RequestVerificationToken"}).get("value")
         payload.update({"ufprt": ufprt, "__RequestVerificationToken": token})
 
         # Retrieve collection details
@@ -118,8 +131,10 @@ class Source:
         for tr in xmas_trs:
             tds = tr.findAll("td")
             try:
-                normal_date = datetime.strptime(tds[0].text.strip(), "%A %d %B").date()
-                fetive_date = datetime.strptime(tds[1].text.strip(), "%A %d %B").date()
+                normal_date = datetime.strptime(
+                    tds[0].text.strip(), "%A %d %B").date()
+                fetive_date = datetime.strptime(
+                    tds[1].text.strip(), "%A %d %B").date()
             except Exception:
                 continue
             for entry in entries.copy():

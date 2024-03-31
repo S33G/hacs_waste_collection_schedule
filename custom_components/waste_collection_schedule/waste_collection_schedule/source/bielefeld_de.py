@@ -22,12 +22,15 @@ ICON_MAP = {
     "Wertstofftonne": "mdi:recycle",
 }
 
-SERVLET = "https://anwendungen.bielefeld.de/WasteManagementBielefeldTest/WasteManagementServlet"  # Actual Production URL changed from ORIGINAL_SERVLET
+# Actual Production URL changed from ORIGINAL_SERVLET
+SERVLET = "https://anwendungen.bielefeld.de/WasteManagementBielefeldTest/WasteManagementServlet"
 ORIGINAL_SERVLET = (
     "https://anwendungen.bielefeld.de/WasteManagementBielefeld/WasteManagementServlet"
 )
 
 # Parser for HTML input (hidden) text
+
+
 class HiddenInputParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -45,7 +48,11 @@ class HiddenInputParser(HTMLParser):
 
 
 class Source:
-    def __init__(self, street: str, house_number: int, address_suffix: str = ""):
+    def __init__(
+            self,
+            street: str,
+            house_number: int,
+            address_suffix: str = ""):
         self._street = street
         self._hnr = house_number
         self._suffix = address_suffix
@@ -58,13 +65,17 @@ class Source:
 
         r = s.get(
             servlet,
-            params={"SubmitAction": "wasteDisposalServices", "InFrameMode": "TRUE"},
+            params={
+                "SubmitAction": "wasteDisposalServices",
+                "InFrameMode": "TRUE"},
         )
         if r.status_code == 404:
             servlet = ORIGINAL_SERVLET
             r = s.get(
                 servlet,
-                params={"SubmitAction": "wasteDisposalServices", "InFrameMode": "TRUE"},
+                params={
+                    "SubmitAction": "wasteDisposalServices",
+                    "InFrameMode": "TRUE"},
             )
 
         r.raise_for_status()
@@ -102,7 +113,8 @@ class Source:
 
         r.raise_for_status()
 
-        reminder_day = "keine Erinnerung"  # "keine Erinnerung", "am Vortag", "2 Tage vorher", "3 Tage vorher"
+        # "keine Erinnerung", "am Vortag", "2 Tage vorher", "3 Tage vorher"
+        reminder_day = "keine Erinnerung"
         reminder_time = "18:00 Uhr"  # "XX:00 Uhr"
 
         args[

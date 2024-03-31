@@ -31,17 +31,18 @@ TEST_CASES = {
 
 API_URL = "https://www.oslo.kommune.no/xmlhttprequest.php"
 ICON_MAP = {
-    "":           "mdi:trash-can",
+    "": "mdi:trash-can",
     "restavfall": "mdi:trash-can",
-    "papir":      "mdi:newspaper-variant-multiple"
-} 
+    "papir": "mdi:newspaper-variant-multiple"
+}
+
 
 class Source:
     def __init__(self, street_name, house_number, house_letter, street_id):
-        self._street_name  = street_name
+        self._street_name = street_name
         self._house_number = house_number
         self._house_letter = house_letter
-        self._street_id    = street_id
+        self._street_id = street_id
 
     def fetch(self):
         headers = {
@@ -49,14 +50,14 @@ class Source:
         }
 
         args = {
-            'service':   'ren.search',
-            'street':    self._street_name,
-            'number':    self._house_number,
-            'letter':    self._house_letter,
+            'service': 'ren.search',
+            'street': self._street_name,
+            'number': self._house_number,
+            'letter': self._house_letter,
             'street_id': self._street_id,
         }
 
-        r = requests.get(API_URL, params = args, headers = headers)
+        r = requests.get(API_URL, params=args, headers=headers)
 
         entries = []
         res = json.loads(r.content)['data']['result'][0]['HentePunkts']
@@ -66,11 +67,11 @@ class Source:
                 tekst = tjeneste['Fraksjon']['Tekst']
                 entries.append(
                     Collection(
-                        date = datetime.datetime.strptime(
+                        date=datetime.datetime.strptime(
                             tjeneste['TommeDato'], "%d.%m.%Y"
                         ).date(),
-                        t = tekst,
-                        icon = ICON_MAP.get(tekst.lower())
+                        t=tekst,
+                        icon=ICON_MAP.get(tekst.lower())
                     )
                 )
 

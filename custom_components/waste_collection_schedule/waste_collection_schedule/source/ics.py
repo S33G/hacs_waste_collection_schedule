@@ -158,7 +158,8 @@ class Source:
                 # replace year in params
                 if self._year_field is not None:
                     if self._params is None:
-                        raise RuntimeError("year_field specified without params")
+                        raise RuntimeError(
+                            "year_field specified without params")
                     self._params[self._year_field] = str(now.year)
 
                 entries = self.fetch_url(url, self._params)
@@ -184,12 +185,16 @@ class Source:
         # get ics file
         if self._method == "GET":
             r = requests.get(
-                url, params=params, headers=self._headers, verify=self._verify_ssl
-            )
+                url,
+                params=params,
+                headers=self._headers,
+                verify=self._verify_ssl)
         elif self._method == "POST":
             r = requests.post(
-                url, data=params, headers=self._headers, verify=self._verify_ssl
-            )
+                url,
+                data=params,
+                headers=self._headers,
+                verify=self._verify_ssl)
         else:
             raise RuntimeError(
                 "Error: unknown method to fetch URL, use GET or POST; got {self._method}"

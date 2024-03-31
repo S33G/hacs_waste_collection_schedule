@@ -10,11 +10,13 @@ TITLE = "Maroondah City Council"
 DESCRIPTION = "Source for Maroondah City Council. Finds both green waste and general recycling dates."
 URL = "https://www.maroondah.vic.gov.au"
 TEST_CASES = {
-    "Monday - Area A": {"address": "1 Abbey Court, RINGWOOD 3134"},  # Monday - Area A
+    # Monday - Area A
+    "Monday - Area A": {"address": "1 Abbey Court, RINGWOOD 3134"},
     "Monday - Area B": {
         "address": "1 Angelica Crescent, CROYDON HILLS 3136"
     },  # Monday - Area B
-    "Tuesday - Area B": {"address": "6 Como Close, CROYDON 3136"},  # Tuesday - Area B
+    # Tuesday - Area B
+    "Tuesday - Area B": {"address": "6 Como Close, CROYDON 3136"},
     "Wednesday - Area A": {
         "address": "113 Dublin Road, RINGWOOD EAST 3135"
     },  # Wednesday - Area A
@@ -30,7 +32,8 @@ TEST_CASES = {
     "Friday - Area A": {
         "address": "6 Lionel Crescent, CROYDON 3136"
     },  # Friday - Area A
-    "Friday - Area B": {"address": "61 Timms Avenue, KILSYTH 3137"},  # Friday - Area B
+    # Friday - Area B
+    "Friday - Area B": {"address": "61 Timms Avenue, KILSYTH 3137"},
 }
 
 _LOGGER = logging.getLogger(__name__)
@@ -76,7 +79,8 @@ class Source:
 
         response = session.get(
             "https://www.maroondah.vic.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

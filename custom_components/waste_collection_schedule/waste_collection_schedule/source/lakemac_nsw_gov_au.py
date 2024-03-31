@@ -43,7 +43,9 @@ class Source:
 
         url = "https://www.lakemac.com.au/ocapi/Public/myarea/wasteservices"
 
-        params = {"geolocationid": addresses["Items"][0]["Id"], "ocsvclang": "en-AU"}
+        params = {
+            "geolocationid": addresses["Items"][0]["Id"],
+            "ocsvclang": "en-AU"}
 
         r = requests.get(url, params=params, headers=headers)
         r.raise_for_status()
@@ -59,15 +61,21 @@ class Source:
         waste_date = []
         for tag in soup.find_all("div", {"class": "next-service"}):
             try:
-                date_object = datetime.strptime(tag.text.strip(), "%a %d/%m/%Y").date()
-            except:
-                continue    
+                date_object = datetime.strptime(
+                    tag.text.strip(), "%a %d/%m/%Y").date()
+            except BaseException:
+                continue
             waste_date.append(date_object)
 
         waste = list(zip(waste_type, waste_date))
 
         entries = []
         for item in waste:
-            entries.append(Collection(item[1], item[0], icon=ICON_MAP.get(item[0])))
+            entries.append(
+                Collection(
+                    item[1],
+                    item[0],
+                    icon=ICON_MAP.get(
+                        item[0])))
 
         return entries

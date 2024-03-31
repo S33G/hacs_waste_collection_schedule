@@ -32,14 +32,15 @@ class Source:
         soup = BeautifulSoup(r.text, "html.parser")
 
         infoboxes = soup.findAll(
-            "div", {"class": "col-xs-12 text-center waste-dates margin-bottom-15"}
-        )
+            "div", {
+                "class": "col-xs-12 text-center waste-dates margin-bottom-15"})
 
         entries = []
         for box in infoboxes:
             items = box.findAll("p")
             waste_type = items[0].text.strip().split(" ")[0].strip()
-            dates = [datetime.strptime(d.text, "%d/%m/%Y").date() for d in items[1:]]
+            dates = [datetime.strptime(d.text, "%d/%m/%Y").date()
+                     for d in items[1:]]
             for date in dates:
                 entries.append(
                     Collection(

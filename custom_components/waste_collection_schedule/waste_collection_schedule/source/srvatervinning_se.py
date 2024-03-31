@@ -29,8 +29,8 @@ class Source:
             "city": self._city.upper(),
         }
         r = requests.get(
-            "https://www.srvatervinning.se/rest-api/core/sewagePickup/search", params
-        )
+            "https://www.srvatervinning.se/rest-api/core/sewagePickup/search",
+            params)
         r.raise_for_status()
 
         data = r.json()
@@ -40,7 +40,8 @@ class Source:
         for container in data["results"][0]["containers"]:
             type = container["contentType"]
             for calentry in container["calendars"]:
-                date_obj = datetime.strptime(calentry["startDate"], "%Y-%m-%d").date()
+                date_obj = datetime.strptime(
+                    calentry["startDate"], "%Y-%m-%d").date()
                 entries.append(Collection(date_obj, type))
 
         return entries

@@ -43,10 +43,12 @@ class Source:
         for item in json_data:
             entries.append(
                 Collection(
-                    date=datetime.strptime(item["Date"], "%d/%m/%Y %H:%M:%S").date(),
+                    date=datetime.strptime(
+                        item["Date"],
+                        "%d/%m/%Y %H:%M:%S").date(),
                     t=item["Service"].split(" ")[0],
-                    icon=ICON_MAP.get(item["Service"].split(" ")[0].upper()),
-                )
-            )
+                    icon=ICON_MAP.get(
+                        item["Service"].split(" ")[0].upper()),
+                ))
 
         return entries

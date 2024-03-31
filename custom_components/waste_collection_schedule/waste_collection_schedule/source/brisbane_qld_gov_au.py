@@ -43,8 +43,8 @@ class Source:
 
         # Retrieve suburbs
         r = requests.get(
-            "https://brisbane.waste-info.com.au/api/v1/localities.json", headers=HEADERS
-        )
+            "https://brisbane.waste-info.com.au/api/v1/localities.json",
+            headers=HEADERS)
         data = json.loads(r.text)
 
         # Find the ID for our suburb
@@ -110,17 +110,21 @@ class Source:
             if item["event_type"] in ["recycle", "organic"]:
                 # Every collection day includes rubbish
                 entries.append(
-                    Collection(date=collection_date, t="Rubbish", icon="mdi:trash-can")
-                )
+                    Collection(
+                        date=collection_date,
+                        t="Rubbish",
+                        icon="mdi:trash-can"))
                 if item["event_type"] == "recycle":
                     entries.append(
                         Collection(
-                            date=collection_date, t="Recycling", icon="mdi:recycle"
-                        )
-                    )
+                            date=collection_date,
+                            t="Recycling",
+                            icon="mdi:recycle"))
                 if item["event_type"] == "organic":
                     entries.append(
-                        Collection(date=collection_date, t="Garden", icon="mdi:leaf")
-                    )
+                        Collection(
+                            date=collection_date,
+                            t="Garden",
+                            icon="mdi:leaf"))
 
         return entries

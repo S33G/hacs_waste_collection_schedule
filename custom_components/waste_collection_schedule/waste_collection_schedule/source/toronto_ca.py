@@ -73,22 +73,23 @@ class Source:
 
         property_json = json.loads(property_download.content.decode("utf-8"))
 
-        property_address_key = self.get_first_result(property_json, "KEYSTRING")
+        property_address_key = self.get_first_result(
+            property_json, "KEYSTRING")
         if property_address_key == "":
             return
 
         # lookup the schedule key for the above property key
-        schedule_download = session.get(
-            SCHEDULE_LOOKUP_URL,
-            params=dict(keyString=property_address_key, unit="%", areaTypeCode1="RESW"),
-        )
+        schedule_download = session.get(SCHEDULE_LOOKUP_URL, params=dict(
+            keyString=property_address_key, unit="%", areaTypeCode1="RESW"), )
         schedule_json = json.loads(schedule_download.content.decode("utf-8"))
 
-        schedule_first_result = self.get_first_result(schedule_json, "AREACURSOR1")
+        schedule_first_result = self.get_first_result(
+            schedule_json, "AREACURSOR1")
         if schedule_first_result == "":
             return
 
-        schedule_key = schedule_first_result["array"][0]["AREA_NAME"].replace(" ", "")
+        schedule_key = schedule_first_result["array"][0]["AREA_NAME"].replace(
+            " ", "")
 
         # download schedule csv and figure out what column format
         csv_content = session.get(CSV_URL).content.decode("utf-8")
@@ -120,21 +121,26 @@ class Source:
 
                 for i in range(len(row)):
                     # skip non-waste types
-                    if (i == id_index) or (i == schedule_index) or (i == week_index):
+                    if (i == id_index) or (
+                            i == schedule_index) or (i == week_index):
                         continue
 
                     if row[i] not in days_of_week:
                         continue
 
                     day_key = days_of_week.index(row[i])
-                    waste_day = pickup_date + timedelta(day_key - startweek_day_key)
+                    waste_day = pickup_date + \
+                        timedelta(day_key - startweek_day_key)
                     waste_type = dbkey_row[i]
 
                     pic = PICTURE_MAP.get(waste_type)
                     icon = ICON_MAP.get(waste_type)
 
                     entries.append(
-                        Collection(waste_day.date(), waste_type, picture=pic, icon=icon)
-                    )
+                        Collection(
+                            waste_day.date(),
+                            waste_type,
+                            picture=pic,
+                            icon=icon))
 
         return entries

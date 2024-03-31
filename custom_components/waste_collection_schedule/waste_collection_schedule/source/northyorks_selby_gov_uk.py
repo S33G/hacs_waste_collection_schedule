@@ -55,7 +55,8 @@ class Source:
                 continue
             date_str = tds[0].text
             date = datetime.strptime(date_str, "%d %B %Y").date()
-            bin_types = [br.next_sibling.strip() for br in tds[2].find_all("i")]
+            bin_types = [br.next_sibling.strip()
+                         for br in tds[2].find_all("i")]
             if not bin_types:
                 continue
 

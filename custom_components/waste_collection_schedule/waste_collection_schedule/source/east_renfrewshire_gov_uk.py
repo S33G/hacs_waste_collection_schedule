@@ -37,7 +37,8 @@ class Source:
         bin_collection_info_page = self.__get_bin_collection_info_page(
             session, address_page, self._uprn
         )
-        bin_collection_info = self.__get_bin_collection_info(bin_collection_info_page)
+        bin_collection_info = self.__get_bin_collection_info(
+            bin_collection_info_page)
         return self.__generate_collection_entries(bin_collection_info)
 
     def __generate_collection_entries(self, bin_collection_info):
@@ -69,9 +70,11 @@ class Source:
             )
         match = serialized_collection_info_pattern.search(script.text)
         if not match:
-            raise Exception("no match cannot find RESIDUALWASTEV2SerializedVariables")
+            raise Exception(
+                "no match cannot find RESIDUALWASTEV2SerializedVariables")
         serialized_collection_info = match.group(1)
-        collection_info = json.loads(base64.b64decode(serialized_collection_info))
+        collection_info = json.loads(
+            base64.b64decode(serialized_collection_info))
         return collection_info
 
     def __get_bin_collection_info_page(self, session, address_page, uprn):

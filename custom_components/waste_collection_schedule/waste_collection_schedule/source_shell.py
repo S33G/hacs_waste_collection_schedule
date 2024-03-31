@@ -144,10 +144,14 @@ class SourceShell:
             e.set_type(e.type.strip())
 
         # filter hidden entries
-        entries = filter(lambda x: filter_function(x, self._customize), entries)
+        entries = filter(
+            lambda x: filter_function(
+                x, self._customize), entries)
 
         # customize fetched entries
-        entries = map(lambda x: customize_function(x, self._customize), entries)
+        entries = map(
+            lambda x: customize_function(
+                x, self._customize), entries)
 
         self._entries = list(entries)
 
@@ -200,7 +204,8 @@ class SourceShell:
             source=source,
             customize=customize,
             title=source_module.TITLE,  # type: ignore[attr-defined]
-            description=source_module.DESCRIPTION,  # type: ignore[attr-defined]
+            # type: ignore[attr-defined]
+            description=source_module.DESCRIPTION,
             url=source_module.URL,  # type: ignore[attr-defined]
             calendar_title=calendar_title,
             unique_id=calc_unique_source_id(source_name, source_args),

@@ -32,8 +32,8 @@ class Source:
         }
 
         r = requests.post(
-            "https://services.stadtservice-bruehl.de/abfallkalender/", data=data
-        )
+            "https://services.stadtservice-bruehl.de/abfallkalender/",
+            data=data)
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")

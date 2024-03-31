@@ -104,8 +104,10 @@ def main():
         parser.feed(r.text)
 
         questions = [
-            inquirer.List("asId", choices=parser.choices, message="Select street")
-        ]
+            inquirer.List(
+                "asId",
+                choices=parser.choices,
+                message="Select street")]
         answers.update(inquirer.prompt(questions))
 
     # search for building number
@@ -122,8 +124,10 @@ def main():
         answers["hnId"] = ""
     else:
         questions = [
-            inquirer.List("hnId", choices=parser.choices, message="Select house number")
-        ]
+            inquirer.List(
+                "hnId",
+                choices=parser.choices,
+                message="Select house number")]
         answers.update(inquirer.prompt(questions))
 
     print("Copy the following statements into your configuration.yaml:\n")

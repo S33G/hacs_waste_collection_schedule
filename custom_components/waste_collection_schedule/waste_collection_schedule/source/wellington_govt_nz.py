@@ -41,7 +41,8 @@ class Source:
             r = requests.post(url, json=data)
             data = json.loads(r.text)
             if len(data["d"]) == 0:
-                raise Exception(f"No result found for streetName {self._streetName}")
+                raise Exception(
+                    f"No result found for streetName {self._streetName}")
             if len(data["d"]) > 1:
                 raise Exception(
                     f"More then one result returned for streetName {self._streetName}, be more specific or use streetId instead"

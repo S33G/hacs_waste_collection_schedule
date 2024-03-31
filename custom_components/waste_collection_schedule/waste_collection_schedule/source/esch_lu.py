@@ -47,7 +47,8 @@ class Source:
     def fetch(self):
         s = get_legacy_session()
 
-        # locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8') # set the French locale to import the dates
+        # locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8') # set the French
+        # locale to import the dates
         params = {
             "street": 0,
             "tour": self._zone,
@@ -71,7 +72,8 @@ class Source:
                 date_fr = cells[2].text.strip().split(", ")[1]
                 day, month, year = date_fr.split()
                 date = datetime.datetime(
-                    year=int(year), month=MONTH_NAMES.index(month) + 1, day=int(day)
-                ).date()
+                    year=int(year),
+                    month=MONTH_NAMES.index(month) + 1,
+                    day=int(day)).date()
                 entries.append(Collection(date, t, icon=ICON_MAP.get(t)))
         return entries

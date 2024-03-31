@@ -12,7 +12,8 @@ ROOT_DIR = Path(__file__).parents[1]
 TEST_FILE = ROOT_DIR / "test" / "test_ukbcd.json"
 TEST_CASES = {
     "Test_File": {
-        # Path is used here to allow the Source call from any location. It is not required in a yaml configuration.
+        # Path is used here to allow the Source call from any location. It is
+        # not required in a yaml configuration.
         "file": str(Path(TEST_FILE))
     }
 }
@@ -37,7 +38,8 @@ class Source:
                     )
                 )
         else:
-            raise RuntimeError("Unable to find file, check config path and file name")
+            raise RuntimeError(
+                "Unable to find file, check config path and file name")
 
         return entries
 

@@ -9,7 +9,8 @@ from waste_collection_schedule.service.ICS import ICS
 # Using verify=False works, but is not ideal. The following links may provide a better way of dealing with this:
 # https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html#ssl-warnings
 # https://urllib3.readthedocs.io/en/1.26.x/user-guide.html#ssl
-# These two lines areused to suppress the InsecureRequestWarning when using verify=False
+# These two lines areused to suppress the InsecureRequestWarning when
+# using verify=False
 urllib3.disable_warnings()
 
 TITLE = "City of Karlsruhe"
@@ -48,7 +49,11 @@ API_URL = "https://web{i}.karlsruhe.de/service/abfall/akal/akal_{year}.php"
 
 
 class Source:
-    def __init__(self, street: str, hnr: str | int, ladeort: int | None = None):
+    def __init__(
+            self,
+            street: str,
+            hnr: str | int,
+            ladeort: int | None = None):
         self._street: str = street
         self._hnr: str | int = hnr
         self._ladeort: int | None = ladeort

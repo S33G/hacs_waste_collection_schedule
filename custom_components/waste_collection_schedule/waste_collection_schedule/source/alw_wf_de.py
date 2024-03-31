@@ -9,7 +9,8 @@ from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 # Using verify=False works, but is not ideal. The following links may provide a better way of dealing with this:
 # https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html#ssl-warnings
 # https://urllib3.readthedocs.io/en/1.26.x/user-guide.html#ssl
-# These two lines areused to suppress the InsecureRequestWarning when using verify=False
+# These two lines areused to suppress the InsecureRequestWarning when
+# using verify=False
 import urllib3
 urllib3.disable_warnings()
 
@@ -17,12 +18,16 @@ TITLE = "Abfallwirtschaft Landkreis Wolfenbüttel"
 DESCRIPTION = "Source for ALW Wolfenbüttel."
 URL = "https://alw-wf.de"
 TEST_CASES = {
-    "Linden alte Straße": {"ort": "Linden mit Okertalsiedlung", "strasse": "Siedlung"},
+    "Linden alte Straße": {
+        "ort": "Linden mit Okertalsiedlung",
+        "strasse": "Siedlung"},
     "Linden neuere Straße": {
         "ort": "Linden mit Okertalsiedlung",
         "strasse": "Kleingartenweg",
     },
-    "Dettum": {"ort": "Dettum", "strasse": "Egal!"},
+    "Dettum": {
+        "ort": "Dettum",
+        "strasse": "Egal!"},
 }
 
 API_URL = "https://abfallapp.alw-wf.de"
@@ -49,11 +54,16 @@ class Source:
     def fetch(self):
         auth_params = json.dumps(AUTH_DATA)
 
-        # ALW WF uses a self-signed certificate so we need to disable certificate verification
-        r = requests.post(f"{API_URL}/GetOrte.php", data=auth_params, verify=False)
+        # ALW WF uses a self-signed certificate so we need to disable
+        # certificate verification
+        r = requests.post(
+            f"{API_URL}/GetOrte.php",
+            data=auth_params,
+            verify=False)
         orte = r.json()
         if orte["result"][0]["StatusCode"] != 200:
-            raise Exception(f"Error getting Orte: {orte['result'][0]['StatusMsg']}")
+            raise Exception(
+                f"Error getting Orte: {orte['result'][0]['StatusMsg']}")
 
         orte = orte["result"][0]["result"]
         orte = {i["Name"]: i["ID"] for i in orte}
@@ -62,7 +72,10 @@ class Source:
         if ort_id is None:
             raise Exception(f"Error finding Ort {self._ort}")
 
-        r = requests.post(f"{API_URL}/GetStrassen.php", data=auth_params, verify=False)
+        r = requests.post(
+            f"{API_URL}/GetStrassen.php",
+            data=auth_params,
+            verify=False)
         strassen = r.json()
         if strassen["result"][0]["StatusCode"] != 200:
             raise Exception(
@@ -82,10 +95,14 @@ class Source:
         if strasse_id is None:
             raise Exception(f"Error finding Straße {self._strasse}")
 
-        r = requests.post(f"{API_URL}/GetArten.php", data=auth_params, verify=False)
+        r = requests.post(
+            f"{API_URL}/GetArten.php",
+            data=auth_params,
+            verify=False)
         arten = r.json()
         if arten["result"][0]["StatusCode"] != 200:
-            raise Exception(f"Error getting Arten: {arten['result'][0]['StatusMsg']}")
+            raise Exception(
+                f"Error getting Arten: {arten['result'][0]['StatusMsg']}")
 
         arten = arten["result"][0]["result"]
         arten = [i for i in arten if i["Art"] == BIN_TYPE_NORMAL]
@@ -93,8 +110,9 @@ class Source:
 
         entries = []
         r = requests.post(
-            f"{API_URL}/GetTermine.php/{strasse_id}", data=auth_params, verify=False
-        )
+            f"{API_URL}/GetTermine.php/{strasse_id}",
+            data=auth_params,
+            verify=False)
         termine = r.json()
         if termine["result"][0]["StatusCode"] != 200:
             raise Exception(

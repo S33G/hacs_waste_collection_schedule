@@ -43,10 +43,9 @@ class Source:
 
     def get_address_detail(self) -> Tuple[str, str]:
         address_response = self._session.post(
-            self.ADDRESS_URL,
-            json={"prefixText": self._address, "count": 12, "contextKey": "test"},
-            headers={"Content-Type": "application/json; charset=UTF-8"},
-        ).json()
+            self.ADDRESS_URL, json={
+                "prefixText": self._address, "count": 12, "contextKey": "test"}, headers={
+                "Content-Type": "application/json; charset=UTF-8"}, ).json()
 
         if len(address_response.get("d")) == 0:
             raise Exception("Address not found within TCC records")
@@ -58,14 +57,11 @@ class Source:
 
         return addr_1, addr_2
 
-    def get_waste_pickup_dates(self, form_data: Dict[str, str]) -> requests.Response:
+    def get_waste_pickup_dates(
+            self, form_data: Dict[str, str]) -> requests.Response:
         pickup_date_response = self._session.post(
-            self.WASTE_URL,
-            data=form_data,
-            headers={
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-        )
+            self.WASTE_URL, data=form_data, headers={
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}, )
 
         return pickup_date_response
 
@@ -73,9 +69,9 @@ class Source:
         state_response = self._session.get(self.WASTE_URL)
         soup = BeautifulSoup(state_response.content, "html.parser")
         view_state = soup.find("input", attrs={"id": "__VIEWSTATE"})["value"]
-        event_validation = soup.find("input", attrs={"id": "__EVENTVALIDATION"})[
-            "value"
-        ]
+        event_validation = soup.find(
+            "input", attrs={
+                "id": "__EVENTVALIDATION"})["value"]
 
         form_data = {
             "dnn$ctr2863$MasterView$CollectionDaysv2$Address": addr_1,
@@ -104,18 +100,21 @@ class Source:
                 if item.find("span", class_="dot")
             ]
             if date == "Not subscribed":
-                continue  # Skip waste types that aren't being paid for/subscribed to.
+                # Skip waste types that aren't being paid for/subscribed to.
+                continue
             else:
                 current_date = datetime.now()
                 pickup_datetime = datetime.strptime(date, "%A %d %B")
 
                 if current_date.month == 12 and pickup_datetime.month == 1:
-                    # Date responses have no year, handle adding a year and also year end/new year collections
+                    # Date responses have no year, handle adding a year and
+                    # also year end/new year collections
                     pickup_date = pickup_datetime.replace(
                         year=datetime.now().year + 1
                     ).date()
 
-                pickup_date = pickup_datetime.replace(year=datetime.now().year).date()
+                pickup_date = pickup_datetime.replace(
+                    year=datetime.now().year).date()
 
             for bin_type in bin_types:
                 entries.append(

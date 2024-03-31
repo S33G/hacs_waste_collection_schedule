@@ -264,17 +264,20 @@ def extract_onclicks(
 
     to_return = []
     for a in data.find_all("a"):
-        onclick: str = a.attrs["onclick"].replace("('#f_ueberspringen').val('0')", "")
+        onclick: str = a.attrs["onclick"].replace(
+            "('#f_ueberspringen').val('0')", "")
         start = onclick.find("(") + 1
         end = onclick.find("})") + 1
         if end == 0:
             end = onclick.find(')"')
 
-        string = ("[" + onclick[start:end] + "]").replace('"', '\\"').replace("'", '"')
+        string = ("[" + onclick[start:end] + "]").replace('"',
+                                                          '\\"').replace("'", '"')
         try:
             to_return.append(json.loads(string))
         except json.decoder.JSONDecodeError:
-            raise Exception(f"Failed to parse '{string}', onclick: '{onclick}'")
+            raise Exception(
+                f"Failed to parse '{string}', onclick: '{onclick}'")
         if hnr:
             res = re.search(r"\.val\([0-9]+\)", onclick)
             if res:
@@ -352,8 +355,10 @@ class AppAbfallplusDe:
             )
         elif method == "post":
             r = self._session.post(
-                base.format(url_ending), data=data, params=params, headers=headers
-            )
+                base.format(url_ending),
+                data=data,
+                params=params,
+                headers=headers)
         return r
 
     def get_kom_or_lk_name(self) -> str | bool:
@@ -373,7 +378,10 @@ class AppAbfallplusDe:
             "client": self._client,
             "app_id": self._app_id,
         }
-        self._request("config.xml", base=API_BASE, data=data).raise_for_status()
+        self._request(
+            "config.xml",
+            base=API_BASE,
+            data=data).raise_for_status()
         r = self._request("login/", base=API_BASE, data=data)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, features="html.parser")
@@ -729,7 +737,8 @@ class AppAbfallplusDe:
         categories = {}
 
         for category in soup_array.find_all("dict"):
-            id = category.find("key", text="id").find_next_sibling("string").text
+            id = category.find(
+                "key", text="id").find_next_sibling("string").text
             name = (
                 category.find("key", text="name")
                 .find_next_sibling("string")
@@ -750,8 +759,9 @@ class AppAbfallplusDe:
 
         collections: list[dict] = []
         for collection in (
-            soup.find("key", text="dates").find_next_sibling("array").find_all("dict")
-        ):
+            soup.find(
+                "key",
+                text="dates").find_next_sibling("array").find_all("dict")):
             category = (
                 collection.find("key", text="category_id")
                 .find_next_sibling("string")
@@ -767,7 +777,8 @@ class AppAbfallplusDe:
                 pickup_date_str, "%Y-%m-%dT%H:%M:%S%z"
             ).date()
 
-            collections.append({"category": category_name, "date": pickup_date})
+            collections.append(
+                {"category": category_name, "date": pickup_date})
 
         return collections
 
@@ -869,7 +880,12 @@ def generate_supported_services(suppoted_apps=SUPPORTED_APPS):
             supported_services[app_id].extend(app.get_suppoted_by_bl())
 
         print(json.dumps(supported_services, indent=4, ensure_ascii=False))
-    print("\n\n\nFINAL:" + json.dumps(supported_services, indent=4, ensure_ascii=False))
+    print(
+        "\n\n\nFINAL:" +
+        json.dumps(
+            supported_services,
+            indent=4,
+            ensure_ascii=False))
 
 
 if __name__ == "__main__":

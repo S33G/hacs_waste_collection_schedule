@@ -9,8 +9,14 @@ TITLE = "KWU Entsorgung Landkreis Oder-Spree"
 DESCRIPTION = "Source for KWU Entsorgung, Germany"
 URL = "https://www.kwu-entsorgung.de/"
 TEST_CASES = {
-    "Erkner": {"city": "Erkner", "street": "Heinrich-Heine-Straße", "number": "11"},
-    "Bad Saarow": {"city": "Bad Saarow", "street": "Ahornallee", "number": 1},
+    "Erkner": {
+        "city": "Erkner",
+        "street": "Heinrich-Heine-Straße",
+        "number": "11"},
+    "Bad Saarow": {
+        "city": "Bad Saarow",
+        "street": "Ahornallee",
+        "number": 1},
 }
 
 HEADERS = {"user-agent": "Mozilla/5.0 (xxxx Windows NT 10.0; Win64; x64)"}
@@ -98,8 +104,8 @@ class Source:
 
         if "kwu.lokal" in ics_url:
             ics_url = ics_url.replace(
-                "http://kalender.kwu.lokal", "https://kalender.kwu-entsorgung.de"
-            )
+                "http://kalender.kwu.lokal",
+                "https://kalender.kwu-entsorgung.de")
 
         # get ics file
         r = session.get(ics_url, headers=HEADERS, verify=True)

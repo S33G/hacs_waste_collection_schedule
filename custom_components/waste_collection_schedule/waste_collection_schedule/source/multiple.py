@@ -99,7 +99,8 @@ def check_source_type(data):
     if isinstance(data, dict):
         # Check if all keys are strings
         if all(isinstance(key, str) for key in data.keys()):
-            # Check if all values are either dictionaries or lists of dictionaries
+            # Check if all values are either dictionaries or lists of
+            # dictionaries
             if all(
                 isinstance(value, dict)
                 or (

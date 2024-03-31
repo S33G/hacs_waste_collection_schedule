@@ -81,7 +81,8 @@ class Source:
         entries = []
         for item in data:
             for collection in item["collection"]:
-                for collection_date_key in ["nextCollectionDate", "lastCollectionDate"]:
+                for collection_date_key in [
+                        "nextCollectionDate", "lastCollectionDate"]:
                     date_string = collection[collection_date_key].split("T")[0]
                     entries.append(
                         Collection(

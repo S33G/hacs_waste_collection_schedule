@@ -53,10 +53,16 @@ class Source:
         soup = BeautifulSoup(response0.text, "html.parser")
 
         data = {
-            "__VIEWSTATE": self.get_asp_var(soup, "__VIEWSTATE"),
-            "__VIEWSTATEGENERATOR": self.get_asp_var(soup, "__VIEWSTATEGENERATOR"),
+            "__VIEWSTATE": self.get_asp_var(
+                soup,
+                "__VIEWSTATE"),
+            "__VIEWSTATEGENERATOR": self.get_asp_var(
+                soup,
+                "__VIEWSTATEGENERATOR"),
             "__VIEWSTATEENCRYPTED": "",
-            "__EVENTVALIDATION": self.get_asp_var(soup, "__EVENTVALIDATION"),
+            "__EVENTVALIDATION": self.get_asp_var(
+                soup,
+                "__EVENTVALIDATION"),
             "txtRoadName": self._street_name,
             "txtPostCode": self._postcode,
             "btnSearch": "Search",

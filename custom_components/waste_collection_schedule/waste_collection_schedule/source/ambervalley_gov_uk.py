@@ -56,4 +56,3 @@ class Source:
                 )
 
         return entries
-

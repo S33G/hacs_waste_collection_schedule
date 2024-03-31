@@ -44,7 +44,7 @@ TEST_CASES = {
 
 
 API_URLS = {
-    "session":"https://www.krg.nsw.gov.au" ,
+    "session": "https://www.krg.nsw.gov.au",
     "search": "https://www.krg.nsw.gov.au/api/v1/myarea/search?keywords={}",
     "schedule": "https://www.krg.nsw.gov.au/ocapi/Public/myarea/wasteservices?geolocationid={}&ocsvclang=en-AU",
 }
@@ -84,12 +84,16 @@ class Source:
         # 'collection' api call seems to require an ASP.Net_sessionID, so obtain the relevant cookie
         s = requests.Session()
         q = requote_uri(str(API_URLS["session"]))
-        r0 = s.get(q, headers = HEADERS)
+        r0 = s.get(q, headers=HEADERS)
 
         # Do initial address search
-        address = "{} {}, {} NSW {}".format(self.street_number, self.street_name, self.suburb, self.post_code)
+        address = "{} {}, {} NSW {}".format(
+            self.street_number,
+            self.street_name,
+            self.suburb,
+            self.post_code)
         q = requote_uri(str(API_URLS["search"]).format(address))
-        r1 = s.get(q, headers = HEADERS)
+        r1 = s.get(q, headers=HEADERS)
         data = json.loads(r1.text)["Items"]
 
         # Find the geolocation for the address
@@ -99,23 +103,27 @@ class Source:
 
         # Retrieve the upcoming collections for location
         q = requote_uri(str(API_URLS["schedule"]).format(locationId))
-        r2 = s.get(q, headers = HEADERS)
+        r2 = s.get(q, headers=HEADERS)
         data = json.loads(r2.text)
         responseContent = data["responseContent"]
 
         soup = BeautifulSoup(responseContent, "html.parser")
         services = soup.find_all("article")
-        
+
         entries = []
 
         for item in services:
             waste_type = item.find('h3').text
-            date = datetime.datetime.strptime(item.find('div', {'class': 'next-service'}).text.strip(), "%a %d/%m/%Y").date()
+            date = datetime.datetime.strptime(item.find(
+                'div', {'class': 'next-service'}).text.strip(), "%a %d/%m/%Y").date()
             entries.append(
                 Collection(
-                    date = date,
-                    # t=waste_type,  # api returns GeneralWaste, Recycling, GreenWaste 
-                    t = ROUNDS.get(waste_type),  # returns user-friendly General Waste, Recycling, Green Waste
+                    date=date,
+                    # t=waste_type,  # api returns GeneralWaste, Recycling,
+                    # GreenWaste
+                    # returns user-friendly General Waste, Recycling, Green
+                    # Waste
+                    t=ROUNDS.get(waste_type),
                     icon=ICON_MAP.get(waste_type),
                 )
             )

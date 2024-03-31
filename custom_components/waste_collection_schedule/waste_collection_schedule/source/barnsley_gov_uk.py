@@ -83,8 +83,12 @@ class Source:
                 "Error getting results from website! Please open an issue on GitHub!"
             )
 
-        # Parse the response, getting the top box first and then tabled collections after
-        results = soup.find("div", {"class": "panel"}).find_all("fieldset")[0:2]
+        # Parse the response, getting the top box first and then tabled
+        # collections after
+        results = soup.find(
+            "div", {
+                "class": "panel"}).find_all("fieldset")[
+            0:2]
         heading = results[0].find_all("p")[1:3]
 
         for bin in heading[1].text.strip().split(", "):
@@ -98,9 +102,11 @@ class Source:
                 )
             )
 
-        results_table = [row for row in results[1].find_all("tbody")[0] if row != "\n"]
+        results_table = [row for row in results[1].find_all("tbody")[
+            0] if row != "\n"]
         for row in results_table:
-            text_list = [item.text.strip() for item in row.contents if item != "\n"]
+            text_list = [item.text.strip()
+                         for item in row.contents if item != "\n"]
             for bin in text_list[1].split(", "):
                 bin_text = bin + " bin"
                 bin_date = parse_date(text_list[0])

@@ -72,7 +72,8 @@ class Source:
         )
         form_id = self.get_form_id(r.text)
 
-        # Use address to get an ID if property wasn't supplied. Assumes first match is correct.
+        # Use address to get an ID if property wasn't supplied. Assumes first
+        # match is correct.
         if self._property is None:
             soup = BeautifulSoup(r.text, "html.parser")
             dropdown = soup.find("div", {"class": "form-item__dropdown"})

@@ -24,7 +24,8 @@ EXTRA_INFO = [
 ]
 
 TEST_CASES = {
-    "14_LE16_9QX": {"uprn": "100030491624"},  # region omitted to test default values
+    # region omitted to test default values
+    "14_LE16_9QX": {"uprn": "100030491624"},
     "4_LE16_9QX": {"uprn": "100030491614", "region": "harborough"},
     "16_LE16_7NA": {"uprn": "100030493289", "region": "harborough"},
     "10_LE16_8ER": {"uprn": "200001136341", "region": "harborough"},
@@ -65,7 +66,8 @@ class Source:
         for item in response.json()["binCollections"]["tile"]:
             try:
                 soup = BeautifulSoup(item[0], "html.parser")
-                date = parser.parse(soup.find_all("b")[2].text.split(",")[1].strip()).date()
+                date = parser.parse(
+                    soup.find_all("b")[2].text.split(",")[1].strip()).date()
                 service = soup.text.split("\n")[0]
             except parser._parser.ParserError:
                 continue
@@ -106,14 +108,18 @@ class Source:
         soup = BeautifulSoup(r.text, "html.parser")
         services = soup.find(
             "div",
-            attrs={"class": "blocks block-your-next-scheduled-bin-collection-days"},
+            attrs={
+                "class": "blocks block-your-next-scheduled-bin-collection-days"},
         ).find_all("li")
         entries = []
         for service in services:
             for type in _icons:
                 if type.lower() in service.text.lower():
                     try:
-                        date = parser.parse(service.find("span", attrs={"class": "pull-right"}).text.strip()).date()
+                        date = parser.parse(
+                            service.find(
+                                "span", attrs={
+                                    "class": "pull-right"}).text.strip()).date()
                     except parser._parser.ParserError:
                         continue
 
@@ -131,9 +137,7 @@ class Source:
             return self.harborough()
         elif self.region == "westdevon":
             return self.getcollectiondetails(
-                endpoint="https://westdevon.fccenvironment.co.uk/ajaxprocessor/getcollectiondetails"
-            )
+                endpoint="https://westdevon.fccenvironment.co.uk/ajaxprocessor/getcollectiondetails")
         elif self.region == "southhams":
             return self.getcollectiondetails(
-                endpoint="https://waste.southhams.gov.uk/mycollections/getcollectiondetails"
-            )
+                endpoint="https://waste.southhams.gov.uk/mycollections/getcollectiondetails")

@@ -20,12 +20,14 @@ ICON_MAP = {
     "garden waste": "mdi:leaf",
 }
 
+
 def getText(element):
     s = ""
     for e in element.childNodes:
         if e.nodeType == e.TEXT_NODE:
             s += e.nodeValue
     return s
+
 
 class Source:
     def __init__(self, uprn=None):
@@ -43,7 +45,7 @@ class Source:
 
         doc = parseString(responseContent)
         collections = doc.getElementsByTagName("channel")
-        
+
         for collection in collections:
             nameFull = getText(collection.getElementsByTagName("title")[0])
             when = getText(collection.getElementsByTagName("title")[1])

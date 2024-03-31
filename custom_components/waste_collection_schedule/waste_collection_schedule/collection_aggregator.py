@@ -102,8 +102,9 @@ class CollectionAggregator:
         # remove unwanted waste types from exclude list
         if exclude_types is not None:
             entries = list(
-                filter(lambda e: e.type not in set(exclude_types), self._entries)
-            )
+                filter(
+                    lambda e: e.type not in set(exclude_types),
+                    self._entries))
 
         # remove expired entries
         now = datetime.now().date()

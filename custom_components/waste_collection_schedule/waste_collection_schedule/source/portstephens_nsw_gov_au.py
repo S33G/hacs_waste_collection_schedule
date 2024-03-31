@@ -52,8 +52,11 @@ TRACKED_EVENTS = ["general", "recycle", "organic", "special"]
 
 
 def get_id(
-    s: requests.Session, url_key: str, val_key: str, name: str, params: dict = {}
-):
+        s: requests.Session,
+        url_key: str,
+        val_key: str,
+        name: str,
+        params: dict = {}):
     response = s.get(API_URLS[url_key], params=params, headers=HEADERS)
     data = json.loads(response.text)
     for val in data[val_key]:
@@ -99,20 +102,24 @@ class Source:
             "start": f"{last_year}-12-31T13:00:00.000Z",
             "end": f"{this_year}-12-30T13:00:00.000Z",
         }
-        collection_data = request.get(property_url, params=params, headers=HEADERS)
+        collection_data = request.get(
+            property_url, params=params, headers=HEADERS)
         collections = json.loads(collection_data.text)
         for entry in collections:
             if "property" in entry:
                 continue
             event_type = entry["event_type"]
-            date = datetime.datetime.strptime(entry["start"], "%Y-%m-%d").date()
+            date = datetime.datetime.strptime(
+                entry["start"], "%Y-%m-%d").date()
             if event_type == "special":
                 event_name = entry["name"]
             else:
                 event_name = ROUNDS.get(event_type)
             if event_type in TRACKED_EVENTS:
                 entries.append(
-                    Collection(date=date, t=event_name, icon=ICON_MAP.get(event_type))
-                )
+                    Collection(
+                        date=date,
+                        t=event_name,
+                        icon=ICON_MAP.get(event_type)))
 
         return entries

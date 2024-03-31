@@ -50,10 +50,11 @@ class Source:
                 if w.text == "true":
                     entries.append(
                         Collection(
-                            date=datetime.strptime(dt.text, "%Y-%m-%dT07:00:00").date(),
+                            date=datetime.strptime(
+                                dt.text,
+                                "%Y-%m-%dT07:00:00").date(),
                             t=waste,
                             icon=ICON_MAP.get(waste),
-                        )
-                    )
+                        ))
 
         return entries

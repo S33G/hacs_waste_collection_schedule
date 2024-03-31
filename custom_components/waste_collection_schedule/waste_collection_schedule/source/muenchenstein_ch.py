@@ -47,7 +47,8 @@ class Source:
                 next_pickup_date = datetime.fromisoformat(next_pickup).date()
 
                 waste_type = BeautifulSoup(item["name"], "html.parser").text
-                waste_type_sorted = BeautifulSoup(item["name-sort"], "html.parser").text
+                waste_type_sorted = BeautifulSoup(
+                    item["name-sort"], "html.parser").text
 
                 entries.append(
                     Collection(
@@ -59,7 +60,8 @@ class Source:
 
         # Collection of "Kehricht und Kleinsperrgut brennbar" are not listed with dates as events on website.
         # Instead it states the day of the week for each waste district: tuesday for east and friday for west
-        # So we're going to set those collections programmatically for the next 4 occurrences
+        # So we're going to set those collections programmatically for the next
+        # 4 occurrences
         weekday_collection = (
             2
             if self._waste_district == "Abfuhrkreis Ost" or self._waste_district == 491
@@ -67,8 +69,12 @@ class Source:
         )
         weekday_today = datetime.now().isoweekday()
         for x in range(4):
-            days_to_pickup = (x * 7) + ((weekday_collection - weekday_today) % 7)
-            next_pickup_date = (datetime.now() + timedelta(days=days_to_pickup)).date()
+            days_to_pickup = (x * 7) + \
+                ((weekday_collection - weekday_today) % 7)
+            next_pickup_date = (
+                datetime.now() +
+                timedelta(
+                    days=days_to_pickup)).date()
             waste_type = "Kehricht und Kleinsperrgut brennbar"
             waste_type_sorted = waste_type.lower().replace(" ", "-")
 

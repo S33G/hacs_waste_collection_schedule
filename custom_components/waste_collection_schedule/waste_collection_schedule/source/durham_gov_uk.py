@@ -11,7 +11,10 @@ TEST_CASES = {
     "Test_001": {"uprn": "100110414978"},
     "Test_002": {"uprn": 100110427200},
 }
-ICON_MAP = {"RECYCLE": "mdi:recycle", "GARDEN": "mdi:leaf", "RUBBISH": "mdi:trash-can"}
+ICON_MAP = {
+    "RECYCLE": "mdi:recycle",
+    "GARDEN": "mdi:leaf",
+    "RUBBISH": "mdi:trash-can"}
 
 
 class Source:
@@ -20,7 +23,8 @@ class Source:
 
     def fetch(self):
         s = requests.Session()
-        r = s.get(f"https://www.durham.gov.uk/bincollections?uprn={self._uprn}")
+        r = s.get(
+            f"https://www.durham.gov.uk/bincollections?uprn={self._uprn}")
         soup = BeautifulSoup(r.text, "html.parser")
 
         entries = []

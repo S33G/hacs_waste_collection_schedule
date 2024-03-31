@@ -25,6 +25,7 @@ ICON_MAP = {
     "Food": "mdi:food-apple",
 }
 
+
 class Source:
     def __init__(self, uprn: str):
         self._uprn = uprn
@@ -49,7 +50,8 @@ class Source:
 
         for collection in collections:
             # check is a collection row
-            title = collection.find("h2", {"class": "panel-title"}).text.strip()
+            title = collection.find("h2",
+                                    {"class": "panel-title"}).text.strip()
 
             if title == "Other Services" or "You are not currently subscribed" in collection.text:
                 continue

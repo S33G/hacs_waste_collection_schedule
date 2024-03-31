@@ -29,25 +29,26 @@ class Source:
 
     def fetch(self):
         today = datetime.datetime.now().date()
-        
+
         r = requests.get(f"{API_URL}/{self._record_id}/")
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")
         table = soup.find("ul", {"class": "data-table"})
         if table is None or isinstance(table, str):
-            raise Exception(f"Content of the webpage seems to be invalid check {API_URL}/{self._record_id}/")
-        rows:list[Tag] = table.find_all("li")
+            raise Exception(
+                f"Content of the webpage seems to be invalid check {API_URL}/{self._record_id}/")
+        rows: list[Tag] = table.find_all("li")
 
         entries = []
         for row in rows:
-            if not "bin days" in row.text.lower():
+            if "bin days" not in row.text.lower():
                 continue
             bin_type_heading = row.find("h2")
             if bin_type_heading is None:
                 continue
             bin_type_text = bin_type_heading.text.lower().strip()
-            
+
             if "bin days" == bin_type_text:
                 bin_type = "Refuse"
             else:
@@ -65,11 +66,12 @@ class Source:
 
                 # Convert date string to datetime object
                 try:
-                    date_obj = datetime.datetime.strptime(date, "%A %d %B").date()
+                    date_obj = datetime.datetime.strptime(
+                        date, "%A %d %B").date()
                     date_obj = date_obj.replace(year=today.year)
                     if date_obj < today:
                         date_obj = date_obj.replace(year=today.year + 1)
-                    
+
                 except ValueError:
                     continue
 

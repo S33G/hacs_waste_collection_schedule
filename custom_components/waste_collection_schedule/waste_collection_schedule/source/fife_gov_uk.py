@@ -7,7 +7,7 @@ DESCRIPTION = "Source for Fife Council."
 URL = "https://www.fife.gov.uk"
 TEST_CASES = {
     "SANDYHILL ROAD, ST ANDREWS": {"uprn": 320069186},
-    "CERES ROAD, PITSCOTTIE" : {"uprn": 320063641},
+    "CERES ROAD, PITSCOTTIE": {"uprn": 320063641},
     "SHORE ROAD, BALMALCOLM": {"uprn": "320083539"},
     "CANMORE STREET, DUNFERMLINE": {"uprn": "320101510"},
 }
@@ -31,9 +31,10 @@ class Source:
 
     def fetch(self):
         session = requests.Session()
-        auth = session.get("https://www.fife.gov.uk/api/citizen?preview=false&locale=en").headers["Authorization"]
+        auth = session.get(
+            "https://www.fife.gov.uk/api/citizen?preview=false&locale=en").headers["Authorization"]
         session.headers.update({"Authorization": auth})
-        
+
         args = {
             "name": "bin_calendar",
             "data": {"uprn": self._uprn},

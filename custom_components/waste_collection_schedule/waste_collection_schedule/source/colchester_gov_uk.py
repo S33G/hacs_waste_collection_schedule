@@ -54,8 +54,7 @@ class Source:
                         # to be added to the `DatesOfFirstCollectionDays` date to provide the correct 'Green' week
                         # collection date.
                         date = datetime.strptime(
-                            data["DatesOfFirstCollectionDays"][key], "%Y-%m-%dT%H:%M:%S"
-                        )
+                            data["DatesOfFirstCollectionDays"][key], "%Y-%m-%dT%H:%M:%S")
                         if not weeks["WeekOne"]:
                             date = date + timedelta(days=7)
                         if date > datetime.now():

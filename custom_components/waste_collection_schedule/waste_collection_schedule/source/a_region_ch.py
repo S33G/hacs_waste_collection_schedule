@@ -111,8 +111,9 @@ class Source:
                 "cookie": "PHPSESSID=71v67j0et4ih04qa142d402ebm;"
             }  # TODO: get cookie from first request
             r = session.get(
-                f"{BASE_URL}/appl/ajax/index.php", params=params, headers=headers
-            )
+                f"{BASE_URL}/appl/ajax/index.php",
+                params=params,
+                headers=headers)
             r.raise_for_status()
             if r.text == "":
                 break
@@ -129,7 +130,8 @@ class Source:
             if "ref=search" in href:
                 for title in download.find_all("div", class_="title"):
                     # title ::= "Abfallkalender Andwil"
-                    municipalities[title.string.removeprefix("Abfallkalender ")] = href
+                    municipalities[title.string.removeprefix(
+                        "Abfallkalender ")] = href
 
     def get_waste_types(self, link):
         r = requests.get(f"{BASE_URL}{link}")
@@ -176,12 +178,14 @@ class Source:
 
         downloads = soup.find_all("a", href=True)
         for download in downloads:
-            # href ::= "/appl/ics.php?apid=12731252&amp;from=2022-05-04%2013%3A00%3A00&amp;to=2022-05-04%2013%3A00%3A00"
+            # href ::=
+            # "/appl/ics.php?apid=12731252&amp;from=2022-05-04%2013%3A00%3A00&amp;to=2022-05-04%2013%3A00%3A00"
             href = download.get("href")
             if "ics.php" in href:
                 parsed = urlparse(href)
                 query = parse_qs(parsed.query)
-                date = datetime.datetime.strptime(query["from"][0], "%Y-%m-%d %H:%M:%S")
+                date = datetime.datetime.strptime(
+                    query["from"][0], "%Y-%m-%d %H:%M:%S")
                 dates.add(date.date())
 
         return dates

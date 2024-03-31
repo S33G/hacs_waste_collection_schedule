@@ -26,7 +26,14 @@ ICON_MAP = {
     "garden waste (brown bin)": "mdi:leaf",
 }
 
-DAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+DAYS = [
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY"]
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,7 +54,8 @@ class Source:
             r = s.post(str(API_URLS["address_search"]), data=payload)
 
             soup = BeautifulSoup(r.text, features="html.parser")
-            propertyUprns = soup.find("select", {"id": "UPRN"}).findAll("option")
+            propertyUprns = soup.find(
+                "select", {"id": "UPRN"}).findAll("option")
             for match in propertyUprns:
                 if self._name:
                     if (

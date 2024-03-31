@@ -60,7 +60,7 @@ class Source:
                 break
 
         if suburb_id == 0:
-            #return []
+            # return []
             raise Exception(f"Surburb '{self.suburb}' not found")
 
         # Retrieve the streets in our suburb
@@ -77,7 +77,7 @@ class Source:
                 break
 
         if street_id == 0:
-            #return []
+            # return []
             raise Exception(f"Street '{self.street_name}' not found")
 
         # Retrieve the properties in our street
@@ -94,8 +94,9 @@ class Source:
                 break
 
         if property_id == 0:
-            #return []
-            raise Exception(f"{self.street_number} {self.street_name} {self.suburb} not found")
+            # return []
+            raise Exception(
+                f"{self.street_number} {self.street_name} {self.suburb} not found")
 
         # Retrieve the upcoming collections for our property
         r = requests.get(
@@ -119,15 +120,21 @@ class Source:
                 continue
             # Every collection day includes rubbish
             entries.append(
-                Collection(date=collection_date, t="Rubbish", icon="mdi:trash-can")
-            )
+                Collection(
+                    date=collection_date,
+                    t="Rubbish",
+                    icon="mdi:trash-can"))
             if item["event_type"] == "recycle":
                 entries.append(
-                    Collection(date=collection_date, t="Recycling", icon="mdi:recycle")
-                )
+                    Collection(
+                        date=collection_date,
+                        t="Recycling",
+                        icon="mdi:recycle"))
             if item["event_type"] == "organic":
                 entries.append(
-                    Collection(date=collection_date, t="Garden", icon="mdi:leaf")
-                )
+                    Collection(
+                        date=collection_date,
+                        t="Garden",
+                        icon="mdi:leaf"))
 
         return entries

@@ -8,14 +8,15 @@ DESCRIPTION = "Source for North / Middle Bohuslän - Rambo AB."
 URL = "https://www.rambo.se/"
 TEST_CASES = {
     "Grebbestad Ö.långgat./Storg., Grebbestad": {
-        "address": "Grebbestad Ö.långgat./Storg., Grebbestad"
-    },
-    "Grebbestadsvägen 6, Tanumshede": {"address": "Grebbestadsvägen 6, Tanumshede"},
-    "Torgvägen 1, Centrum, Hedekas": {"address": "Torgvägen 1, Centrum, Hedekas"},
+        "address": "Grebbestad Ö.långgat./Storg., Grebbestad"},
+    "Grebbestadsvägen 6, Tanumshede": {
+        "address": "Grebbestadsvägen 6, Tanumshede"},
+    "Torgvägen 1, Centrum, Hedekas": {
+        "address": "Torgvägen 1, Centrum, Hedekas"},
     "Örekilsvägen Munkedals Reningsverk 10, Munkedal": {
-        "address": "Örekilsvägen Munkedals Reningsverk 10, Munkedal"
-    },
-    "Storgatan 39, Smögen": {"address": "Storgatan 39, Smögen"},
+        "address": "Örekilsvägen Munkedals Reningsverk 10, Munkedal"},
+    "Storgatan 39, Smögen": {
+        "address": "Storgatan 39, Smögen"},
 }
 
 
@@ -44,17 +45,18 @@ class Source:
         }
 
         # get json file
-        r = requests.get(API_URL.format("address-flat"), params=args, headers=HEADERS)
+        r = requests.get(
+            API_URL.format("address-flat"),
+            params=args,
+            headers=HEADERS)
         r.raise_for_status()
 
         data = r.json()
 
         plant_number = None
         for hit in data:
-            if (
-                "address" in hit
-                and hit["address"].strip().lower() == self._address.strip().lower()
-            ):
+            if ("address" in hit and hit["address"].strip(
+            ).lower() == self._address.strip().lower()):
                 plant_number = hit["plant_number"].replace(" ", "+")
                 break
 

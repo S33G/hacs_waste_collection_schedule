@@ -3,9 +3,12 @@ from datetime import datetime
 import requests
 from waste_collection_schedule import Collection
 
-TITLE = "Chiemgau Recycling - Landkreis Rosenheim"  # Title will show up in README.md and info.md
-DESCRIPTION = "Source script for paper waste collection in Landkreis Rosenheim area"  # Describe your source
-URL = "https://chiemgau-recycling.de"  # Insert url to service homepage. URL will show up in README.md and info.md
+# Title will show up in README.md and info.md
+TITLE = "Chiemgau Recycling - Landkreis Rosenheim"
+# Describe your source
+DESCRIPTION = "Source script for paper waste collection in Landkreis Rosenheim area"
+# Insert url to service homepage. URL will show up in README.md and info.md
+URL = "https://chiemgau-recycling.de"
 COUNTRY = "de"
 TEST_CASES = {  # Insert arguments for test cases to be used by test_sources.py script
     "Bruckmühl 1": {
@@ -18,6 +21,7 @@ ICON_MAP = {  # Optional: Dict of waste types and suitable mdi icons
 }
 
 API_URL = "https://blauetonne.stkn.org/lk_rosenheim"
+
 
 class Source:
     def __init__(self, district):
@@ -32,7 +36,8 @@ class Source:
         for date in r.json():
             entries.append(
                 Collection(
-                    date=datetime.fromisoformat(date).date(),  # Collection date
+                    date=datetime.fromisoformat(
+                        date).date(),  # Collection date
                     t="Papier Tonne",  # Collection type
                     icon=ICON_MAP.get("Papier"),  # Collection icon
                 )

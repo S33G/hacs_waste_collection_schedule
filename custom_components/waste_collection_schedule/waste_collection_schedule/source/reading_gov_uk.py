@@ -8,11 +8,16 @@ TITLE = "Reading Council"
 DESCRIPTION = "Source for reading.gov.uk services for Reading Council"
 URL = "https://reading.gov.uk"
 TEST_CASES = {
-    "known_uprn": {"uprn": "310027679"},
-    "known_uprn as number": {"uprn": 310027679},
-    "unknown_uprn_by_number": {"postcode": "RG31 5PN", "housenameornumber": "65"},
-    "unknown_uprn_by_number as number": {"postcode": "RG31 5PN", "housenameornumber": 65}
-}
+    "known_uprn": {
+        "uprn": "310027679"},
+    "known_uprn as number": {
+        "uprn": 310027679},
+    "unknown_uprn_by_number": {
+        "postcode": "RG31 5PN",
+        "housenameornumber": "65"},
+    "unknown_uprn_by_number as number": {
+        "postcode": "RG31 5PN",
+        "housenameornumber": 65}}
 
 ICONS = {
     "Rubbish": "mdi:trash-can",
@@ -46,18 +51,21 @@ class Source:
         if self._uprn is None:
             self._uprn = self.get_uprn()
         resp = requests.get(f"{SEARCH_URLS['COLLECTION']}/{self._uprn}")
-        return [self.parse_collection(col) for col in resp.json()["collections"]]
+        return [self.parse_collection(col)
+                for col in resp.json()["collections"]]
 
     def get_uprn(self) -> str:
         resp = requests.get(f"{SEARCH_URLS['UPRN']}/{self._postcode}")
         addresses = resp.json()["Addresses"]
         address = next(filter(self.filter_addresses, addresses), None)
         if address is None:
-            raise Exception(f"House {self._housenameornumber} not found for postcode {self._postcode}")
+            raise Exception(
+                f"House {self._housenameornumber} not found for postcode {self._postcode}")
         return address["AccountSiteUprn"]
 
     def filter_addresses(self, address) -> bool:
-        nameornum, _ = address["SiteShortAddress"].split(f", {address['SiteAddress2']}, ")
+        nameornum, _ = address["SiteShortAddress"].split(
+            f", {address['SiteAddress2']}, ")
         return self._housenameornumber == nameornum
 
     def parse_collection(self, col) -> Collection:

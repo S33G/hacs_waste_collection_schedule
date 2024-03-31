@@ -56,7 +56,8 @@ class Source:
                 # In some cases the date is just a month, so parse this as the
                 # first of the month to atleast get something close
                 try:
-                    next_pickup_date = datetime.strptime(next_pickup, "%b %Y").date()
+                    next_pickup_date = datetime.strptime(
+                        next_pickup, "%b %Y").date()
                 except ValueError as month_parse_error:
                     _LOGGER.warning(
                         "Failed to parse date %s, %s,",

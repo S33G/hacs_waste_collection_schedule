@@ -31,7 +31,8 @@ class Source:
         self._uprn = uprn
 
         if postcode is None and address is None and uprn is None:
-            raise Exception("no attributes - specify postcode and address or just uprn")
+            raise Exception(
+                "no attributes - specify postcode and address or just uprn")
 
     def fetch(self):
         if self._uprn is None:
@@ -39,7 +40,9 @@ class Source:
                 "jsonrpc": "2.0",
                 "id": "",
                 "method": "Breckland.Whitespace.JointWasteAPI.GetSiteIDsByPostcode",
-                "params": {"postcode": self._postcode, "environment": "live"},
+                "params": {
+                    "postcode": self._postcode,
+                    "environment": "live"},
             }
 
             r = requests.post(API_URL, json=json_data, headers=headers)
@@ -58,7 +61,9 @@ class Source:
             "jsonrpc": "2.0",
             "id": "",
             "method": "Breckland.Whitespace.JointWasteAPI.GetBinCollectionsByUprn",
-            "params": {"uprn": self._uprn, "environment": "live"},
+            "params": {
+                "uprn": self._uprn,
+                "environment": "live"},
         }
 
         r = requests.post(API_URL, json=json_data, headers=headers)

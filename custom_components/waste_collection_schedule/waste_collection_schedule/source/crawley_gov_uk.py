@@ -44,8 +44,7 @@ class Source:
 
         api_url = (
             f"https://my.crawley.gov.uk/appshost/firmstep/self/apps/custompage/waste?language=en&uprn={self._uprn}"
-            f"&usrn={self._usrn}&day={day}&month={month}&year={year}"
-        )
+            f"&usrn={self._usrn}&day={day}&month={month}&year={year}")
         response = requests.get(api_url)
 
         soup = BeautifulSoup(response.text, features="html.parser")
@@ -63,7 +62,8 @@ class Source:
         bin_index = 0
         for tag in collection_tag:
             for item in tag.next_elements:
-                if str(item).startswith('<div class="date text-right text-grey">'):
+                if str(item).startswith(
+                        '<div class="date text-right text-grey">'):
                     collection_date = datetime.strptime(
                         item.text + " " + str(year), "%A %d %B %Y"
                     ).date()

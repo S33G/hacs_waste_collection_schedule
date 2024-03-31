@@ -101,7 +101,8 @@ class Source:
                 break
 
         if link is None:
-            raise Exception("Did not found matching ICS link for gemeinde and (bezirk)")
+            raise Exception(
+                "Did not found matching ICS link for gemeinde and (bezirk)")
 
         # get ICS file
         r = requests.get(link)

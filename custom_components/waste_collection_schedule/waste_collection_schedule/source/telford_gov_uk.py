@@ -51,7 +51,8 @@ class Source:
             addresses = json.loads(r.json())
 
             for property in addresses["properties"]:
-                if property["PrimaryName"].lower() == self._name_number.lower():
+                if property["PrimaryName"].lower(
+                ) == self._name_number.lower():
                     self._uprn = property["UPRN"]
 
             if not self._uprn:
@@ -88,10 +89,12 @@ class Source:
                     + str(year)
                 )
 
-                date = datetime.datetime.strptime(datestring, "%A %d %B %Y").date()
+                date = datetime.datetime.strptime(
+                    datestring, "%A %d %B %Y").date()
 
                 # Calculate the year. As we only get collections 2 weeks in advance we can assume the current
-                # year unless the month is January in December where it will be next year
+                # year unless the month is January in December where it will be
+                # next year
 
                 if (date.month == 1) and (today.month == 12):
                     date = date.replace(year=year + 1)

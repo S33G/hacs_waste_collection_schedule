@@ -35,7 +35,8 @@ class Source:
 
         r = requests.get(API_URL, headers=HEADERS)
         r.raise_for_status()
-        selects = BeautifulSoup(r.content, "html.parser").body.find_all("select")
+        selects = BeautifulSoup(
+            r.content, "html.parser").body.find_all("select")
 
         if street:
             strlist = next(iter([s for s in selects if s["id"] == "strlist"]))
@@ -70,9 +71,11 @@ class Source:
                 )
 
     def fetch(self):
-        # Get & parse full HTML only on first call to fetch() to map district or street to district_id
+        # Get & parse full HTML only on first call to fetch() to map district
+        # or street to district_id
         if not self._district_id:
-            self._district_id = self.map_district_id(self._district, self._street)
+            self._district_id = self.map_district_id(
+                self._district, self._street)
 
         if not self._district_id:
             raise ValueError("'_district_id' is not set!")

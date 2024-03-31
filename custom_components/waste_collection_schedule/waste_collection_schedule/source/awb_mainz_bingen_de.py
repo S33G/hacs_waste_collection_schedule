@@ -93,9 +93,8 @@ class Source:
         if not teilorte_div:
             raise Exception("invalid response from server", soup)
 
-        teilorte = BeautifulSoup(
-            teilorte_div.text.replace("<![CDATA[", "").replace("]]>", ""), "html.parser"
-        )
+        teilorte = BeautifulSoup(teilorte_div.text.replace(
+            "<![CDATA[", "").replace("]]>", ""), "html.parser")
 
         ort = teilorte.find(
             "option", text=re.compile(re.escape(self._ort), re.IGNORECASE)
@@ -123,9 +122,8 @@ class Source:
         if not div_strasse:
             raise Exception("invalid response from server")
 
-        strassen_soup = BeautifulSoup(
-            div_strasse.text.replace("<![CDATA[", "").replace("]]>", ""), "html.parser"
-        )
+        strassen_soup = BeautifulSoup(div_strasse.text.replace(
+            "<![CDATA[", "").replace("]]>", ""), "html.parser")
 
         # If strasse is needed
         if strassen_soup.find("option"):
@@ -134,8 +132,9 @@ class Source:
 
             # get strasse id
             strasse_id = strassen_soup.find(
-                "option", text=re.compile(re.escape(self._strasse), re.IGNORECASE)
-            )
+                "option", text=re.compile(
+                    re.escape(
+                        self._strasse), re.IGNORECASE))
             if not strasse_id:
                 found = [i.text for i in strassen_soup.find_all("option")][1:]
                 raise Exception(
@@ -162,9 +161,8 @@ class Source:
 
         if not cal_wrapper:
             raise Exception("No calendar found", r.text)
-        cal_soup = BeautifulSoup(
-            cal_wrapper.text.replace("<![CDATA[", "").replace("]]>", ""), "html.parser"
-        )
+        cal_soup = BeautifulSoup(cal_wrapper.text.replace(
+            "<![CDATA[", "").replace("]]>", ""), "html.parser")
 
         entries = []
         # get ical file url
@@ -175,12 +173,19 @@ class Source:
             r.raise_for_status()
             r.encoding = "utf-8"
 
-            # remove DURATION because the returned icalendar has invalid DURATION syntax
-            ical_string = re.sub(r"^DURATION.*\n?", "", r.text, flags=re.MULTILINE)
+            # remove DURATION because the returned icalendar has invalid
+            # DURATION syntax
+            ical_string = re.sub(
+                r"^DURATION.*\n?", "", r.text, flags=re.MULTILINE)
 
             dates = self._ics.convert(ical_string)
             for d in dates:
-                bin_type = d[1].split(" am ")[0].replace("Abfuhrtermin", "").strip()
-                entries.append(Collection(d[0], bin_type, ICON_MAP.get(bin_type)))
+                bin_type = d[1].split(" am ")[0].replace(
+                    "Abfuhrtermin", "").strip()
+                entries.append(
+                    Collection(
+                        d[0],
+                        bin_type,
+                        ICON_MAP.get(bin_type)))
 
         return entries

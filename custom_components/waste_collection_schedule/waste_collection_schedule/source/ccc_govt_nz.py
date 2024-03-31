@@ -24,7 +24,8 @@ class Source:
         entries = []
 
         # Find the Rating Unit ID by the physical address
-        # While a property may have more than one address, bins are allocated by each Rating Unit
+        # While a property may have more than one address, bins are allocated
+        # by each Rating Unit
         addressQuery = {
             "q": self._address,
             "status": "current",
@@ -33,9 +34,9 @@ class Source:
         }
 
         r = s.get("https://opendata.ccc.govt.nz/CCCSearch/rest/address/suggest",
-            params=addressQuery,
-            # verify=False,
-        )
+                  params=addressQuery,
+                  # verify=False,
+                  )
         address = r.json()
 
         # Find the Bin service by Rating Unit ID
@@ -46,17 +47,22 @@ class Source:
 
         # Updated request using SSL code snippet
         r = s.get("https://ccc-data-citizen-api-v1-prod.au-s1.cloudhub.io/api/v1/properties/" + str(address[0]["RatingUnitID"]),
-            headers=binsHeaders
-            # verify=False,
-        )
+                  headers=binsHeaders
+                  # verify=False,
+                  )
         bins = r.json()
-        
-        # Deduplicate the Bins in case the Rating Unit has more than one of the same Bin type
-        bins = {each["material"]: each for each in bins["bins"]["collections"]}.values()
+
+        # Deduplicate the Bins in case the Rating Unit has more than one of the
+        # same Bin type
+        bins = {each["material"]: each for each in bins["bins"]
+                ["collections"]}.values()
 
         # Get the list of Overrides for any special dates
-        # It will be an array of these: { ID: 32, Title: "New Year Friday 2024", OriginalDate: "2024-01-05", NewDate: "2024-01-06", Expired: 0 }
-        overrides = requests.get("https://ccc.govt.nz/api/kerbsidedateoverrides").json()
+        # It will be an array of these: { ID: 32, Title: "New Year Friday
+        # 2024", OriginalDate: "2024-01-05", NewDate: "2024-01-06", Expired: 0
+        # }
+        overrides = requests.get(
+            "https://ccc.govt.nz/api/kerbsidedateoverrides").json()
 
         # Process each Override
         for bin in bins:

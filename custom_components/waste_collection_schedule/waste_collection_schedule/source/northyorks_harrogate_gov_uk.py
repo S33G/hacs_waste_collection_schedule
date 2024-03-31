@@ -45,7 +45,10 @@ class Source:
         tableClass = soup.findAll("table", {"class": "hbcRounds"})
         for tr in tableClass[1].find_all("tr"):
             cells = []
-            cells.append(dparser.parse(tr.find("td").text.lstrip(), fuzzy=True).date())
+            cells.append(
+                dparser.parse(
+                    tr.find("td").text.lstrip(),
+                    fuzzy=True).date())
             cells.append(tr.find("th").text)
             schedule.append(cells)
 

@@ -69,10 +69,10 @@ class Source:
     def fetch(self):
         s = requests.Session()
 
-        # Load landing page and extract tracking ID needed for subsequent requests
+        # Load landing page and extract tracking ID needed for subsequent
+        # requests
         r0 = s.get(
-            f"https://asjwsw-wrp{self._borough}municipal-live.whitespacews.com/#!",
-        )
+            f"https://asjwsw-wrp{self._borough}municipal-live.whitespacews.com/#!", )
         trackingID = re.findall(REGEX, r0.text)[0]
 
         # Load search form
@@ -132,10 +132,12 @@ class Source:
         for i in range(0, len(waste_dates)):
             entries.append(
                 Collection(
-                    date=datetime.strptime(waste_dates[i].text, "%d/%m/%Y").date(),
+                    date=datetime.strptime(
+                        waste_dates[i].text,
+                        "%d/%m/%Y").date(),
                     t=waste_types[i].text,
-                    icon=ICON_MAP.get(waste_types[i].text.upper()),
-                )
-            )
+                    icon=ICON_MAP.get(
+                        waste_types[i].text.upper()),
+                ))
 
         return entries

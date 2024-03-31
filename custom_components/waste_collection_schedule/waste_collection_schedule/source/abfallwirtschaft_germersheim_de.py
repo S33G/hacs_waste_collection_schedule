@@ -45,19 +45,20 @@ class Source:
         ).get("value")
 
         checkbox_class = re.compile("id_form_icsabfallart_[0-9][0-9]?")
-        waste_types = soup.find("div", {"class": "ctlg_form_field checkbox"}).find_all(
-            "label",
-            {
-                "for": checkbox_class,
-            },
-        )
+        waste_types = soup.find(
+            "div", {
+                "class": "ctlg_form_field checkbox"}).find_all(
+            "label", {
+                "for": checkbox_class, }, )
         for waste_type in waste_types:
             params["icsabfallart[]"].append(waste_type.text)
 
         r = s.post(
             API_URL,
             params=params,
-            data={"ICS_DOWNLOAD": ics_download, "REQUEST_TOKEN": request_token},
+            data={
+                "ICS_DOWNLOAD": ics_download,
+                "REQUEST_TOKEN": request_token},
         )
         r.raise_for_status()
 

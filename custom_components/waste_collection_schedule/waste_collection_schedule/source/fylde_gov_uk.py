@@ -35,7 +35,8 @@ class Source:
 
     def _getToken(self, session: requests.Session) -> str:
         # The token required for the API call can only be generated dynamically
-        # We generate our own token by loading the "bin collection" web page and scraping it from the relevant iframe
+        # We generate our own token by loading the "bin collection" web page
+        # and scraping it from the relevant iframe
         r = session.get(
             f"{URL}/resident/bins-recycling-and-rubbish/bin-collection-day/"
         )
@@ -59,7 +60,8 @@ class Source:
     def fetch(self):
         session = requests.Session()
 
-        # Build parameters list and call API `https://collectiveview.bartec-systems.com/R152/GetData.ashx?Method=X&Token=Y&UPRN=Z`
+        # Build parameters list and call API
+        # `https://collectiveview.bartec-systems.com/R152/GetData.ashx?Method=X&Token=Y&UPRN=Z`
         parameters = {
             "Method": "calendareventsfromtoken",
             "Token": self._getToken(session),
@@ -81,7 +83,8 @@ class Source:
                 .strip()
                 .title()
             )
-            # Job 'start' string to epoch. "/Date(1580515199000)/" -> "1580515199000"
+            # Job 'start' string to epoch. "/Date(1580515199000)/" ->
+            # "1580515199000"
             date = job["start"][6:-2]
 
             entries.append(

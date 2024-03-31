@@ -18,6 +18,7 @@ COUNTRY = "de"
 def EXTRA_INFO():
     return [{"title": s["title"], "url": s["url"]} for s in SERVICE_MAP]
 
+
 TEST_CASES = {
     "Offenbach Address": {
         "municipality": "Offenbach",
@@ -88,17 +89,18 @@ class Source:
         municipalities = MUNICIPALITIES
         if municipality not in municipalities:
             raise Exception(f"municipality '{municipality}' not found")
-        
+
         self._api_url = f"https://www.insert-it.de/{municipalities[municipality]}"
         self._ics = ICS(regex=REGEX_MAP.get(municipality))
 
+        # Check if at least either location_id is set or both street and hnr
+        # are set
+        if not ((location_id is not None) or (
+                street is not None and hnr is not None)):
+            raise Exception(
+                "At least either location_id should be set or both street and hnr should be set.")
 
-        # Check if at least either location_id is set or both street and hnr are set
-        if not ((location_id is not None) or (street is not None and hnr is not None)):
-            raise Exception("At least either location_id should be set or both street and hnr should be set.")
-        
         self._uselocation = location_id is not None
-
 
     def get_street_id(self):
         """Return ID of matching street"""
@@ -118,9 +120,8 @@ class Source:
             if element["Name"] == self._street:
                 street_id = element["ID"]
                 return street_id
-            
+
         raise Exception(f"Street {self._street} not found")
-    
 
     def get_location_id(self, street_id):
         """Return ID of first matching location"""
@@ -134,15 +135,17 @@ class Source:
 
         result = json.loads(r.text)
         if not result:
-            raise Exception(f"No locations found for Street ID {street_id} and House number {self._hnr}")
+            raise Exception(
+                f"No locations found for Street ID {street_id} and House number {self._hnr}")
 
         for element in result:
-            if element["StreetId"] == street_id and element["Text"] == str(self._hnr):
+            if element["StreetId"] == street_id and element["Text"] == str(
+                    self._hnr):
                 location_id = element["ID"]
                 return location_id
-                
-        raise Exception(f"Location for Street ID {street_id} with House number {self._hnr} not found")
-    
+
+        raise Exception(
+            f"Location for Street ID {street_id} with House number {self._hnr} not found")
 
     def fetch(self):
 
@@ -156,7 +159,6 @@ class Source:
         if now.month == 12:
             entries += self.fetch_year(now.year + 1)
         return entries
-
 
     def fetch_year(self, year):
         s = requests.Session()

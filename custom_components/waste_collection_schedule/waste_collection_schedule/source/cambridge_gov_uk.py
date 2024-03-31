@@ -42,11 +42,11 @@ class Source:
         addresses = r.json()
 
         address_ids = [
-            x["id"] for x in addresses if x["houseNumber"].capitalize() == self._number
-        ]
+            x["id"] for x in addresses if x["houseNumber"].capitalize() == self._number]
 
         if len(address_ids) == 0:
-            raise Exception(f"Could not find address {self._post_code} {self._number}")
+            raise Exception(
+                f"Could not find address {self._post_code} {self._number}")
 
         q = str(API_URLS["collection"]).format(address_ids[0])
         r = requests.get(q)

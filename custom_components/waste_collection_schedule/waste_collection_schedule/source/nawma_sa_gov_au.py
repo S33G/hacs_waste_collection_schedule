@@ -20,7 +20,8 @@ TEST_CASES = {
         "street_name": "Bridge Road",
         "suburb": "Pooraka",
     },  # Monday reverse
-    "Whites Road": {"street_name": "Whites Road", "suburb": "Paralowie"},  # Tuesday
+    # Tuesday
+    "Whites Road": {"street_name": "Whites Road", "suburb": "Paralowie"},
     "Hazel Avenue": {
         "street_name": "Hazel Avenue",
         "suburb": "Angle Vale",

@@ -27,8 +27,8 @@ class Source:
 
         # get list of streets and house numbers
         r = requests.get(
-            "https://stadtreinigung-leipzig.de/rest/Navision/Streets", params=params
-        )
+            "https://stadtreinigung-leipzig.de/rest/Navision/Streets",
+            params=params)
 
         data = json.loads(r.text)
         if len(data["results"]) == 0:

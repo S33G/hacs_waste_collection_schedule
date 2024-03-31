@@ -57,9 +57,12 @@ class Source:
         for row in rows:
             for cell in row:
                 if row.index(cell) == 0:
-                    # Source doesn't include the year, so assume all dates are for the current year
-                    dt = datetime.strptime(cell.text + str(year), "%A %d %B%Y").date()
-                    # If date in more than 4 weeks in the past, assume it's near the year end and increment to next year
+                    # Source doesn't include the year, so assume all dates are
+                    # for the current year
+                    dt = datetime.strptime(
+                        cell.text + str(year), "%A %d %B%Y").date()
+                    # If date in more than 4 weeks in the past, assume it's
+                    # near the year end and increment to next year
                     if (dt - today) < timedelta(days=-31):
                         dt = dt.replace(year=dt.year + 1)
                 else:

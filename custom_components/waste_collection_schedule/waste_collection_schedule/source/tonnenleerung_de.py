@@ -33,7 +33,12 @@ ICON_MAP = {
 API_URL = "https://tonnenleerung.de/{url}"
 
 # Array names included in the html file
-ARRAY_NAMES = ["blauArray", "gelbArray", "grauArray", "braunArray", "grau4Array"]
+ARRAY_NAMES = [
+    "blauArray",
+    "gelbArray",
+    "grauArray",
+    "braunArray",
+    "grau4Array"]
 
 REGEX_TEMPLATE = r"{array_name}\s?=\s?\[[,\"\-\d]*\]"
 
@@ -63,7 +68,9 @@ class Source:
         entries = []
 
         for array_name in ARRAY_NAMES:
-            array = re.search(REGEX_TEMPLATE.format(array_name=array_name), r.text)
+            array = re.search(
+                REGEX_TEMPLATE.format(
+                    array_name=array_name), r.text)
             if not array:
                 continue
             bin_type = NAME_2_TYPE[array_name]

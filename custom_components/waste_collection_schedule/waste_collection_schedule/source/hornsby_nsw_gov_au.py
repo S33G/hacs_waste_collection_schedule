@@ -52,14 +52,14 @@ class Source:
         ).date()
         entries.append(
             Collection(
-                date=green_collection_date, t="Green Waste", icon=ICON_MAP.get("Green")
-            )
-        )
+                date=green_collection_date,
+                t="Green Waste",
+                icon=ICON_MAP.get("Green")))
         entries.append(
             Collection(
-                date=yellow_collection_date, t="Recycling", icon=ICON_MAP.get("Yellow")
-            )
-        )
+                date=yellow_collection_date,
+                t="Recycling",
+                icon=ICON_MAP.get("Yellow")))
         entries.append(
             Collection(
                 date=yellow_collection_date,

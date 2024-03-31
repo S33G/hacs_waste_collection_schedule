@@ -14,7 +14,13 @@ from random import choice, randint
 ROOT_DIR = Path(__file__).parents[1]
 TEST_DIR = ROOT_DIR / "test"
 FILENAME = "test_ukbcd.json"
-WASTES = ["Refuse", "Recycling", "Garden", "Food", "Paper & Cardboard", "Batteries"]
+WASTES = [
+    "Refuse",
+    "Recycling",
+    "Garden",
+    "Food",
+    "Paper & Cardboard",
+    "Batteries"]
 
 data: dict = {"bins": []}
 year = datetime.date.today().year

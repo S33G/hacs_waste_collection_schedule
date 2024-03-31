@@ -34,7 +34,8 @@ class Source:
         # Making a get request
         response = session.get(
             "https://www.goldcoast.qld.gov.au/api/v1/myarea/searchfuzzy?maxresults=1",
-            params={"keywords": self._street_address},
+            params={
+                "keywords": self._street_address},
         )
         response.raise_for_status()
         addressSearchApiResults = response.json()
@@ -54,7 +55,8 @@ class Source:
 
         response = session.get(
             "Https://www.goldcoast.qld.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

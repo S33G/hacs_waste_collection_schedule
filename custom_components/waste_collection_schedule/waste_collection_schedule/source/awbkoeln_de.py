@@ -34,7 +34,10 @@ class Source:
 
         entries = []
         for d in data["data"]:
-            date = datetime.date(year=d["year"], month=d["month"], day=d["day"])
+            date = datetime.date(
+                year=d["year"],
+                month=d["month"],
+                day=d["day"])
             entries.append(Collection(date, d["type"]))
 
         return entries

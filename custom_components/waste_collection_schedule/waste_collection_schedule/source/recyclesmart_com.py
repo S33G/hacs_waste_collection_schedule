@@ -22,7 +22,8 @@ class Source:
         self._password = password
 
     def fetch(self):
-        # login is via Google Identity Toolkit, providing username and password.
+        # login is via Google Identity Toolkit, providing username and
+        # password.
         r = requests.post(
             "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
             json={
@@ -30,11 +31,13 @@ class Source:
                 "email": self._email,
                 "password": self._password,
             },
-            params={"key": "AIzaSyBnup3QFYYGwnvjZi7r5a39c8b94SNospU"},
+            params={
+                "key": "AIzaSyBnup3QFYYGwnvjZi7r5a39c8b94SNospU"},
         )
         data = json.loads(r.text)
 
-        # take the token returned from Google Identity Toolkit to get the API auth token (JWT) from Firebase
+        # take the token returned from Google Identity Toolkit to get the API
+        # auth token (JWT) from Firebase
         r = requests.post(
             "https://www.app.recyclesmart.com/api/sessions/firebase",
             json={"id_token": data["idToken"]},
@@ -47,7 +50,7 @@ class Source:
             "https://www.app.recyclesmart.com/api/pickups",
             # retrieves future pickups (if scheduled), then past pickups, until per_page is reached
             # the average user is scheduled for monthly pickups
-            params={"page":"1", "per_page":"5"},
+            params={"page": "1", "per_page": "5"},
             headers={"Authorization": data["data"]["attributes"]["auth_token"]},
         )
 
@@ -55,6 +58,7 @@ class Source:
 
         entries = []
         for item in data["data"]:
-            collection_date = datetime.strptime(item["attributes"]["pickup_on"], "%Y-%m-%d")
+            collection_date = datetime.strptime(
+                item["attributes"]["pickup_on"], "%Y-%m-%d")
             entries.append(Collection(collection_date.date(), "Pickup"))
         return entries

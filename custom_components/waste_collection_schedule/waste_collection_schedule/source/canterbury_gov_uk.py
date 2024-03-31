@@ -17,7 +17,7 @@ TEST_CASES = {
 
 API_URLS = {
     "address_search": "https://trsewmllv7.execute-api.eu-west-2.amazonaws.com/dev/address",
-    "collection":  "https://zbr7r13ke2.execute-api.eu-west-2.amazonaws.com/Beta/get-bin-dates",
+    "collection": "https://zbr7r13ke2.execute-api.eu-west-2.amazonaws.com/Beta/get-bin-dates",
 }
 
 ICON_MAP = {
@@ -45,17 +45,20 @@ class Source:
         addresses = r.json()
 
         address_ids = [
-            x for x in addresses["results"]
-            if (x["LPI"].get('PAO_TEXT') and x["LPI"]["PAO_TEXT"].lower() == self._number.lower()) or (x["LPI"].get('PAO_START_NUMBER') and x["LPI"]["PAO_START_NUMBER"].lower() == self._number.lower())
-        ]
+            x for x in addresses["results"] if (
+                x["LPI"].get('PAO_TEXT') and x["LPI"]["PAO_TEXT"].lower() == self._number.lower()) or (
+                x["LPI"].get('PAO_START_NUMBER') and x["LPI"]["PAO_START_NUMBER"].lower() == self._number.lower())]
 
         if len(address_ids) == 0:
             raise Exception(
                 f"Could not find address {self._post_code} {self._number}")
 
         q = str(API_URLS["collection"])
-        r = requests.post(q, json={
-                          "uprn": address_ids[0]["LPI"]["UPRN"], "usrn": address_ids[0]["LPI"]["USRN"]})
+        r = requests.post(
+            q,
+            json={
+                "uprn": address_ids[0]["LPI"]["UPRN"],
+                "usrn": address_ids[0]["LPI"]["USRN"]})
         r.raise_for_status()
 
         collectionsRaw = json.loads(r.json()["dates"])

@@ -14,14 +14,13 @@ def EXTRA_INFO():
     return [{"title": s["title"], "url": s["url"]} for s in SERVICE_MAP]
 
 
-TEST_CASES = {
-    "Rhein-Sieg-Kreis, Alfter": {
-        "service": "Rsa",
-        "mm_frm_ort_sel": "Alfter",
-        "mm_frm_str_sel": "Ahrweg (105-Ende/94-Ende)",
-    },
-    "Münster, Achatiusweg": {"service": "Awm", "mm_frm_str_sel": "Achatiusweg"},
-}
+TEST_CASES = {"Rhein-Sieg-Kreis, Alfter": {"service": "Rsa",
+                                           "mm_frm_ort_sel": "Alfter",
+                                           "mm_frm_str_sel": "Ahrweg (105-Ende/94-Ende)",
+                                           },
+              "Münster, Achatiusweg": {"service": "Awm",
+                                       "mm_frm_str_sel": "Achatiusweg"},
+              }
 
 
 # Parser for HTML checkbox
@@ -64,8 +63,11 @@ class InputTextParser(HTMLParser):
 
 class Source:
     def __init__(
-        self, service, mm_frm_ort_sel=None, mm_frm_str_sel=None, mm_frm_hnr_sel=None
-    ):
+            self,
+            service,
+            mm_frm_ort_sel=None,
+            mm_frm_str_sel=None,
+            mm_frm_hnr_sel=None):
         self._service = service
         self._mm_frm_ort_sel = mm_frm_ort_sel
         self._mm_frm_str_sel = mm_frm_str_sel
@@ -118,7 +120,8 @@ class Source:
             mm_ses.feed(r.text)
 
         # select to get ical
-        args = {"mm_ses": mm_ses.value, "xxx": 1, "mm_ica_auswahl": "iCalendar-Datei"}
+        args = {"mm_ses": mm_ses.value, "xxx": 1,
+                "mm_ica_auswahl": "iCalendar-Datei"}
         r = requests.post(url, data=args)
         mm_ses.feed(r.text)
 

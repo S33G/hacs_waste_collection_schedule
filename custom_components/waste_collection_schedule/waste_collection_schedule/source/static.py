@@ -53,7 +53,14 @@ TEST_CASES = {
 }
 
 FREQNAMES = ["YEARLY", "MONTHLY", "WEEKLY", "DAILY"]
-WEEKDAY_MAP = {"MO": MO, "TU": TU, "WE": WE, "TH": TH, "FR": FR, "SA": SA, "SU": SU}
+WEEKDAY_MAP = {
+    "MO": MO,
+    "TU": TU,
+    "WE": WE,
+    "TH": TH,
+    "FR": FR,
+    "SA": SA,
+    "SU": SU}
 
 
 class Source:
@@ -96,7 +103,8 @@ class Source:
         self._type = type
         self._dates = [parser.isoparse(d).date() for d in dates or []]
 
-        self._recurrence = FREQNAMES.index(frequency) if frequency is not None else None
+        self._recurrence = FREQNAMES.index(
+            frequency) if frequency is not None else None
         self._interval = interval
         self._start = parser.isoparse(start).date() if start else None
         if until:

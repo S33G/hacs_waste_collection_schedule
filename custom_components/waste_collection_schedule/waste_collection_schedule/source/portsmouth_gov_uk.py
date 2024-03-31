@@ -43,36 +43,44 @@ class Source:
         now = time.time_ns() // 1_000_000
 
         # now query using the uprn
-        payload = {"formValues": {"Section 1": {"col_uprn": {"value": self._uprn}}}}
+        payload = {
+            "formValues": {
+                "Section 1": {
+                    "col_uprn": {
+                        "value": self._uprn}}}}
         scheduleRequest = s.post(
             API_URLS["schedule"] + "&_" + str(now) + "&sid=" + sessionKey,
             headers=HEADERS,
             json=payload,
         )
-        data = scheduleRequest.json()["integration"]["transformed"]["rows_data"]["0"]
+        data = scheduleRequest.json(
+        )["integration"]["transformed"]["rows_data"]["0"]
 
         rubbishDates = data["listRefDatesHTML"].split("<p>")[0].split("<br />")
-        recyclingDates = data["listRecDatesHTML"].split("<p>")[0].split("<br />")
+        recyclingDates = data["listRecDatesHTML"].split("<p>")[
+            0].split("<br />")
 
         entries = []
         for date in rubbishDates:
             if len(date) > 0:
                 entries.append(
                     Collection(
-                        date=datetime.strptime(date.rstrip("* "), "%A %d %B %Y").date(),
+                        date=datetime.strptime(
+                            date.rstrip("* "),
+                            "%A %d %B %Y").date(),
                         t="refuse bin",
                         icon="mdi:trash-can",
-                    )
-                )
+                    ))
 
         for date in recyclingDates:
             if len(date) > 0:
                 entries.append(
                     Collection(
-                        date=datetime.strptime(date.rstrip("* "), "%A %d %B %Y").date(),
+                        date=datetime.strptime(
+                            date.rstrip("* "),
+                            "%A %d %B %Y").date(),
                         t="recycling bin",
                         icon="mdi:recycle",
-                    )
-                )
+                    ))
 
         return entries

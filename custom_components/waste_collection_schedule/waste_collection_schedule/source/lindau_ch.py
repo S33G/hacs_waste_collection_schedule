@@ -45,7 +45,8 @@ class Source:
                 next_pickup_date = datetime.fromisoformat(next_pickup).date()
 
                 waste_type = BeautifulSoup(item["name"], "html.parser").text
-                waste_type_sorted = BeautifulSoup(item["name-sort"], "html.parser").text
+                waste_type_sorted = BeautifulSoup(
+                    item["name-sort"], "html.parser").text
 
                 entries.append(
                     Collection(

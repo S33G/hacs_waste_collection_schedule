@@ -67,7 +67,8 @@ class Source:
             headers=HEADERS,
             json=payload,
         )
-        data = scheduleRequest.json()["integration"]["transformed"]["rows_data"]["0"]
+        data = scheduleRequest.json(
+        )["integration"]["transformed"]["rows_data"]["0"]
         entries = []
 
         if "echo_refuse_next_date" in data and data["echo_refuse_next_date"]:
@@ -91,38 +92,35 @@ class Source:
                     icon="mdi:trash-can",
                 )
             )
-        
+
         if "echo_paper_and_card_next_date" in data and data["echo_paper_and_card_next_date"]:
             entries.append(
                 Collection(
                     date=datetime.strptime(
-                        data["echo_paper_and_card_next_date"], "%Y-%m-%d %H:%M:%S"
-                    ).date(),
+                        data["echo_paper_and_card_next_date"],
+                        "%Y-%m-%d %H:%M:%S").date(),
                     t="paper and card recycling bin",
                     icon="mdi:recycle",
-                )
-            )
+                ))
 
         if "echo_mixed_recycling_next_date" in data and data["echo_mixed_recycling_next_date"]:
             entries.append(
                 Collection(
                     date=datetime.strptime(
-                        data["echo_mixed_recycling_next_date"], "%Y-%m-%d %H:%M:%S"
-                    ).date(),
+                        data["echo_mixed_recycling_next_date"],
+                        "%Y-%m-%d %H:%M:%S").date(),
                     t="mixed recycling bin",
                     icon="mdi:recycle",
-                )
-            )
-        
+                ))
+
         if "echo_garden_waste_next_date" in data and data["echo_garden_waste_next_date"]:
             entries.append(
                 Collection(
                     date=datetime.strptime(
-                        data["echo_garden_waste_next_date"], "%Y-%m-%d %H:%M:%S"
-                    ).date(),
+                        data["echo_garden_waste_next_date"],
+                        "%Y-%m-%d %H:%M:%S").date(),
                     t="garden waste bin",
                     icon="mdi:leaf",
-                )
-            )
+                ))
 
         return entries

@@ -44,7 +44,12 @@ class Source:
                 " to many addresses found, specify more detailed street name"
             )
 
-        args = {"ModID": 48, "call": "ical", "pois": ids[0][0], "kat": 1, "alarm": 0}
+        args = {
+            "ModID": 48,
+            "call": "ical",
+            "pois": ids[0][0],
+            "kat": 1,
+            "alarm": 0}
         r = requests.get(
             "https://www.neunkirchen-siegerland.de/output/options.php",
             params=args,

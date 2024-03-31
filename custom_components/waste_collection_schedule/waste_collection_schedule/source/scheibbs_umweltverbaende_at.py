@@ -43,17 +43,16 @@ class Source:
             for item in weblinks:
                 # match weblink with region to get collection schedule
                 if self._region in item.text:
-                    r1 = s.get(f"https://scheibbs.umweltverbaende.at/{item['href']}")
+                    r1 = s.get(
+                        f"https://scheibbs.umweltverbaende.at/{item['href']}")
                     soup = BeautifulSoup(r1.text, "html.parser")
                     schedule = soup.find_all("div", {"class": "tunterlegt"})
                     for day in schedule:
                         txt = day.text.strip().split(" \u00a0 ")
                         entries.append(
                             Collection(
-                                date=datetime.strptime(txt[1], "%d.%m.%Y").date(),
-                                t=txt[2],
-                                icon=ICON_MAP.get(txt[2]),
-                            )
-                        )
+                                date=datetime.strptime(
+                                    txt[1], "%d.%m.%Y").date(), t=txt[2], icon=ICON_MAP.get(
+                                    txt[2]), ))
 
         return entries

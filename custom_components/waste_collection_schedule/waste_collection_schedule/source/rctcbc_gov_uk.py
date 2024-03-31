@@ -24,7 +24,8 @@ class Source:
     def __init__(self, uprn):
         self._uprn = str(uprn)
 
-    def extract_collections(self, calendar: Tag | BeautifulSoup) -> list[Collection]:
+    def extract_collections(self, calendar: Tag |
+                            BeautifulSoup) -> list[Collection]:
         calendar_month = calendar.find("div", {"class": "calendar-month"})
         if not calendar_month or not isinstance(calendar_month, Tag):
             return []
@@ -76,14 +77,16 @@ class Source:
 
     def fetch(self) -> list[Collection]:
         s = requests.Session()
-        # website appears to display ~4 months worth of collections, so iterate through those pages
+        # website appears to display ~4 months worth of collections, so iterate
+        # through those pages
         entries: list[Collection] = []
         for month in range(0, 4):
             r = s.get(
                 f"https://www.rctcbc.gov.uk/EN/Resident/RecyclingandWaste/RecyclingandWasteCollectionDays.aspx?uprn={self._uprn}&month={month}"
             )
             soup = BeautifulSoup(r.text, "html.parser")
-            printable_calendar_entries = self.extract_from_printable_calendar(soup)
+            printable_calendar_entries = self.extract_from_printable_calendar(
+                soup)
             if printable_calendar_entries:
                 return printable_calendar_entries
 

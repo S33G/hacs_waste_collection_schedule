@@ -13,7 +13,7 @@ URL = "https://aucklandcouncil.govt.nz"
 TEST_CASES = {
     "429 Sea View Road": {"area_number": "12342453293"},  # Monday
     "8 Dickson Road": {"area_number": "12342306525"},  # Thursday
-    "with Food Scraps": {"area_number": "12341998652"},  
+    "with Food Scraps": {"area_number": "12341998652"},
 }
 
 MONTH = {
@@ -85,7 +85,8 @@ class WasteSearchResultsParser(HTMLParser):
                 if self._workingWasteDate is not None:
                     if className.startswith("icon-"):
                         type = s["class"][5:]  # remove "icon-"
-                        self._entries.append(Collection(self._workingWasteDate, type))
+                        self._entries.append(Collection(
+                            self._workingWasteDate, type))
 
     def handle_data(self, data):
         # date span comes first, doesn't have a year
@@ -112,9 +113,9 @@ class Source:
 
         # Updated request using SSL code snippet
         r = get_legacy_session().get("https://www.aucklandcouncil.govt.nz/rubbish-recycling/rubbish-recycling-collections/Pages/collection-day-detail.aspx",
-            params=params,
-            # verify=False,
-        )
+                                     params=params,
+                                     # verify=False,
+                                     )
 
         p = WasteSearchResultsParser()
         p.feed(r.text)

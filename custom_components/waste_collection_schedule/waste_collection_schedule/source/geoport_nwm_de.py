@@ -28,7 +28,8 @@ class Source:
         today = datetime.date.today()
         dates = []
         if today.month == 12:
-            # On Dec 27 2022, the 2022 schedule was no longer available for test case "Seefeld", all others worked
+            # On Dec 27 2022, the 2022 schedule was no longer available for
+            # test case "Seefeld", all others worked
             try:
                 dates = self.fetch_year(today.year)
             except Exception:
@@ -58,7 +59,10 @@ class Source:
         ):
             for arg in args:
                 try:
-                    r = requests.get(API_URL.format(year=year, arg=f"{prefix}_{arg}"))
+                    r = requests.get(
+                        API_URL.format(
+                            year=year,
+                            arg=f"{prefix}_{arg}"))
                     r.raise_for_status()
                     new_entries = self._ics.convert(r.text)
                     entries.extend(new_entries)
@@ -74,7 +78,8 @@ def convert_to_arg(district, prefix=""):
     district = district.replace("ä", "ae")
     district = district.replace("ß", "ss")
     district = district.replace("/", "")
-    # district = district.replace("- ", "-") failed with Seefeld/ Testorf- Steinfort
+    # district = district.replace("- ", "-") failed with Seefeld/ Testorf-
+    # Steinfort
     district = district.replace(".", "")
     district = district.replace(" ", "_")
     prefix = prefix + "_" if prefix else ""

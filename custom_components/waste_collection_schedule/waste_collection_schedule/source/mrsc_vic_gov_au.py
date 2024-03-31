@@ -57,7 +57,8 @@ class Source:
 
         response = session.get(
             "https://www.mrsc.vic.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

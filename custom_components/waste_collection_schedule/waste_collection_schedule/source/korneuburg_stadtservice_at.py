@@ -4,13 +4,15 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 from waste_collection_schedule import Collection  # type: ignore[attr-defined]
-from waste_collection_schedule.service.ICS import ICS # type: ignore[attr-defined]
+# type: ignore[attr-defined]
+from waste_collection_schedule.service.ICS import ICS
 
 TITLE = "Stadtservice Korneuburg"
 DESCRIPTION = "Source for Stadtservice Korneuburg"
 URL = "https://www.korneuburg.gv.at"
 TEST_CASES = {
-    "Rathaus": {"street_name": "Hauptplatz", "street_number": 39},  # Teilgebiet 4
+    # Teilgebiet 4
+    "Rathaus": {"street_name": "Hauptplatz", "street_number": 39},
     "Rathaus using Teilgebiet": {
         "street_name": "SomeStreet",
         "street_number": "1A",
@@ -38,7 +40,8 @@ class Source:
         self._street_name_id = -1
         self._street_number_id = -1
         self._headers = {"User-Agent": "Mozilla/5.0"}
-        self._cookies = {"ris_cookie_setting": "g7750"}  # Accept Cookie Consent
+        # Accept Cookie Consent
+        self._cookies = {"ris_cookie_setting": "g7750"}
         self._ics = ICS()
 
     @staticmethod
@@ -100,7 +103,10 @@ class Source:
 
         # request address selection form
         url = urljoin(URL, "Rathaus/Buergerservice/Muellabfuhr")
-        page = requests.get(url=url, headers=self._headers, cookies=self._cookies)
+        page = requests.get(
+            url=url,
+            headers=self._headers,
+            cookies=self._cookies)
         soup = BeautifulSoup(page.content, "html.parser")
 
         # extract possible street and number combinations from html source
@@ -123,8 +129,7 @@ class Source:
         if street_number_link == "not found":
             raise Exception(
                 f"{self.street_number} not found. Available numbers for {self.street_name} are\
-             {list(number_dict.get(available_streets['Am Hafen']).keys())}"
-            )
+             {list(number_dict.get(available_streets['Am Hafen']).keys())}")
 
         # add selection cookie
         self._cookies["riscms_muellkalender"] = str(
@@ -163,7 +168,10 @@ class Source:
         urls = [urljoin(URL, u) for u in WASTE_TYPE_URLS.get(self._region)]
 
         for u in urls:
-            r = requests.get(url=u, headers=self._headers, cookies=self._cookies)
+            r = requests.get(
+                url=u,
+                headers=self._headers,
+                cookies=self._cookies)
             soup = BeautifulSoup(r.content, "html.parser")
             download_link = soup.findAll(
                 "a",

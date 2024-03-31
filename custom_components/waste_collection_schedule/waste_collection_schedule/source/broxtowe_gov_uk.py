@@ -55,7 +55,8 @@ class Source:
         self._uprn_args["ctl00$ContentPlaceHolder1$FF5683DDL"] = f"U{self._uprn}"
         self._postcode_args["ctl00$ContentPlaceHolder1$FF5683TB"] = f"{self._postcode}"
 
-    def __get_hidden_fiels(self, response: requests.Response, to_update: dict[str, str]):
+    def __get_hidden_fiels(
+            self, response: requests.Response, to_update: dict[str, str]):
         response.raise_for_status()
         r_list = response.text.split("|")
 
@@ -66,8 +67,8 @@ class Source:
             r_list) if value == "hiddenField"]
 
         for index in indexes:
-            key = r_list[index+1]
-            value = r_list[index+2]
+            key = r_list[index + 1]
+            value = r_list[index + 2]
             to_update[key] = value
 
     def fetch(self):
@@ -79,7 +80,10 @@ class Source:
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")
-        for key in ["__VIEWSTATE", "__VIEWSTATEGENERATOR", "__EVENTVALIDATION"]:
+        for key in [
+            "__VIEWSTATE",
+            "__VIEWSTATEGENERATOR",
+                "__EVENTVALIDATION"]:
             search = soup.find(id=key)
             if not search or not isinstance(search, Tag):
                 continue
@@ -112,7 +116,7 @@ class Source:
 
         table = soup.find("table", class_="bartec")
 
-        if table == None or isinstance(table, NavigableString):
+        if table is None or isinstance(table, NavigableString):
             raise Exception("could not get valid data from ashford.gov.uk")
 
         entries = []

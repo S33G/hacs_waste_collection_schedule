@@ -67,7 +67,8 @@ class Source:
                     # t=bin_type_text,
                     # icon=ICONS[bin_type_text],
                     date=datetime.strptime(
-                        NextCollection.text.strip().split(REM_STRING1, 1)[0].strip(),
+                        NextCollection.text.strip().split(
+                            REM_STRING1, 1)[0].strip(),
                         "%A %d %b %Y",
                     ).date(),
                     t=BinType.text.strip(),

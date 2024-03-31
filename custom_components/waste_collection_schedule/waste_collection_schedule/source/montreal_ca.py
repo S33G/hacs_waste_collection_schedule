@@ -9,7 +9,8 @@ from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 # Currently, Montreal does not offer an iCal/Webcal subscription method.
 # The GeoJSON file provides sector-specific details.
 # The waste collection schedule is then interpreted from English natural language. Not every sector follows the same structure.
-# This method is not highly reliable but serves as an acceptable workaround until a better solution is provided by the city.
+# This method is not highly reliable but serves as an acceptable
+# workaround until a better solution is provided by the city.
 
 TITLE = "Montreal (QC)"
 DESCRIPTION = "Source script for montreal.ca/info-collectes"
@@ -20,28 +21,22 @@ TEST_CASES = {
     "Ahuntsic": {"sector": "AC-2"},
 }
 
-API_URL = [
-    {
-        "type": "Waste",
-        "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/5f3fb372-64e8-45f2-a406-f1614930305c/download/collecte-des-ordures-menageres.geojson",
-    },
-    {
-        "type": "Recycling",
-        "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/d02dac7d-a114-4113-8e52-266001447591/download/collecte-des-matieres-recyclables.geojson",
-    },
-    {
-        "type": "Food",
-        "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/61e8c7e6-9bf1-45d9-8ebe-d7c0d50cfdbb/download/collecte-des-residus-alimentaires.geojson",
-    },
-    {
-        "type": "Green",
-        "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/d0882022-c74d-4fe2-813d-1aa37f6427c9/download/collecte-des-residus-verts-incluant-feuilles-mortes.geojson",
-    },
-    {
-        "type": "Bulky",
-        "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/2345d55a-5325-488c-b4fc-a885fae458e2/download/collecte-des-residus-de-construction-de-renovation-et-de-demolition-crd-et-encombrants.geojson",
-    },
-]
+API_URL = [{"type": "Waste",
+            "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/5f3fb372-64e8-45f2-a406-f1614930305c/download/collecte-des-ordures-menageres.geojson",
+            },
+           {"type": "Recycling",
+            "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/d02dac7d-a114-4113-8e52-266001447591/download/collecte-des-matieres-recyclables.geojson",
+            },
+           {"type": "Food",
+            "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/61e8c7e6-9bf1-45d9-8ebe-d7c0d50cfdbb/download/collecte-des-residus-alimentaires.geojson",
+            },
+           {"type": "Green",
+            "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/d0882022-c74d-4fe2-813d-1aa37f6427c9/download/collecte-des-residus-verts-incluant-feuilles-mortes.geojson",
+            },
+           {"type": "Bulky",
+            "url": "https://donnees.montreal.ca/dataset/2df0fa28-7a7b-46c6-912f-93b215bd201e/resource/2345d55a-5325-488c-b4fc-a885fae458e2/download/collecte-des-residus-de-construction-de-renovation-et-de-demolition-crd-et-encombrants.geojson",
+            },
+           ]
 
 
 ICON_MAP = {
@@ -55,7 +50,9 @@ ICON_MAP = {
 WEEKDAYS = {
     "Monday": 0,
     "Tuesday": 1,
-    "Tuesay": 1,  # Typo in message "Collections take place on TUESAYS" (instead of TUESDAYS).
+    # Typo in message "Collections take place on TUESAYS" (instead of
+    # TUESDAYS).
+    "Tuesay": 1,
     "Wednesday": 2,
     "Thursday": 3,
     "Friday": 4,
@@ -92,7 +89,11 @@ class Source:
         collection_day = time.strptime(collection_day, "%A").tm_wday
         days = (collection_day - datetime.now().date().weekday() + 7) % 7
         next_collect = datetime.now().date() + timedelta(days=days)
-        days = abs(next_collect - datetime.strptime(start_date, "%Y-%m-%d").date()).days
+        days = abs(
+            next_collect -
+            datetime.strptime(
+                start_date,
+                "%Y-%m-%d").date()).days
         if (days // 7) % weeks:
             next_collect = next_collect + timedelta(days=7)
         next_dates = []
@@ -133,7 +134,8 @@ class Source:
                             pass  # Skip if the day is out of range for the month
                     continue
 
-                # Splitting the string by ',' and 'and' to extract individual numbers
+                # Splitting the string by ',' and 'and' to extract individual
+                # numbers
                 line = line.replace(";", "")
 
                 line = line.replace(".", "")
@@ -180,7 +182,8 @@ class Source:
                 # remove * character
                 split_months[1] = split_months[1].replace("*", "")
 
-                # Splitting the string by ',' and 'and' to extract individual numbers
+                # Splitting the string by ',' and 'and' to extract individual
+                # numbers
                 days = re.split(r", | and ", split_months[1])
                 # Converting the extracted strings to integers
                 days = [int(num) for num in days]
@@ -208,7 +211,8 @@ class Source:
                 collection_day = WEEKDAYS[day]
                 break  # Stop searching if the day is found
 
-        # Iterate through each month and day, and handle the "out of range" error
+        # Iterate through each month and day, and handle the "out of range"
+        # error
         for month in range(1, 13):
             for day in range(1, 32):
                 try:
@@ -251,7 +255,8 @@ class Source:
 
             # RECYCLING OR FOOD
             elif source_type == "Recycling" or source_type == "Food":
-                entries += self.parse_recycling_food(schedule_message, source_type)
+                entries += self.parse_recycling_food(
+                    schedule_message, source_type)
 
             else:
                 # source_type == "Bulky" not implemented
@@ -263,9 +268,11 @@ class Source:
         entries = []
         for source in API_URL:
             try:
-                entries += self.get_data_by_source(source["type"], source["url"])
+                entries += self.get_data_by_source(
+                    source["type"], source["url"])
             except Exception:
-                # Probably because the natural language format does not match known formats.
+                # Probably because the natural language format does not match
+                # known formats.
                 LOGGER.warning(
                     f"Error while parsing {source['type']} schedule. Ignored."
                 )

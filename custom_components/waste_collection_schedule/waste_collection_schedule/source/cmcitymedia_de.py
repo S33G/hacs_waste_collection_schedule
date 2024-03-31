@@ -16,17 +16,17 @@ TEST_CASES = {
 TEST_CASES.update({s["region"]: {"hpid": s["hpid"]} for s in SERVICE_MAP})
 
 
-
 def EXTRA_INFO():
     return [
-        {"title": s["region"], "url": URL} 
-        for s in SERVICE_MAP 
+        {"title": s["region"], "url": URL}
+        for s in SERVICE_MAP
         if not s.get('disabled', False)
     ]
 
 
 API_URL = "http://slim.cmcitymedia.de/v1/{}/waste/{}/dates"
 DATE_FORMAT = "%Y-%m-%d"
+
 
 class Source:
     def __init__(self, hpid, realmid=None, district=None):
@@ -42,7 +42,11 @@ class Source:
         entries = []
 
         district_param = f"?district={self.district}" if self.district else ""
-        result = requests.get(API_URL.format(self.hpid, self.service["realm"]) + district_param)
+        result = requests.get(
+            API_URL.format(
+                self.hpid,
+                self.service["realm"]) +
+            district_param)
 
         result.raise_for_status()
 

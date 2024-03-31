@@ -10,10 +10,10 @@ TITLE = "Yarra Ranges Council"
 DESCRIPTION = "Source for Yarra Ranges Council rubbish collection."
 URL = "https://www.yarraranges.vic.gov.au"
 TEST_CASES = {
-    "Petstock Lilydale": {"street_address": "447-449 Maroondah Hwy, Lilydale VIC 3140"},
+    "Petstock Lilydale": {
+        "street_address": "447-449 Maroondah Hwy, Lilydale VIC 3140"},
     "Beechworth Bakery Healesville": {
-        "street_address": "316 Maroondah Hwy, Healesville VIC 3777"
-    },
+        "street_address": "316 Maroondah Hwy, Healesville VIC 3777"},
 }
 
 _LOGGER = logging.getLogger(__name__)
@@ -59,7 +59,9 @@ class Source:
 
         response = session.get(
             "https://www.yarraranges.vic.gov.au/ocapi/Public/myarea/wasteservices",
-            params={"geolocationid": geolocationid, "ocsvclang": "en-AU"},
+            params={
+                "geolocationid": geolocationid,
+                "ocsvclang": "en-AU"},
         )
         response.raise_for_status()
 
@@ -88,6 +90,10 @@ class Source:
             if next_pickup_date is None or waste_type is None:
                 continue
 
-            entries.append(Collection(date=next_pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=next_pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries

@@ -64,8 +64,9 @@ class Source:
         div = soup.find_all("table", {"role": "region"})
         for region in div:
             displayClass = list(
-                filter(lambda x: x.endswith("-Override-Panel"), region["class"])
-            )
+                filter(
+                    lambda x: x.endswith("-Override-Panel"),
+                    region["class"]))
             if len(displayClass) > 0:
                 heading = region.find_all(
                     "td", {"class": displayClass[0].replace("Panel", "Header")}

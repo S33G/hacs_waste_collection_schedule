@@ -48,8 +48,11 @@ TEST_CASES = {
 
 class Source:
     def __init__(
-        self, service: str, ort: str, strasse: str, hausnummer: str | int | None = None
-    ):
+            self,
+            service: str,
+            ort: str,
+            strasse: str,
+            hausnummer: str | int | None = None):
         self._api = AbfallnaviDe(service)
         self._ort = ort
         self._strasse = strasse

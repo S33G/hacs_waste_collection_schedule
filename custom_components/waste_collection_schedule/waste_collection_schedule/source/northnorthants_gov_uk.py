@@ -48,7 +48,10 @@ class Source:
             * 1000
         )
         dateforurl = datetime.now().strftime("%Y-%m-%d")
-        dateforurl2 = (datetime.now() + timedelta(days=42)).strftime("%Y-%m-%d")
+        dateforurl2 = (
+            datetime.now() +
+            timedelta(
+                days=42)).strftime("%Y-%m-%d")
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64)",
         }
@@ -85,7 +88,11 @@ class Source:
                 bin_type = "Food"
             else:
                 bin_type = sov
-            dateofbin = int("".join(filter(str.isdigit, output_json[i]["start"])))
+            dateofbin = int(
+                "".join(
+                    filter(
+                        str.isdigit,
+                        output_json[i]["start"])))
             day = datetime.utcfromtimestamp(dateofbin / 1000).date()
             collection_data = Collection(
                 t=bin_type,

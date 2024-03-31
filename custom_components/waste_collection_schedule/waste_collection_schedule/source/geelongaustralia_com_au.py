@@ -54,7 +54,8 @@ class Source:
             or not eventvalidation
             or not isinstance(eventvalidation, Tag)
         ):
-            raise Exception("could not get valid data from geelongaustralia.com.au")
+            raise Exception(
+                "could not get valid data from geelongaustralia.com.au")
 
         self._submit_args["__VIEWSTATE"] = str(viewstate["value"])
 

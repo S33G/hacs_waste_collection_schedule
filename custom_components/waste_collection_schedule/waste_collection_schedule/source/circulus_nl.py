@@ -33,11 +33,15 @@ class Source:
         self._house_number = house_number
 
     def fetch(self):
-        location_data = {"zipCode": self._postal_code, "number": self._house_number}
+        location_data = {
+            "zipCode": self._postal_code,
+            "number": self._house_number}
         entries = []
 
         # Make a post request and store the cookies
-        r = requests.post(f"{API_URL}/register/zipcode.json", data=location_data)
+        r = requests.post(
+            f"{API_URL}/register/zipcode.json",
+            data=location_data)
         r.raise_for_status()
 
         cookies = r.cookies
@@ -47,12 +51,16 @@ class Source:
             # Make a GET request and store the JSON data
             req_params = {
                 "from": date.today().strftime("%Y-%m-%d"),
-                "till": (date.today() + timedelta(days=365)).strftime("%Y-%m-%d"),
+                "till": (
+                    date.today() +
+                    timedelta(
+                        days=365)).strftime("%Y-%m-%d"),
             }
 
             r = requests.get(
-                f"{API_URL}/afvalkalender.json", params=req_params, cookies=cookies
-            )
+                f"{API_URL}/afvalkalender.json",
+                params=req_params,
+                cookies=cookies)
             r.raise_for_status()
 
             for item in r.json()["customData"]["response"]["garbage"]:

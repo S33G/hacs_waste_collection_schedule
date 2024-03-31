@@ -10,8 +10,12 @@ TITLE = "AWB Abfallwirtschaft Vechta"
 DESCRIPTION = "Source for AWB Abfallwirtschaft Vechta."
 URL = "https://www.abfallwirtschaft-vechta.de/"
 TEST_CASES = {
-    "Vechta, An der Hasenweide": {"stadt": "Vechta", "strasse": "An der Hasenweide"},
-    "Bakum, Up'n Sande": {"stadt": "Bakum", "strasse": "Up'n Sande"},
+    "Vechta, An der Hasenweide": {
+        "stadt": "Vechta",
+        "strasse": "An der Hasenweide"},
+    "Bakum, Up'n Sande": {
+        "stadt": "Bakum",
+        "strasse": "Up'n Sande"},
     "Neuenkirchen-Vörden, Braunschweiger Straße": {
         "stadt": "Neuenkirchen-Vörden",
         "strasse": "Braunschweiger Straße",
@@ -63,7 +67,8 @@ class Source:
 
             r = session.get(
                 "https://www.abfallwirtschaft-vechta.de/CALENDER/inc.suche_stadt.php",
-                params={"term": self._stadt},
+                params={
+                    "term": self._stadt},
             )
             r.raise_for_status()
             city_id = r.json()[0]["id"]
@@ -71,7 +76,9 @@ class Source:
 
             r = session.get(
                 "https://www.abfallwirtschaft-vechta.de/CALENDER/inc.suche_strasse.php",
-                params={"stadt": city_id, "term": self._strasse},
+                params={
+                    "stadt": city_id,
+                    "term": self._strasse},
             )
             r.raise_for_status()
             street = json.loads(r.text[1:-2])["strassen"][0]
@@ -98,7 +105,8 @@ class Source:
             r.raise_for_status()
             r.encoding = "utf-8"
 
-            # sometimes has a not ascii UID this would raise an Exception while converting
+            # sometimes has a not ascii UID this would raise an Exception while
+            # converting
             dates = self._ics.convert(r.text.replace("UID:", "NOTUID: "))
 
             for d in dates:
@@ -119,8 +127,11 @@ class Source:
                         d[0],
                         bin_type,
                         ICON_MAP.get(
-                            re.sub("[0-9]", "", bin_type).strip().replace("  ", " ")
-                        ),
-                    )
-                )
+                            re.sub(
+                                "[0-9]",
+                                "",
+                                bin_type).strip().replace(
+                                "  ",
+                                " ")),
+                    ))
         return collection_entries

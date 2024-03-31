@@ -8,7 +8,8 @@ TITLE = "Dillingen Saar"  # Title will show up in README.md and info.md
 DESCRIPTION = (
     "Source script for waste collection Dillingen Saar"  # Describe your source
 )
-URL = "https://www.dillingen-saar.de/"  # Insert url to service homepage. URL will show up in README.md and info.md
+# Insert url to service homepage. URL will show up in README.md and info.md
+URL = "https://www.dillingen-saar.de/"
 TEST_CASES = {  # Insert arguments for test cases to be used by test_sources.py script
     "Am Fischerberg": {
         "street": "Am Fischerberg"
@@ -47,8 +48,8 @@ class Source:
 
         params = {"format": "ics", "type": "rm,gs,bio,pa"}
         r = requests.get(
-            f"{API_URL}/{self._street}/{str(now.year)}-01-01/+1%20year/", params=params
-        )
+            f"{API_URL}/{self._street}/{str(now.year)}-01-01/+1%20year/",
+            params=params)
         r.raise_for_status()
 
         # Convert ICS String to events
@@ -56,9 +57,8 @@ class Source:
 
         entries = []
         for d in dates:
-            t = d[1].split("...")[
-                0
-            ]  # string of all characters up to but not including the first "..."
+            # string of all characters up to but not including the first "..."
+            t = d[1].split("...")[0]
             entries.append(Collection(date=d[0], t=t, icon=ICON_MAP.get(t)))
 
         return entries

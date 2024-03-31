@@ -9,9 +9,9 @@ TITLE = "Hobsons Bay City Council"
 DESCRIPTION = "Source for Hobsons Bay City Council waste & recycling collection"
 URL = "https://www.hobsonsbay.vic.gov.au"
 TEST_CASES = {
-    "Civic Parade Medical Centre": {"street_address": "399 Queen St, Altona Meadows"},
-    "Hecho En Mexico Altona": {"street_address": "48 Pier St, Altona"},
-}
+    "Civic Parade Medical Centre": {
+        "street_address": "399 Queen St, Altona Meadows"}, "Hecho En Mexico Altona": {
+            "street_address": "48 Pier St, Altona"}, }
 
 API_URL = "https://hbcc-seven.vercel.app/api/"
 SEARCH_API_URL = "https://jw7fda7yti-2.algolianet.com/1/indexes/*/queries"
@@ -74,7 +74,8 @@ class Source:
 
         addresses_params = {"asn": asn}
         addresses_endpoint = urljoin(API_URL, "addresses")
-        addresses_response = requests.get(addresses_endpoint, params=addresses_params)
+        addresses_response = requests.get(
+            addresses_endpoint, params=addresses_params)
         addresses_response.raise_for_status()
         address = addresses_response.json()["rows"][0]
 
@@ -86,7 +87,8 @@ class Source:
 
         schedules_params = {"day": day, "area": area}
         schedules_endpoint = urljoin(API_URL, "schedules")
-        schedules_response = requests.get(schedules_endpoint, params=schedules_params)
+        schedules_response = requests.get(
+            schedules_endpoint, params=schedules_params)
         schedules_response.raise_for_status()
         schedules = schedules_response.json()["rows"]
 

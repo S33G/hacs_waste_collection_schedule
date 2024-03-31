@@ -49,14 +49,15 @@ class Source:
         )["action"]
         pageSessionId = soup.find(
             "input",
-            attrs={"name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_PAGESESSIONID"},
+            attrs={
+                "name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_PAGESESSIONID"},
         )["value"]
         sessionId = soup.find(
-            "input", attrs={"name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_SESSIONID"}
-        )["value"]
+            "input", attrs={
+                "name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_SESSIONID"})["value"]
         nonce = soup.find(
-            "input", attrs={"name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_NONCE"}
-        )["value"]
+            "input", attrs={
+                "name": "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_NONCE"})["value"]
 
         form_data = {
             "LOOKUPBINDATESBYADDRESSSKIPOUTOFREGION_PAGESESSIONID": pageSessionId,
@@ -90,7 +91,8 @@ class Source:
             soup = BeautifulSoup(
                 data[key]["COLLECTIONDETAILS2"], features="html.parser"
             )
-            for waste_type_div in soup.find_all("div", attrs={"class": "grid__cell"}):
+            for waste_type_div in soup.find_all(
+                    "div", attrs={"class": "grid__cell"}):
                 waste_type = waste_type_div.find(
                     "p", attrs={"class": "myaccount-block__title--bin"}
                 ).text.strip()
@@ -114,8 +116,7 @@ class Source:
 
                     # Remove ordinal suffixes from date string
                     date_string = re.sub(
-                        r"(?<=[0-9])(?:st|nd|rd|th)", "", date_node.text.strip()
-                    )
+                        r"(?<=[0-9])(?:st|nd|rd|th)", "", date_node.text.strip())
                     date = datetime.strptime(date_string, "%a %d %B %Y").date()
                     entries.append(
                         Collection(

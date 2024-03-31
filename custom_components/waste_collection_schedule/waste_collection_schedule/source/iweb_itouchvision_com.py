@@ -89,13 +89,22 @@ KEYLISTS = {
     ],
 }
 TEST_CASES = {
-    "Somerset #1": {"postcode": "TA20 2JG", "uprn": "30071283", "council": "SOMERSET"},
-    "Somerset #2": {"postcode": "BA9 9NF", "uprn": "30002380", "council": "SOMERSET"},
-    "Somerset #3": {"postcode": "TA24 7JE", "uprn": 10023837109, "council": "SOMERSET"},
+    "Somerset #1": {
+        "postcode": "TA20 2JG",
+        "uprn": "30071283",
+        "council": "SOMERSET"},
+    "Somerset #2": {
+        "postcode": "BA9 9NF",
+        "uprn": "30002380",
+        "council": "SOMERSET"},
+    "Somerset #3": {
+        "postcode": "TA24 7JE",
+        "uprn": 10023837109,
+        "council": "SOMERSET"},
     "Test Valley #1": {
         "postcode": "SP10 3JB",
-        "uprn": "100060559598",
-        "council": "TEST_VALLEY",
+                    "uprn": "100060559598",
+                    "council": "TEST_VALLEY",
     },
     "Test Valley #2": {
         "postcode": "SO20 6EJ",
@@ -125,7 +134,8 @@ class Source:
 
     def get_payloads(self, s):
         p1 = {i["name"]: i.get("value", "") for i in s.select("input[name]")}
-        p2 = {i["data-for"]: i.get("value", "") for i in s.select("input[data-for]")}
+        p2 = {i["data-for"]: i.get("value", "")
+              for i in s.select("input[data-for]")}
         ps = s.select_one('input[id="pSalt"]').get("value")
         pp = s.select_one('input[id="pPageItemsProtected"]').get("value")
         return p1, p2, ps, pp
@@ -138,7 +148,8 @@ class Source:
         r0 = s.get(URLS[self._council])
         # Extract values needed for the postcode search
         soup = BeautifulSoup(r0.text, "html.parser")
-        payload1, payload2, payload_salt, payload_protected = self.get_payloads(soup)
+        payload1, payload2, payload_salt, payload_protected = self.get_payloads(
+            soup)
         payload1["p_request"] = "SEARCH"
         payload1["P153_POST_CODE"] = self._postcode
 
@@ -181,7 +192,8 @@ class Source:
         r2 = s.get(URLS["BIN_DAYS"])
         # Extract values needed for address selection
         soup = BeautifulSoup(r2.text, "html.parser")
-        payload1, payload2, payload_salt, payload_protected = self.get_payloads(soup)
+        payload1, payload2, payload_salt, payload_protected = self.get_payloads(
+            soup)
         payload1["p_request"] = "SUBMIT"
         payload1["P153_UPRN"] = self._uprn
 
@@ -227,7 +239,8 @@ class Source:
         entries = []
         for item in soup.select(".t-MediaList-item"):
             for value in item.select(".t-MediaList-body"):
-                waste_type = value.select("span")[1].get_text(strip=True).title()
+                waste_type = value.select(
+                    "span")[1].get_text(strip=True).title()
                 waste_date = datetime.strptime(
                     value.select(".t-MediaList-desc")[0].get_text(strip=True),
                     "%A, %d %B, %Y",

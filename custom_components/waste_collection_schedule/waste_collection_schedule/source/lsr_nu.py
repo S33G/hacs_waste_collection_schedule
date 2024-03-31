@@ -31,13 +31,15 @@ TEST_CASES = {
 #   "typeOfWasteDescription": "Matavfall"
 # }
 
+
 class Source:
     def __init__(self, street_address):
         self._street_address = street_address
 
     def fetch(self):
         response = requests.get(
-            "https://minasidor.lsr.nu/api/api/external/schedule/" + self._street_address,
+            "https://minasidor.lsr.nu/api/api/external/schedule/" +
+            self._street_address,
         )
 
         data = response.json()
@@ -50,6 +52,10 @@ class Source:
                 icon = "mdi:leaf"
             next_pickup = item["date"]
             next_pickup_date = datetime.fromisoformat(next_pickup).date()
-            entries.append(Collection(date=next_pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=next_pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries

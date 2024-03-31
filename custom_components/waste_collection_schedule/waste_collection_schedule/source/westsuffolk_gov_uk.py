@@ -39,8 +39,12 @@ class Source:
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         collections_div = soup.find(
-            "", text=re.compile(r"Your next bin collection days", re.IGNORECASE)
-        ).find_next_sibling("div", class_="atPanelData")
+            "",
+            text=re.compile(
+                r"Your next bin collection days",
+                re.IGNORECASE)).find_next_sibling(
+            "div",
+            class_="atPanelData")
 
         bin_type = None
         entries = []
@@ -59,6 +63,8 @@ class Source:
             # date: Saturday 30th December
             coll_date = parser.parse(date_str).date()
             entries.append(
-                Collection(date=coll_date, t=bin_type, icon=ICON_MAP.get(bin_type))
-            )
+                Collection(
+                    date=coll_date,
+                    t=bin_type,
+                    icon=ICON_MAP.get(bin_type)))
         return entries

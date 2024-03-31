@@ -38,7 +38,8 @@ class ICS_v1:
             start_date -= datetime.timedelta(days=self._offset)
         end_date = start_date.replace(year=start_date.year + 1)
 
-        events = recurring_ical_events.of(calendar).between(start_date, end_date)
+        events = recurring_ical_events.of(
+            calendar).between(start_date, end_date)
 
         entries = []
         for e in events:

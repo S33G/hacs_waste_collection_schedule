@@ -15,31 +15,31 @@ ICON_MAP = {
     "Yard Waste": "mdi:leaf",
 }
 
-EXTRA_INFO = [
-    {
-        "title": "Albuquerque, New Mexico, USA",
-        "url": "https://recyclecoach.com/cities/usa-nm-city-of-albuquerque/",
-    },
-    {
-        "title": "Tucson, Arizona, USA",
-        "url": "https://recyclecoach.com/cities/usa-az-city-of-tucson/",
-    },
-    {
-        "title": "Olympia, Washington, USA",
-        "url": "https://recyclecoach.com/cities/usa-wa-city-of-olympia/",
-    },
-    {
-        "title": "Newark, Delaware, USA",
-        "url": "https://recyclecoach.com/cities/usa-de-city-of-newark/",
-    },
-    {
-        "title": "Louisville, Kentucky, USA",
-        "url": "https://recyclecoach.com/cities/usa-ky-city-of-louisville/",
-    },
-    {"title": "London (ON)", "url": "https://london.ca/", "country": "ca"},
-    {"title": "Aurora (ON)", "url": "https://www.aurora.ca/", "country": "ca"},
-    {"title": "Vaughan (ON)", "url": "https://www.vaughan.ca/", "country": "ca"},
-]
+EXTRA_INFO = [{"title": "Albuquerque, New Mexico, USA",
+               "url": "https://recyclecoach.com/cities/usa-nm-city-of-albuquerque/",
+               },
+              {"title": "Tucson, Arizona, USA",
+               "url": "https://recyclecoach.com/cities/usa-az-city-of-tucson/",
+               },
+              {"title": "Olympia, Washington, USA",
+               "url": "https://recyclecoach.com/cities/usa-wa-city-of-olympia/",
+               },
+              {"title": "Newark, Delaware, USA",
+               "url": "https://recyclecoach.com/cities/usa-de-city-of-newark/",
+               },
+              {"title": "Louisville, Kentucky, USA",
+               "url": "https://recyclecoach.com/cities/usa-ky-city-of-louisville/",
+               },
+              {"title": "London (ON)",
+               "url": "https://london.ca/",
+               "country": "ca"},
+              {"title": "Aurora (ON)",
+               "url": "https://www.aurora.ca/",
+               "country": "ca"},
+              {"title": "Vaughan (ON)",
+               "url": "https://www.vaughan.ca/",
+               "country": "ca"},
+              ]
 
 TEST_CASES = {
     "Default": {"street": "2242 grinstead drive", "city": "louisville", "state": "KY"},
@@ -212,11 +212,11 @@ class Source:
                     for collection in event["collections"]:
                         if collection["status"] == "is_none":
                             continue
-                        ct = collection_types["collection-" + str(collection["id"])]
+                        ct = collection_types["collection-" +
+                                              str(collection["id"])]
                         c = Collection(
-                            datetime.strptime(event["date"], date_format).date(),
-                            ct["title"],
-                            ICON_MAP.get(ct["title"]),
-                        )
+                            datetime.strptime(
+                                event["date"], date_format).date(), ct["title"], ICON_MAP.get(
+                                ct["title"]), )
                         entries.append(c)
         return entries

@@ -36,7 +36,11 @@ class Source:
         headers = {
             "user-agent": "Mozilla/5.0",
         }
-        response = requests.get(API_URL, params=params, headers=headers, timeout=30)
+        response = requests.get(
+            API_URL,
+            params=params,
+            headers=headers,
+            timeout=30)
         # Some queries (Bridge Road test case) return duplicate results, we only want to process
         # unique bin collection dates
         unique_entries = set(
@@ -59,12 +63,13 @@ class Source:
         """
         collections = []
         for match in re.finditer(
-            r"(?P<date>\d{1,2}\/\d{1,2}\/\d{4}|today) \((?P<waste_type>\w+)\)", string
-        ):
+            r"(?P<date>\d{1,2}\/\d{1,2}\/\d{4}|today) \((?P<waste_type>\w+)\)",
+                string):
             if match.group("date") == "today":
                 collection_date = date.today()
             else:
-                collection_date = date_parse(match.group("date"), dayfirst=True).date()
+                collection_date = date_parse(
+                    match.group("date"), dayfirst=True).date()
 
             waste_type = match.group("waste_type")
             collections.append(

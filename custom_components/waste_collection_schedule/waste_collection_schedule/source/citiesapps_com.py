@@ -59,7 +59,13 @@ ICON_MAP = {
 
 
 class Source:
-    def __init__(self, city: str, calendar: str, password, email=None, phone=None):
+    def __init__(
+            self,
+            city: str,
+            calendar: str,
+            password,
+            email=None,
+            phone=None):
         self._city: str = city
         self._calendar: str = calendar
         self._email: str | None = email
@@ -70,7 +76,8 @@ class Source:
         cities_apps = CitiesApps(
             email=self._email, phone=self._phone, password=self._password
         )
-        garbage_plans = cities_apps.fetch_garbage_plans(self._city, self._calendar)
+        garbage_plans = cities_apps.fetch_garbage_plans(
+            self._city, self._calendar)
 
         entries = []
         for garbage_plan in garbage_plans:

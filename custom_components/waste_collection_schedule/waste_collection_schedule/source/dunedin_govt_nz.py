@@ -1,7 +1,7 @@
 import json
 import requests
 
-from  datetime import datetime, timedelta
+from datetime import datetime, timedelta
 from waste_collection_schedule import Collection
 
 TITLE = "Dunedin District Council"
@@ -15,7 +15,7 @@ TEST_CASES = {
     "Collection 'c'": {"address": "2 - 90 Harbour Terrace Dunedin"},
 }
 DAYS = {
-    "Monday" : 0,
+    "Monday": 0,
     "Tuesday": 1,
     "Wednesday": 2,
     "Thursday": 3,
@@ -44,8 +44,7 @@ class Source:
         s = requests.Session()
         r = s.get(
             f"https://www.dunedin.govt.nz/design/rubbish-and-collection-days-search/lookup/_nocache?query={self._address}",
-            headers=HEADERS
-        )
+            headers=HEADERS)
         r_json = json.loads(r.text)[0]["attributes"]
 
         # Work out the date of the next collection(s)
@@ -57,14 +56,16 @@ class Source:
             collection_dates.append(today)
         elif r_json["collectionDay"] == "Tomorrow":
             collection_dates.append(today + timedelta(days=1))
-        elif r_json["collectionDay"] == "All Week":  # assume this means weekdays only, not weekends
+        # assume this means weekdays only, not weekends
+        elif r_json["collectionDay"] == "All Week":
             collection_date = today
-            counter = 0 
+            counter = 0
             while counter <= 7:
-                if collection_date.strftime("%A") in "Monday Tuesday Wednesday Thursday Friday":
+                if collection_date.strftime(
+                        "%A") in "Monday Tuesday Wednesday Thursday Friday":
                     collection_dates.append(collection_date)
                 collection_date = collection_date + timedelta(days=1)
-                counter +=1
+                counter += 1
         else:  # find date of next matching weekday
             collection_date = today
             while collection_date.strftime("%A") != r_json["collectionDay"]:
@@ -94,7 +95,8 @@ class Source:
         https://www.dunedin.govt.nz/council/council-projects/waste-futures/the-future-of-rubbish-and-recycling-in-dunedin
         '''
         if r_json["collectionDay"] != "All Week":
-            if today.weekday() > DAYS[r_json["collectionDay"]]:  # collection should have happened
+            if today.weekday() > DAYS[r_json["collectionDay"]
+                                      ]:  # collection should have happened
                 if r_json["CurrentWeek"] == "c":  # not strictly needed, included for completeness
                     r_json["CurrentWeek"] = "c"
                 if r_json["CurrentWeek"] == "y":
@@ -118,7 +120,7 @@ class Source:
             for schedule in collection_dates:
                 entries.append(
                     Collection(
-                        date = schedule,
+                        date=schedule,
                         t=waste,
                         icon=ICON_MAP.get(waste.upper()),
                     )

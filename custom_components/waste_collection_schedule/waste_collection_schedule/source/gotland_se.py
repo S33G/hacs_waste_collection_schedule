@@ -15,6 +15,7 @@ ICON_MAP = {
     "Matavfall": "mdi:leaf"
 }
 
+
 class Source:
     def __init__(self, uprn):
         self._uprn = uprn
@@ -23,8 +24,7 @@ class Source:
         query_params = {"address": "(" + self._uprn + ")"}
         response = requests.get(
             "https://edpfuture.gotland.se/FutureWeb/SimpleWastePickup/GetWastePickupSchedule",
-            params=query_params
-        )
+            params=query_params)
         data = json.loads(response.text)
 
         entries = []

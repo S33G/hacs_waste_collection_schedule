@@ -51,9 +51,9 @@ def main():
     streets = api.get_streets(city_id)
     questions = [
         inquirer.List(
-            "street_id", choices=convert_dict_to_array(streets), message="Select street"
-        )
-    ]
+            "street_id",
+            choices=convert_dict_to_array(streets),
+            message="Select street")]
     street_id = inquirer.prompt(questions)["street_id"]
     args["strasse"] = streets[street_id]
 

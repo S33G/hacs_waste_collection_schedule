@@ -38,7 +38,7 @@ class DetailsFormat(Enum):
     upcoming = "upcoming"  # list of "<date> <type1, type2, ...>"
     appointment_types = "appointment_types"  # list of "<type> <date>"
     generic = "generic"  # all values in separate attributes
-    hidden = "hidden" # hide details
+    hidden = "hidden"  # hide details
 
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -59,7 +59,11 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(
+        hass,
+        config,
+        async_add_entities,
+        discovery_info=None):
     value_template = config.get(CONF_VALUE_TEMPLATE)
     if value_template is not None:
         value_template.hass = hass
@@ -135,7 +139,10 @@ class ScheduleSensor(SensorEntity):
         self._attr_unique_id = name
         self._attr_should_poll = False
 
-        async_dispatcher_connect(hass, UPDATE_SENSORS_SIGNAL, self._update_sensor)
+        async_dispatcher_connect(
+            hass,
+            UPDATE_SENSORS_SIGNAL,
+            self._update_sensor)
 
     @property
     def native_value(self):
@@ -172,12 +179,12 @@ class ScheduleSensor(SensorEntity):
             return
 
         collection = upcoming[0]
-        # collection::=CollectionGroup{date=2020-04-01, types=['Type1', 'Type2']}
+        # collection::=CollectionGroup{date=2020-04-01, types=['Type1',
+        # 'Type2']}
 
         if self._value_template is not None:
             self._value = self._value_template.async_render_with_possible_json_value(
-                collection, None
-            )
+                collection, None)
         else:
             self._value = (
                 f"{self._separator.join(collection.types)} in {collection.daysTo} days"
@@ -231,8 +238,7 @@ class ScheduleSensor(SensorEntity):
             )
             for collection in upcoming:
                 attributes[self._render_date(collection)] = self._separator.join(
-                    collection.types
-                )
+                    collection.types)
         elif self._details_format == DetailsFormat.appointment_types:
             # show list of collections in details
             for t in collection_types:
@@ -243,8 +249,8 @@ class ScheduleSensor(SensorEntity):
                     start_index=self._event_index,
                 )
                 date = (
-                    "" if len(collections) == 0 else self._render_date(collections[0])
-                )
+                    "" if len(collections) == 0 else self._render_date(
+                        collections[0]))
                 attributes[t] = date
         elif self._details_format == DetailsFormat.generic:
             # insert generic attributes into details
@@ -257,7 +263,8 @@ class ScheduleSensor(SensorEntity):
             )
             refreshtime = ""
             if self._aggregator.refreshtime is not None:
-                refreshtime = self._aggregator.refreshtime.isoformat(timespec="seconds")
+                refreshtime = self._aggregator.refreshtime.isoformat(
+                    timespec="seconds")
             attributes["last_update"] = refreshtime
 
         if len(upcoming1) > 0:

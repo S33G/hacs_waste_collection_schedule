@@ -38,7 +38,11 @@ class Source:
 
     def fetch(self):
 
-        r = requests.post(API_URL, data=dict(action="waste_disposal_form_get_schedule", id_numeru=self._location_id))
+        r = requests.post(
+            API_URL,
+            data=dict(
+                action="waste_disposal_form_get_schedule",
+                id_numeru=self._location_id))
         data = json.loads(r.text)
 
         calendar_data = self.extract_calendar_data(data)
@@ -52,11 +56,11 @@ class Source:
             type_str = calendar_data[WASTE_TYPE_PARAM_FORMAT.format(i)]
             entries.append(
                 Collection(
-                    date=datetime.datetime.strptime(date_str, "%Y-%m-%d").date(),
+                    date=datetime.datetime.strptime(
+                        date_str,
+                        "%Y-%m-%d").date(),
                     t=type_str.capitalize(),
-                    icon=ICON_MAP.get(type_str)
-                )
-            )
+                    icon=ICON_MAP.get(type_str)))
 
         return entries
 
@@ -66,7 +70,8 @@ class Source:
         message = data[MESSAGE_FIELD_NAME]
         match = self._calendar_url_pattern.search(message)
         if not match:
-            raise Exception(f"Error: a message {message} does not contain a valid calendar url!")
+            raise Exception(
+                f"Error: a message {message} does not contain a valid calendar url!")
         calendar_url = match.group(1)
         parsed_url = urlparse(calendar_url)
         params_list = parse_qsl(parsed_url.query)

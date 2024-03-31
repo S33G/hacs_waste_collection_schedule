@@ -8,8 +8,10 @@ TITLE = "Warsaw"
 DESCRIPTION = "Source for Warsaw city garbage collection"
 URL = "https://warszawa19115.pl"
 TEST_CASES = {
-    "Street Name": {"street_address": "MARSZAŁKOWSKA 84/92, 00-514 Śródmieście"},
-    "Geolocation ID": {"geolocation_id": "3830963"},
+    "Street Name": {
+        "street_address": "MARSZAŁKOWSKA 84/92, 00-514 Śródmieście"},
+    "Geolocation ID": {
+        "geolocation_id": "3830963"},
 }
 
 _LOGGER = logging.getLogger(__name__)
@@ -98,7 +100,8 @@ class Source:
     def fetch(self):
         # When only an address is specified, get geolocation on first fetch
         if self._geolocation_id is None:
-            self._geolocation_id = self.get_geolocation_id(self._street_address)
+            self._geolocation_id = self.get_geolocation_id(
+                self._street_address)
 
         # Calendar lookup cares about a cookie, so a Session must be used
         calendar_session = requests.Session()
@@ -137,7 +140,8 @@ class Source:
                 if entry["data"]:
                     original_type = entry["frakcja"]["id_frakcja"]
                     waste_type = NAME_MAP.get(original_type, original_type)
-                    waste_date = datetime.strptime(entry["data"], "%Y-%m-%d").date()
+                    waste_date = datetime.strptime(
+                        entry["data"], "%Y-%m-%d").date()
                     entries.append(Collection(waste_date, waste_type))
 
         return entries

@@ -7,10 +7,10 @@ TITLE = "Belmont City Council"
 DESCRIPTION = "Source for Belmont City Council rubbish collection."
 URL = "https://www.belmont.wa.gov.au/"
 TEST_CASES = {
-    "PETstock Belmont": {"address": "196 Abernethy Road Belmont 6104"},
-    "Belgravia Medical Centre": {"address": "374 Belgravia Street Cloverdale 6105"},
-    "IGA Rivervale": {"address": "126 Kooyong Road Rivervale 6103"},
-}
+    "PETstock Belmont": {
+        "address": "196 Abernethy Road Belmont 6104"}, "Belgravia Medical Centre": {
+            "address": "374 Belgravia Street Cloverdale 6105"}, "IGA Rivervale": {
+                "address": "126 Kooyong Road Rivervale 6103"}, }
 
 
 class Source:
@@ -20,8 +20,8 @@ class Source:
     def fetch(self):
         params = {"key": self._address}
         r = requests.get(
-            "https://www.belmont.wa.gov.au/api/intramaps/getaddresses", params=params
-        )
+            "https://www.belmont.wa.gov.au/api/intramaps/getaddresses",
+            params=params)
         r.raise_for_status()
         j = r.json()
 

@@ -39,19 +39,21 @@ class Source:
         ):
 
             try:
-                recyclingdate = results.find("span", class_="nextCollectionDate")
+                recyclingdate = results.find(
+                    "span", class_="nextCollectionDate")
 
                 if recyclingdate is not None:
-                    recyclingtype = results.find("div", class_="content-left").find(
-                        "h3"
-                    )
+                    recyclingtype = results.find(
+                        "div", class_="content-left").find("h3")
                     entries.append(
                         Collection(
-                            date=parser.parse(recyclingdate.text, dayfirst=True).date(),
+                            date=parser.parse(
+                                recyclingdate.text,
+                                dayfirst=True).date(),
                             t=recyclingtype.text,
-                            icon=ICON_MAP.get(recyclingtype.text),
-                        )
-                    )
+                            icon=ICON_MAP.get(
+                                recyclingtype.text),
+                        ))
             except (StopIteration, TypeError):
                 pass
         return entries

@@ -68,9 +68,8 @@ class Source:
             API_URLS["authResp"] + "&_" + urlNonce + "&sid=" + sessionKey,
             headers=HEADERS,
         )
-        authenticateResponseNonce = self.achieveFormsData(authRespRequest)["0"][
-            "AuthenticateResponse"
-        ]
+        authenticateResponseNonce = self.achieveFormsData(
+            authRespRequest)["0"]["AuthenticateResponse"]
 
         # This payload is used for all subsequent requests
         uprnPayload = {
@@ -118,7 +117,8 @@ class Source:
         for service in data.values():
             genericService = service["service"].strip()
             if ICON_MAP.get(genericService) is not None:
-                serviceTypeToGenericService[service["serviceType"]] = genericService
+                serviceTypeToGenericService[service["serviceType"]
+                                            ] = genericService
 
         # Now query the jobs (collection schedule)
         scheduleRequest = s.post(
@@ -129,7 +129,9 @@ class Source:
         data = self.achieveFormsData(scheduleRequest)
 
         if len(data) < 1:
-            _LOGGER.warn("couldn't find collection data for UPRN %s", self._uprn)
+            _LOGGER.warn(
+                "couldn't find collection data for UPRN %s",
+                self._uprn)
             return []
 
         entries = []
@@ -139,7 +141,8 @@ class Source:
                 collection["collectionDateTime"], "%Y-%m-%dT%H:%M:%S"
             ).date()
             collection_type = collection["serviceType"]
-            # Only emit the collection if it's a recognised collection type (I.e. Ignore: "BULKY BOOKINGS" and whatever else crops up)
+            # Only emit the collection if it's a recognised collection type
+            # (I.e. Ignore: "BULKY BOOKINGS" and whatever else crops up)
             if serviceTypeToGenericService.get(collection_type) is not None:
                 collection_type_generic = serviceTypeToGenericService[collection_type]
                 entries.append(

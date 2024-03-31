@@ -87,20 +87,18 @@ class Source:
         url = "https://www.whittlesea.vic.gov.au/umbraco/api/cartomap/GetQueryResultsArcGisWasteCollection"
 
         firstQuery = (
-            "geometry%3D"
-            + geo_x
-            + ","
-            + geo_y
-            + "%26geometryType%3DesriGeometryPoint%26inSR%3D4326%26spatialRel%3DesriSpatialRelIntersects%26outFields%3DName%26returnGeometry%3Dfalse%26f%3Djson"
-        )
+            "geometry%3D" +
+            geo_x +
+            "," +
+            geo_y +
+            "%26geometryType%3DesriGeometryPoint%26inSR%3D4326%26spatialRel%3DesriSpatialRelIntersects%26outFields%3DName%26returnGeometry%3Dfalse%26f%3Djson")
 
         secondQuery = (
-            "where%3Dzonename%253D%2527%7B0%7D%2527%2Band%2Bdate%3ECURRENT_TIMESTAMP-1%26time%3D%26topFilter%3D%257B%250D%250A%2B%2B%2522groupByFields%2522%253A%2B%2522zonename%2522%252C%250D%250A%2B%2B%2522topCount%2522%253A%2B"
-            + str(WEEKS)
-            + "%252C%250D%250A%2B%2B%2522orderByFields%2522%253A%2B%2522date%2522%250D%250A%257D%26outFields%3D*%26orderByFields%3Ddate%26resultRecordCount%3D"
-            + str(WEEKS)
-            + "%26f%3Djson"
-        )
+            "where%3Dzonename%253D%2527%7B0%7D%2527%2Band%2Bdate%3ECURRENT_TIMESTAMP-1%26time%3D%26topFilter%3D%257B%250D%250A%2B%2B%2522groupByFields%2522%253A%2B%2522zonename%2522%252C%250D%250A%2B%2B%2522topCount%2522%253A%2B" +
+            str(WEEKS) +
+            "%252C%250D%250A%2B%2B%2522orderByFields%2522%253A%2B%2522date%2522%250D%250A%257D%26outFields%3D*%26orderByFields%3Ddate%26resultRecordCount%3D" +
+            str(WEEKS) +
+            "%26f%3Djson")
 
         url += "?firstQuery=" + firstQuery + "&secondQuery=" + secondQuery
 
@@ -122,8 +120,12 @@ class Source:
         for item in data["rows"]:
             if "cartodb_id" in item:
                 # adding 1 day to the date to fix timezone issue (covers AEST and AEDST)
-                # https://github.com/mampfes/hacs_waste_collection_schedule/issues/912 
-                collection_date = (parse(item["date"]) + timedelta(days=1)).date()
+                # https://github.com/mampfes/hacs_waste_collection_schedule/issues/912
+                collection_date = (
+                    parse(
+                        item["date"]) +
+                    timedelta(
+                        days=1)).date()
                 entries.append(
                     Collection(
                         date=collection_date,

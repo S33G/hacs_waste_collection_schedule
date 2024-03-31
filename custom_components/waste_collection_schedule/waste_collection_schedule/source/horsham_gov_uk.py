@@ -53,9 +53,9 @@ class Source:
                 collection_text = result_row[2].text.replace(
                     "\xa0", " "
                 )  # This is to remove a non-blanking space
-                collection_items = collection_text.split(
-                    "AND"
-                )  # Sometimes there will be multiple bins, split with the word AND
+                # Sometimes there will be multiple bins, split with the word
+                # AND
+                collection_items = collection_text.split("AND")
                 for collection_type in collection_items:
                     entries.append(
                         Collection(

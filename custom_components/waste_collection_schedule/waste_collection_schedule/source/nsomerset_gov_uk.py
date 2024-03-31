@@ -14,7 +14,9 @@ TEST_CASES = {
         "uprn": "24009468",
         "postcode": "BS23 1UJ",
     },
-    "Walliscote Road, Weston super Mare": {"uprn": "24136727", "postcode": "BS23 1EF"},
+    "Walliscote Road, Weston super Mare": {
+        "uprn": "24136727",
+        "postcode": "BS23 1EF"},
 }
 
 ICON_MAP = {

@@ -114,17 +114,20 @@ class Source:
         r = session.post(URL + "FindAddress", data=args)
         r.raise_for_status()
         page = soup(r.text, "html.parser")
-        addresses = page.find("select", {"id": "UprnAddress"}).find_all("option")
+        addresses = page.find("select",
+                              {"id": "UprnAddress"}).find_all("option")
 
         if not addresses:
-            raise ValueError(f"no addresses found for postcode {self._postcode}")
+            raise ValueError(
+                f"no addresses found for postcode {self._postcode}")
 
         args["__RequestVerificationToken"] = page.find(
             "input", {"name": "__RequestVerificationToken"}
         )["value"]
 
         found = False
-        compare_address = self._address.replace(",", "").replace(" ", "").lower()
+        compare_address = self._address.replace(
+            ",", "").replace(" ", "").lower()
 
         for address in addresses:
             address_text = comparable(address.text)

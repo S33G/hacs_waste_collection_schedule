@@ -37,7 +37,8 @@ class Source:
         service_elements = soup.select(".service-wrapper")
 
         for service_element in service_elements:
-            service_name = service_element.select(".service-name")[0].text.strip()
+            service_name = service_element.select(
+                ".service-name")[0].text.strip()
             next_service_date = service_element.select("td.next-service")[0]
 
             next_service_date.span.extract()

@@ -62,7 +62,8 @@ class Source:
     def fetch(self):
         r = requests.get("https://www.abfallkalender-zak.de")
         soup = BeautifulSoup(r.text, "html.parser")
-        types = [t["value"] for t in soup.findAll("input", attrs={"name": "types[]"})]
+        types = [t["value"]
+                 for t in soup.findAll("input", attrs={"name": "types[]"})]
 
         if not self._city.replace(" ", "").replace(",", "").isnumeric():
             # city is not a number, so we need to get the id
@@ -80,8 +81,11 @@ class Source:
             # also get data for next year if we are already in december
             try:
                 entries.extend(
-                    self.fetch_year((now.year + 1), self._city, self._street, types)
-                )
+                    self.fetch_year(
+                        (now.year + 1),
+                        self._city,
+                        self._street,
+                        types))
             except Exception:
                 # ignore if fetch for next year fails
                 pass

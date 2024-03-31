@@ -7,7 +7,10 @@ from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 TITLE = "Abfall Stuttgart"
 DESCRIPTION = "Source for waste collections for the city of Stuttgart, Germany."
 URL = "https://service.stuttgart.de"
-TEST_CASES = {"Im Steinengarten 7": {"street": "Im Steinengarten", "streetnr": 7}}
+TEST_CASES = {
+    "Im Steinengarten 7": {
+        "street": "Im Steinengarten",
+        "streetnr": 7}}
 
 
 # Parser for HTML checkbox
@@ -71,7 +74,8 @@ class TableParser(HTMLParser):
             self._date = ""
         elif tag == "tr":
             if self._within_tr and len(self._date) > 0:
-                date = datetime.datetime.strptime(self._date, "%d.%m.%Y").date()
+                date = datetime.datetime.strptime(
+                    self._date, "%d.%m.%Y").date()
                 self._entries.append(Collection(date, self._type))
                 self._date = ""
             self._within_tr = False
@@ -98,7 +102,8 @@ class Source:
 
     def fetch(self):
         # get waste types
-        r = requests.get("https://service.stuttgart.de/lhs-services/aws/abfuhrtermine")
+        r = requests.get(
+            "https://service.stuttgart.de/lhs-services/aws/abfuhrtermine")
         wastetypes = InputCheckboxParser(name="calendar[wastetype][]")
         wastetypes.feed(r.text)
 
@@ -114,8 +119,8 @@ class Source:
         args.append(("calendar[submit]", ""))
 
         r = requests.post(
-            "https://service.stuttgart.de/lhs-services/aws/abfuhrtermine", data=args
-        )
+            "https://service.stuttgart.de/lhs-services/aws/abfuhrtermine",
+            data=args)
         entries_parser = TableParser()
         entries_parser.feed(r.text)
         return entries_parser.entries

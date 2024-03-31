@@ -47,7 +47,8 @@ class Source:
             )
 
         soup = BeautifulSoup(r.text, 'html.parser')
-        citySelection = [ a for a in soup.select('#sf_locid > option[value]') if self.is_city_selection(a, cityName) ]
+        citySelection = [a for a in soup.select(
+            '#sf_locid > option[value]') if self.is_city_selection(a, cityName)]
         if len(citySelection) == 0:
             raise Exception(
                 "Error: could not find id for city: '{}'".format(
@@ -77,10 +78,10 @@ class Source:
             )
 
         streets = json.loads(r.text)
-        if streetName != None:
-            streetId = [ item[0] for item in streets if streetName in item[1] ]
+        if streetName is not None:
+            streetId = [item[0] for item in streets if streetName in item[1]]
         else:
-            streetId = [ item[0] for item in streets ]
+            streetId = [item[0] for item in streets]
 
         if len(streetId) == 0:
             raise Exception(

@@ -11,7 +11,8 @@ from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 # Using verify=False works, but is not ideal. The following links may provide a better way of dealing with this:
 # https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html#ssl-warnings
 # https://urllib3.readthedocs.io/en/1.26.x/user-guide.html#ssl
-# These two lines areused to suppress the InsecureRequestWarning when using verify=False
+# These two lines areused to suppress the InsecureRequestWarning when
+# using verify=False
 urllib3.disable_warnings()
 
 TITLE = "Port Adelaide Enfield, South Australia"
@@ -104,13 +105,15 @@ class Source:
         # get page to select an address
         soup = BeautifulSoup(r.text, "html.parser")
 
-        selectable = soup.find_all("a", {"class": "anchor-button small"}, text="Select")
+        selectable = soup.find_all(
+            "a", {"class": "anchor-button small"}, text="Select")
 
         if len(selectable) == 0:
             raise ValueError("No address found")
         selected = selectable[0]
 
-        # If multiple addresses are found, try to find the one that matches the input and warn if there are multiple or none matches
+        # If multiple addresses are found, try to find the one that matches the
+        # input and warn if there are multiple or none matches
         if len(selectable) > 1:
             found = [
                 " ".join(
@@ -125,11 +128,15 @@ class Source:
             for index, entry in enumerate(found):
                 entry = entry.lower().strip().replace("  ", "")
                 if (
-                    self._house_number.lower().strip().replace("  ", "") in entry
-                    and self._street.lower().strip().replace("  ", "") in entry
-                    and self._suburb.lower().strip().replace("  ", "") in entry
-                    and self._unit_number.lower().strip().replace("  ", "") in entry
-                ):
+                    self._house_number.lower().strip().replace(
+                        "  ",
+                        "") in entry and self._street.lower().strip().replace(
+                        "  ",
+                        "") in entry and self._suburb.lower().strip().replace(
+                        "  ",
+                        "") in entry and self._unit_number.lower().strip().replace(
+                        "  ",
+                        "") in entry):
                     if match:
                         LOGGER.warning(
                             f"Multiple addresses found, using first one \nfound:{', '.join(found[:10])}{'...' if len(found) >= 10 else ''} \nusing:{found[using_index]}"
@@ -152,7 +159,8 @@ class Source:
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")
-        cal_header = soup.find("th", {"class": "header-month"}).find("span").text
+        cal_header = soup.find(
+            "th", {"class": "header-month"}).find("span").text
 
         from_month = cal_header.split("-")[0].strip()
         to_month = cal_header.split("-")[1].strip().split(" ")[0]
@@ -187,19 +195,22 @@ class Source:
         ):
             parent_td = pickup.parent
             month = (
-                main_month if "main-month" in parent_td.attrs["class"] else other_month
-            )
+                main_month if "main-month" in parent_td.attrs["class"] else other_month)
             year = main_year if "main-month" in parent_td.attrs["class"] else other_year
             day = parent_td.find("div", {"class": "daynumber"}).text
 
             # Iterate over all pickup container types for this day
-            for container in pickup.find_all("div", {"class": "bin-container"}):
+            for container in pickup.find_all(
+                    "div", {"class": "bin-container"}):
                 container_type = " ".join(container.find("div").attrs["class"])
                 container_icon = ICON_MAP.get(container_type)
 
-                date = datetime.strptime(f"{year}-{month}-{day}", "%Y-%B-%d").date()
+                date = datetime.strptime(
+                    f"{year}-{month}-{day}", "%Y-%B-%d").date()
                 entries.append(
-                    Collection(date=date, t=container_type, icon=container_icon)
-                )
+                    Collection(
+                        date=date,
+                        t=container_type,
+                        icon=container_icon))
 
         return entries

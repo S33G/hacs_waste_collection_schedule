@@ -49,5 +49,4 @@ class Source:
                     )
                 )
 
-
         return entries

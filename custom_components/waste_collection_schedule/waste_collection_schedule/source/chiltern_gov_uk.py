@@ -28,6 +28,7 @@ ICON_MAP = {
     "Communal Refuse Collection": "mdi:trash-can",
 }
 
+
 class Source:
     def __init__(self, uprn):
         self._uprn = uprn
@@ -40,7 +41,9 @@ class Source:
         soup = BeautifulSoup(r.text, features="html.parser")
 
         # Extract form submission url
-        form = soup.find("form", attrs={"id": "COPYOFECHOCOLLECTIONDATES_FORM"})
+        form = soup.find(
+            "form", attrs={
+                "id": "COPYOFECHOCOLLECTIONDATES_FORM"})
         form_url = form["action"]
 
         # Submit form
@@ -54,22 +57,24 @@ class Source:
 
         # Extract collection dates
         pattern = r'var COPYOFECHOCOLLECTIONDATES_PAGE1_DATES2Data = JSON.parse\(helper\.utilDecode\(\'([^\']+)\'\)\);'
-        match = re.search (pattern,r.text)
+        match = re.search(pattern, r.text)
         if match:
-           decoded_jsonstr = base64.b64decode(match.group(1)).decode('utf-8')
-  
+            decoded_jsonstr = base64.b64decode(match.group(1)).decode('utf-8')
+
         servicedata = json.loads(decoded_jsonstr)
 
         entries = []
-        
-        #Loop through services and append to Collection 
+
+        # Loop through services and append to Collection
         for service in servicedata['services']:
             entries.append(
                 Collection(
-                    date=datetime.strptime(service['nextDate'], '%d/%m/%Y').date(),
+                    date=datetime.strptime(
+                        service['nextDate'],
+                        '%d/%m/%Y').date(),
                     t=service['serviceName'],
-                    icon=ICON_MAP.get(service['serviceName']),
-                )
-            )
+                    icon=ICON_MAP.get(
+                        service['serviceName']),
+                ))
 
         return entries

@@ -9,7 +9,9 @@ from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 TITLE = "Nillumbik Shire Council"
 DESCRIPTION = "Source for Nillumbik Shire Council rubbish collection."
 URL = "https://www.nillumbik.vic.gov.au"
-TEST_CASES = {"Test": {"street_address": "11 Sunnyside Crescent, WATTLE GLEN, 3096"}}
+TEST_CASES = {
+    "Test": {
+        "street_address": "11 Sunnyside Crescent, WATTLE GLEN, 3096"}}
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -54,7 +56,8 @@ class Source:
 
         response = session.get(
             "https://www.nillumbik.vic.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

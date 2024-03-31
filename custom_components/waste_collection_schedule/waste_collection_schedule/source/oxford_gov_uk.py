@@ -9,8 +9,12 @@ TITLE = "Oxford City Council"
 DESCRIPTION = "Source for oxford.gov.uk services for Oxford, UK."
 URL = "https://oxford.gov.uk"
 TEST_CASES = {
-    "Magdalen Road": {"uprn": "100120827594", "postcode": "OX4 1RB"},
-    "Oliver Road (brown bin too)": {"uprn": "100120831804", "postcode": "OX4 2JH"},
+    "Magdalen Road": {
+        "uprn": "100120827594",
+        "postcode": "OX4 1RB"},
+    "Oliver Road (brown bin too)": {
+        "uprn": "100120831804",
+        "postcode": "OX4 2JH"},
 }
 
 API_URLS = {
@@ -51,20 +55,24 @@ class Source:
             "next": "Next",
         }
 
-        collection_response = session.post(API_URLS["collection"], data=form_data)
+        collection_response = session.post(
+            API_URLS["collection"], data=form_data)
 
-        collection_soup = BeautifulSoup(collection_response.text, "html.parser")
-        for paragraph in collection_soup.find("div", class_="editor").find_all("p"):
+        collection_soup = BeautifulSoup(
+            collection_response.text, "html.parser")
+        for paragraph in collection_soup.find(
+                "div", class_="editor").find_all("p"):
             matches = re.match(r"^(\w+) Next Collection: (.*)", paragraph.text)
             if matches:
                 collection_type, date_string = matches.groups()
                 entries.append(
                     Collection(
-                        date=datetime.strptime(date_string, "%A %d %B %Y").date(),
+                        date=datetime.strptime(
+                            date_string,
+                            "%A %d %B %Y").date(),
                         t=collection_type,
                         icon=ICON_MAP.get(collection_type),
-                    )
-                )
+                    ))
         if not entries:
             raise ValueError(
                 "Could not get collections for the given combination of UPRN and Postcode."

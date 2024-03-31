@@ -10,9 +10,9 @@ TITLE = "Mansfield Shire Council"
 DESCRIPTION = "Source for Mansfield Shire Council rubbish collection."
 URL = "https://www.mansfield.vic.gov.au"
 TEST_CASES = {
-    "Delatite Hotel": {"street_address": "95 High Street, Mansfield"},
-    "Mansfield Zoo": {"street_address": "1064 Mansfield-Woods Point Road, Mansfield"},
-}
+    "Delatite Hotel": {
+        "street_address": "95 High Street, Mansfield"}, "Mansfield Zoo": {
+            "street_address": "1064 Mansfield-Woods Point Road, Mansfield"}, }
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,7 +56,8 @@ class Source:
 
         response = session.get(
             "https://www.mansfield.vic.gov.au/ocapi/Public/myarea/wasteservices?ocsvclang=en-AU",
-            params={"geolocationid": geolocationid},
+            params={
+                "geolocationid": geolocationid},
         )
         response.raise_for_status()
 

@@ -58,10 +58,14 @@ class Source:
                 "method": "location.westberks.echoPostcodeFinder",
                 "params": {"provider": "", "postcode": self._postcode},
             }
-            args = {"callback": "HomeAssistant", "jsonrpc": json.dumps(jsonrpc), "_": 0}
+            args = {
+                "callback": "HomeAssistant",
+                "jsonrpc": json.dumps(jsonrpc),
+                "_": 0}
             r = requests.get(SEARCH_URLS["uprn_search"], params=args)
 
-            # I don't really know python so there *must* be a better way to do these four lines!
+            # I don't really know python so there *must* be a better way to do
+            # these four lines!
             response_str = r.content.decode("utf-8")
             data_length = len(response_str) - 1
             response_sub = response_str[14:data_length]
@@ -78,9 +82,11 @@ class Source:
 
         entries = []
 
-        # Get the collection days based on the UPRN (either supplied through arguments or searched for above)
+        # Get the collection days based on the UPRN (either supplied through
+        # arguments or searched for above)
         if self._uprn is not None:
-            # POST request - one for each type as it is a separate method in the api
+            # POST request - one for each type as it is a separate method in
+            # the api
             rubbish_args = {
                 "jsonrpc": "2.0",
                 "id": str(int(time.time())),
@@ -93,9 +99,13 @@ class Source:
                 "method": "goss.echo.westberks.forms.getNextRecyclingCollectionDate",
                 "params": {"uprn": self._uprn},
             }
-            r = session.post(SEARCH_URLS["collection_search"], json=rubbish_args)
+            r = session.post(
+                SEARCH_URLS["collection_search"],
+                json=rubbish_args)
             rubbish_data = json.loads(r.content)
-            r = session.post(SEARCH_URLS["collection_search"], json=recycling_args)
+            r = session.post(
+                SEARCH_URLS["collection_search"],
+                json=recycling_args)
             recycling_data = json.loads(r.content)
 
             # if subtext is empty, use datetext
@@ -136,7 +146,8 @@ class Source:
                         + str(date.today().year)
                     )
                 else:
-                    if len(recycling_data["result"]["nextRecyclingDateText"]) < 12:
+                    if len(recycling_data["result"]
+                           ["nextRecyclingDateText"]) < 12:
                         dt_str = (
                             recycling_data["result"]["nextRecyclingDateSubText"]
                             + " "

@@ -40,7 +40,9 @@ class Source:
         ics_urls = list()
         for download in downloads:
             href = download.get("href")
-            if "t=ics" in href and href not in ics_urls: #The website lists the same url multiple times, we only want it once
+            # The website lists the same url multiple times, we only want it
+            # once
+            if "t=ics" in href and href not in ics_urls:
                 ics_urls.append(href)
 
         if not ics_urls:
@@ -57,5 +59,5 @@ class Source:
 
             for d in dates:
                 entries.append(Collection(d[0], d[1]))
-        
+
         return entries

@@ -64,9 +64,8 @@ class Source:
                 entries.append(
                     Collection(
                         datetime.strptime(
-                            data["contents"][entry]["start"], "%Y-%m-%d %H:%M:%S"
-                        ).date(),
+                            data["contents"][entry]["start"],
+                            "%Y-%m-%d %H:%M:%S").date(),
                         data["contents"][entry]["title"],
-                    )
-                )
+                    ))
         return entries

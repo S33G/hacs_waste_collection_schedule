@@ -38,7 +38,8 @@ class Source:
 
         suburbs = {}
         for entry in data:
-            suburbs[entry["Suburb"].strip().upper().replace(" ", "")] = entry["SuburbKey"]
+            suburbs[entry["Suburb"].strip().upper().replace(" ", "")
+                    ] = entry["SuburbKey"]
 
         # check if suburb exists
         suburb_searh = self._suburb.strip().upper().replace(" ", "")
@@ -52,7 +53,8 @@ class Source:
 
         streets = {}
         for entry in data:
-            streets[entry["Street"].strip().upper().replace(" ", "")] = entry["StreetKey"]
+            streets[entry["Street"].strip().upper().replace(" ", "")
+                    ] = entry["StreetKey"]
 
         # check if street exists
         street_search = self._street.strip().upper().replace(" ", "")
@@ -70,9 +72,8 @@ class Source:
 
         houseNos = {}
         for entry in data:
-            houseNos[
-                (str(int(entry["HouseNo"])) + entry.get("HouseSuffix", "").strip()).strip().upper().replace(" ", "")
-            ] = entry["PropertyKey"]
+            houseNos[(str(int(entry["HouseNo"])) + entry.get("HouseSuffix", "").strip()
+                      ).strip().upper().replace(" ", "")] = entry["PropertyKey"]
 
         # check if house number exists
         houseNo_search = self._houseNo.strip().upper().replace(" ", "")
@@ -88,6 +89,7 @@ class Source:
         for entry in data:
             name = entry["Name"]
             for dateStr in entry["CollectionDays"]:
-                date = datetime.datetime.strptime(dateStr, "%Y-%m-%dT%H:%M:%S").date()
+                date = datetime.datetime.strptime(
+                    dateStr, "%Y-%m-%dT%H:%M:%S").date()
                 entries.append(Collection(date, name))
         return entries

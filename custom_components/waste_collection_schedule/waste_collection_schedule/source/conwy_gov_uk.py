@@ -48,7 +48,8 @@ class Source:
             date = datetime.strptime(date_str, "%A, %d/%m/%Y").date()
 
             for bin_type in bin_types:
-                icon = ICON_MAP.get(bin_type.split(" ")[0].lower())  # Collection icon
+                icon = ICON_MAP.get(
+                    bin_type.split(" ")[0].lower())  # Collection icon
                 entries.append(Collection(date=date, t=bin_type, icon=icon))
 
         return entries

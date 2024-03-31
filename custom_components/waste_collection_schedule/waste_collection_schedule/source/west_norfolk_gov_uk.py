@@ -24,6 +24,7 @@ ICON_MAP = {
     "GARDEN": "mdi:leaf"
 }
 
+
 class Source:
     def __init__(self, uprn):
         self._uprn = str(uprn).zfill(12)
@@ -34,8 +35,7 @@ class Source:
         s = requests.Session()
         r0 = s.get(
             "https://www.west-norfolk.gov.uk/info/20174/bins_and_recycling_collection_dates",
-            headers=HEADERS
-        )
+            headers=HEADERS)
         s.cookies.update(
             {
                 "bcklwn_store": s.cookies.get("PHPSESSID"),
@@ -44,11 +44,10 @@ class Source:
         )
 
         # Get initial collection dates using updated cookies
-        r1= s.get(
+        r1 = s.get(
             "https://www.west-norfolk.gov.uk/info/20174/bins_and_recycling_collection_dates",
             headers=HEADERS,
-            cookies=s.cookies
-        )
+            cookies=s.cookies)
 
         # Get extended collection schedule from calendar end point
         r2 = s.get(
@@ -57,22 +56,25 @@ class Source:
             cookies=s.cookies
         )
 
-        # Extract dates and waste types: Extracts ~6 months worth of collections from the optional website calendar page
+        # Extract dates and waste types: Extracts ~6 months worth of
+        # collections from the optional website calendar page
         entries = []
         soup = BeautifulSoup(r2.text, "html.parser")
         pickups = soup.findAll("div", {"class": "cldr_month"})
         for item in pickups:
             month = item.find("h2")
-            dates = item.findAll("td", {"class": re.compile(" (recycling|refuse|garden)")})
+            dates = item.findAll(
+                "td", {
+                    "class": re.compile(" (recycling|refuse|garden)")})
             for d in dates:
                 attr = d.attrs.get("class")
                 for a in attr[2:]:
                     dt = d.text + " " + month.text
                     entries.append(
                         Collection(
-                            date = datetime.strptime(dt, "%d %B %Y").date(),
-                            t = a,
-                            icon = ICON_MAP.get(a.upper())
+                            date=datetime.strptime(dt, "%d %B %Y").date(),
+                            t=a,
+                            icon=ICON_MAP.get(a.upper())
                         )
                     )
 

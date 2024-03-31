@@ -44,7 +44,11 @@ class Source:
         entries = []
         match = re.findall(r"(\d{2})\.(\d{2})\.(\d{4})", r.text)
         for m in match:
-            date = datetime.date(day=int(m[0]), month=int(m[1]), year=int(m[2]))
+            date = datetime.date(
+                day=int(
+                    m[0]), month=int(
+                    m[1]), year=int(
+                    m[2]))
             entries.append(
                 Collection(date, "Gelber Sack", icon=ICON_MAP["Gelber Sack"])
             )
@@ -59,7 +63,11 @@ class Source:
             r"(\d{2})\.(\d{2})\.(\d{4}).*?<em>\s*([A-Za-z- ]+)\s*</em>", r.text
         )
         for m in match:
-            date = datetime.date(day=int(m[0]), month=int(m[1]), year=int(m[2]))
+            date = datetime.date(
+                day=int(
+                    m[0]), month=int(
+                    m[1]), year=int(
+                    m[2]))
             entries.append(Collection(date, m[3], icon=ICON_MAP[m[3]]))
 
         return entries

@@ -51,7 +51,11 @@ ICON_MAP = {
 
 
 class Source:
-    def __init__(self, plz: int, strasse: str, hausnr: str | int | None = None):
+    def __init__(
+            self,
+            plz: int,
+            strasse: str,
+            hausnr: str | int | None = None):
         self._plz: str = str(plz)
         self._strasse: str = strasse
         self._hausnr: str | None = str(hausnr) if hausnr else None
@@ -79,8 +83,10 @@ class Source:
 
         # filter waste type
         collection_keys = {
-            value for key, value in districts.items() if key not in ("city", "district")
-        }
+            value for key,
+            value in districts.items() if key not in (
+                "city",
+                "district")}
 
         r = requests.get(
             "https://api.heilbronn.de/garbage-calendar?method=get&datatype=pickupdates"

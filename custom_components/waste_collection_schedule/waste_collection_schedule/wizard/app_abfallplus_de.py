@@ -114,8 +114,7 @@ def select_street(app: AppAbfallplusDe.AppAbfallplusDe, bund_select: bool):
                 "street_search",
                 message="Search your street you will be given some options to choose from",
                 default=street_search,
-            )
-        ]
+            )]
         streets = app.get_streets(inquirer.prompt(questions)["street_search"])
         questions = [
             inquirer.List(
@@ -138,7 +137,9 @@ def select_street(app: AppAbfallplusDe.AppAbfallplusDe, bund_select: bool):
     return street
 
 
-def select_house_number(app: AppAbfallplusDe.AppAbfallplusDe, bund_select: bool):
+def select_house_number(
+        app: AppAbfallplusDe.AppAbfallplusDe,
+        bund_select: bool):
     house_numbers = app.get_hnrs()
     questions = [
         inquirer.List(

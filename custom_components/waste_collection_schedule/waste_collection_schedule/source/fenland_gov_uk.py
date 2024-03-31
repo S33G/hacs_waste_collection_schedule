@@ -72,7 +72,10 @@ class Source:
                     collectionDate["date"], "%Y-%m-%dT%H:%M:%SZ"
                 )
                 if collectionDate.hour == 23:
-                    collectionDate = (timedelta(days=1) + collectionDate).date()
+                    collectionDate = (
+                        timedelta(
+                            days=1) +
+                        collectionDate).date()
                 else:
                     collectionDate = collectionDate.date()
                 entries.append(

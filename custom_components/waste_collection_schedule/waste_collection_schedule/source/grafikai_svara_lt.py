@@ -34,8 +34,12 @@ class Source:
     API_URL = "https://grafikai.svara.lt/api/"
 
     def __init__(
-        self, region, street, house_number, district=None, waste_object_ids=None
-    ):
+            self,
+            region,
+            street,
+            house_number,
+            district=None,
+            waste_object_ids=None):
         if waste_object_ids is None:
             waste_object_ids = []
         self._region = region
@@ -69,8 +73,10 @@ class Source:
         for collection in data["data"]:
             try:
                 type = collection["descriptionPlural"].casefold()
-                if self.check_if_waste_object_defined(collection["wasteObjectId"]):
-                    waste_object_query = {"wasteObjectId": collection["wasteObjectId"]}
+                if self.check_if_waste_object_defined(
+                        collection["wasteObjectId"]):
+                    waste_object_query = {
+                        "wasteObjectId": collection["wasteObjectId"]}
 
                     rwo = requests.get(
                         self.API_URL + "schedule",
@@ -83,12 +89,11 @@ class Source:
                         entries.append(
                             Collection(
                                 date=datetime.strptime(
-                                    collection_waste_object["date"], "%Y-%m-%dT%H:%M:%S"
-                                ).date(),
+                                    collection_waste_object["date"],
+                                    "%Y-%m-%dT%H:%M:%S").date(),
                                 t=collection["descriptionFmt"].title(),
                                 icon=ICON_MAP.get(type),
-                            )
-                        )
+                            ))
             except ValueError:
                 pass  # ignore date conversion failure for not scheduled collections
 

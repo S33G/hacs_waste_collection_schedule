@@ -45,11 +45,11 @@ class Source:
         r.raise_for_status()
         addresses = r.json()
         address_ids = [
-            x["id"] for x in addresses if x["houseNumber"].capitalize() == self._number
-        ]
+            x["id"] for x in addresses if x["houseNumber"].capitalize() == self._number]
 
         if len(address_ids) == 0:
-            raise Exception(f"Could not find address {self._post_code} {self._number}")
+            raise Exception(
+                f"Could not find address {self._post_code} {self._number}")
 
         q = str(API_URLS["collection"]).format(address_ids[0])
         r = requests.get(q)
@@ -68,7 +68,9 @@ class Source:
                         t=ROUNDS.get(
                             round_type, round_type.title()
                         ),  # returns concise values: Black Bin, Blue Bin, Green Bin
-                        # t = round_type.title(),  # returns standard Scambs values: Black Bin Collection, Blue Bin Collection, Green Bin Collection
+                        # t = round_type.title(),  # returns standard Scambs
+                        # values: Black Bin Collection, Blue Bin Collection,
+                        # Green Bin Collection
                         icon=ICON_MAP.get(round_type),
                     )
                 )

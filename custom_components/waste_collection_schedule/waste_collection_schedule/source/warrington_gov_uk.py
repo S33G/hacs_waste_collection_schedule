@@ -31,7 +31,9 @@ class Source:
     def fetch(self):
 
         s = requests.Session()
-        r = s.get(f"https://www.warrington.gov.uk/bin-collections/get-jobs/{self._uprn}", headers=HEADERS)
+        r = s.get(
+            f"https://www.warrington.gov.uk/bin-collections/get-jobs/{self._uprn}",
+            headers=HEADERS)
         json_data = json.loads(r.text)
 
         entries = []
@@ -41,22 +43,28 @@ class Source:
             return entries
 
         for job in json_data["schedule"]:
-            # Data doesn't contain bin type, so we need to extract it from the job name.
+            # Data doesn't contain bin type, so we need to extract it from the
+            # job name.
             bin_type = self.get_type(job["Name"])
             if not bin_type:
                 continue
 
             # List contains duplicates, so skip if already added.
-            if self.contains(entries, lambda x: x.date == datetime.strptime(job["ScheduledStart"], "%Y-%m-%dT%H:00:00").date() and x.type == bin_type):
+            if self.contains(
+                entries,
+                lambda x: x.date == datetime.strptime(
+                    job["ScheduledStart"],
+                    "%Y-%m-%dT%H:00:00").date() and x.type == bin_type):
                 continue
 
             entries.append(
                 Collection(
-                    date=datetime.strptime(job["ScheduledStart"], "%Y-%m-%dT%H:00:00").date(),
+                    date=datetime.strptime(
+                        job["ScheduledStart"],
+                        "%Y-%m-%dT%H:00:00").date(),
                     t=bin_type,
-                    icon=ICON_MAP.get(bin_type.upper())
-                )
-            )
+                    icon=ICON_MAP.get(
+                        bin_type.upper())))
 
         return entries
 

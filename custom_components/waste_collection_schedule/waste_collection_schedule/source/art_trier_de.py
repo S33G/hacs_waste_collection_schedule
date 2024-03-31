@@ -35,7 +35,9 @@ API_URL = "https://www.art-trier.de/ics-feed"
 REMINDER_DAY = (
     "0"  # The calendar event should be on the same day as the waste collection
 )
-REMINDER_TIME = "0600"  # The calendar event should start on any hour of the correct day, so this does not matter much
+# The calendar event should start on any hour of the correct day, so this
+# does not matter much
+REMINDER_TIME = "0600"
 ICON_MAP = {
     "Altpapier": "mdi:package-variant",
     "Restmüll": "mdi:trash-can",
@@ -59,17 +61,15 @@ LOGGER = logging.getLogger(__name__)
 
 class Source:
     def __init__(self, district: str, zip_code: str):
-        self._district = quote(
-            district.lower().removeprefix("stadt ").translate(SPECIAL_CHARS).strip()
-        )
+        self._district = quote(district.lower().removeprefix(
+            "stadt ").translate(SPECIAL_CHARS).strip())
         self._zip_code = zip_code
         self._ics = ICS(regex=r"^A.R.T. Abfuhrtermin: (.*)", split_at=r" & ")
 
     def fetch(self):
         LOGGER.warning(
             "The ART Trier source is deprecated and might not work with all addresses anymore."
-            " Please use the ICS instead: https://github.com/mampfes/hacs_waste_collection_schedule/blob/master/doc/ics/art_trier_de.md"
-        )
+            " Please use the ICS instead: https://github.com/mampfes/hacs_waste_collection_schedule/blob/master/doc/ics/art_trier_de.md")
         url = f"{API_URL}/{self._zip_code}:{self._district}::@{REMINDER_DAY}-{REMINDER_TIME}.ics"
 
         res = requests.get(url)

@@ -91,7 +91,9 @@ class Source:
                             .capitalize()
                         )
                         entries.append(
-                            Collection(date=date, t=color, icon=ICON_MAP.get(color))
-                        )
+                            Collection(
+                                date=date,
+                                t=color,
+                                icon=ICON_MAP.get(color)))
 
         return entries

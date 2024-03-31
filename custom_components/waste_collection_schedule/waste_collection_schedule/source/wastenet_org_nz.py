@@ -66,7 +66,8 @@ class Source:
         if not address and not entry_id:
             raise ValueError("Address or entry_id must be provided")
 
-        self._address = address.replace(" INVERCARGILL", "") if address else None
+        self._address = address.replace(
+            " INVERCARGILL", "") if address else None
         self._entry_id = entry_id
 
     def get_entry_id(self, s):

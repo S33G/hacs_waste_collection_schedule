@@ -76,7 +76,8 @@ class OptionParser(HTMLParser):
                         # self._within_option = True
                         self._is_selector = True
                         self._option_value = attributes["value"]
-                        self._choices.append((attributes["value"], attributes["value"]))
+                        self._choices.append(
+                            (attributes["value"], attributes["value"]))
                 elif (
                     self._target_var == OptionParser.TEXTBOXES
                     and attributes["type"] == "text"

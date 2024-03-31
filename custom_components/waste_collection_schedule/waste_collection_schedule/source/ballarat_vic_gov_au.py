@@ -40,7 +40,9 @@ class Source:
 
         response = session.get(
             "https://data.ballarat.vic.gov.au/api/records/1.0/search/",
-            params={"dataset": "waste-collection-days", "q": self._street_address},
+            params={
+                "dataset": "waste-collection-days",
+                "q": self._street_address},
         )
         response.raise_for_status()
         addressSearchApiResults = response.json()

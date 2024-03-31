@@ -37,7 +37,8 @@ class Source:
         building_id = None
 
         # support only first building match
-        building_id_matches = re.findall(r"\(([0-9]+)\)", building_data["Buildings"][0])
+        building_id_matches = re.findall(
+            r"\(([0-9]+)\)", building_data["Buildings"][0])
         if not building_id_matches or len(building_id_matches) == 0:
             return []
         building_id = building_id_matches[0]
@@ -47,7 +48,9 @@ class Source:
         )
 
         waste_data = json.loads(response.text)
-        if not ("RhServices" in waste_data and len(waste_data["RhServices"]) > 0):
+        if not (
+            "RhServices" in waste_data and len(
+                waste_data["RhServices"]) > 0):
             return []
 
         data = waste_data["RhServices"]
@@ -60,6 +63,10 @@ class Source:
                 icon = "mdi:food-apple"
             next_pickup = item["NextWastePickup"]
             next_pickup_date = datetime.fromisoformat(next_pickup).date()
-            entries.append(Collection(date=next_pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=next_pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries

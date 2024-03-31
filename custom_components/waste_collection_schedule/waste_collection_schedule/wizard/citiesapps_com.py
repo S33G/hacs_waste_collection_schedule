@@ -60,13 +60,15 @@ def ask_by_street(city_id):
     streetlist = streets["streets"]
 
     streetlist.sort(key=lambda d: d["full_names"])
-    calendars = {
-        s_cal["garbage_areaid"]: s_cal["name"] for s_cal in streets["calendars"]
-    }
-    choices = [
-        (" ".join(c["full_names"]), calendars[c["areaids"][0]]) for c in streetlist
-    ]
-    questions = [inquirer.List("cal", choices=choices, message="Select a street")]
+    calendars = {s_cal["garbage_areaid"]: s_cal["name"]
+                 for s_cal in streets["calendars"]}
+    choices = [(" ".join(c["full_names"]), calendars[c["areaids"][0]])
+               for c in streetlist]
+    questions = [
+        inquirer.List(
+            "cal",
+            choices=choices,
+            message="Select a street")]
     return inquirer.prompt(questions)["cal"]
 
 

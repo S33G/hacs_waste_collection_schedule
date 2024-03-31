@@ -25,7 +25,8 @@ def initializeSession(abf_strasse, abf_hausnr):
     s.get("https://www.bsr.de/abfuhrkalender-20520.php")
 
     # # start search using street name (without PLZ)
-    args = {"script": "dynamic_search", "step": 1, "q": abf_strasse.split(",")[0]}
+    args = {"script": "dynamic_search", "step": 1, "q": abf_strasse.split(",")[
+        0]}
     s.get("https://www.bsr.de/abfuhrkalender_ajax.php", params=args)
 
     # retrieve house number list
@@ -107,7 +108,8 @@ class Source:
             dates.extend(self._ics.convert(ics))
 
         if now.month in [12, 1]:
-            # have to reinitialize session and address search for fetching christmas tree collection schedules, otherwise it doesn't work
+            # have to reinitialize session and address search for fetching
+            # christmas tree collection schedules, otherwise it doesn't work
             sessionChristmastrees = initializeSession(
                 self._abf_strasse, self._abf_hausnr
             )

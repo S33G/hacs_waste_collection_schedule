@@ -27,9 +27,8 @@ class Source:
         cities = r.json()
 
         # create city to id map from retrieved cities
-        city_to_id = {
-            city["ortsbezeichnung"]: city["ortsnummer"] for (city) in cities["orte"]
-        }
+        city_to_id = {city["ortsbezeichnung"]: city["ortsnummer"]
+                      for (city) in cities["orte"]}
 
         if self._city not in city_to_id:
             raise Exception(f"city not found: {self._city}")

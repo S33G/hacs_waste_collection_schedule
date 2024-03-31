@@ -13,10 +13,10 @@ DESCRIPTION = (
 )
 URL = "https://bathnes.gov.uk"
 TEST_CASES = {
-    "uprn": {"uprn": "10001138699"},
-    "houseNumber": {"postcode": "BA1 2LR", "housenameornumber": 1},
-    "houseName": {"postcode": "BA2 9AZ", "housenameornumber": "All Saints Church"},
-}
+    "uprn": {
+        "uprn": "10001138699"}, "houseNumber": {
+            "postcode": "BA1 2LR", "housenameornumber": 1}, "houseName": {
+                "postcode": "BA2 9AZ", "housenameornumber": "All Saints Church"}, }
 
 TYPES = {
     "residual": {"icon": "mdi:trash-can", "alias": "Rubbish"},

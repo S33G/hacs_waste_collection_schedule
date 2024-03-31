@@ -43,10 +43,15 @@ class Source:
             icon = ICON_MAP.get(type.lower())
             entries.append(Collection(date=date, t=type.lower(), icon=icon))
 
-            # garden waste is collected on the same day as household, but isn't returned in the API
+            # garden waste is collected on the same day as household, but isn't
+            # returned in the API
             if type == "Household":
                 also = "Garden"
                 icon = ICON_MAP.get(also.lower())
-                entries.append(Collection(date=date, t=also.lower(), icon=icon))
+                entries.append(
+                    Collection(
+                        date=date,
+                        t=also.lower(),
+                        icon=icon))
 
         return entries

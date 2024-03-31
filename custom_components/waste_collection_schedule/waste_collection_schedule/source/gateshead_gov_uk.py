@@ -29,20 +29,31 @@ class Source:
 
     def fetch(self):
         session = requests.Session()
-        
+
         # Start a session
-        r = session.get("https://www.gateshead.gov.uk/article/3150/Bin-collection-day-checker")
-        
+        r = session.get(
+            "https://www.gateshead.gov.uk/article/3150/Bin-collection-day-checker")
+
         r.raise_for_status()
         soup = BeautifulSoup(r.text, features="html.parser")
 
         # Extract form submission url and form data
-        form_url = soup.find("form", attrs={"id": "BINCOLLECTIONCHECKER_FORM"})["action"]
-        pageSessionId = soup.find("input", attrs={"name": "BINCOLLECTIONCHECKER_PAGESESSIONID"})["value"]
-        sessionId = soup.find("input", attrs={"name": "BINCOLLECTIONCHECKER_SESSIONID"})["value"]
-        nonce = soup.find("input", attrs={"name": "BINCOLLECTIONCHECKER_NONCE"})["value"]
-        ticks = soup.find("input", attrs={"name": "BINCOLLECTIONCHECKER_ADDRESSSEARCH_TICKS"})["value"]
-        
+        form_url = soup.find(
+            "form", attrs={
+                "id": "BINCOLLECTIONCHECKER_FORM"})["action"]
+        pageSessionId = soup.find(
+            "input", attrs={
+                "name": "BINCOLLECTIONCHECKER_PAGESESSIONID"})["value"]
+        sessionId = soup.find(
+            "input", attrs={
+                "name": "BINCOLLECTIONCHECKER_SESSIONID"})["value"]
+        nonce = soup.find(
+            "input", attrs={
+                "name": "BINCOLLECTIONCHECKER_NONCE"})["value"]
+        ticks = soup.find(
+            "input", attrs={
+                "name": "BINCOLLECTIONCHECKER_ADDRESSSEARCH_TICKS"})["value"]
+
         form_data = {
             "BINCOLLECTIONCHECKER_PAGESESSIONID": pageSessionId,
             "BINCOLLECTIONCHECKER_SESSIONID": sessionId,
@@ -55,10 +66,12 @@ class Source:
         # Submit form
         r = session.post(form_url, data=form_data)
         r.raise_for_status()
-        
+
         # Extract encoded response data
         soup = BeautifulSoup(r.text, features="html.parser")
-        pattern = re.compile(r"var BINCOLLECTIONCHECKERFormData = \"(.*?)\";$", re.MULTILINE | re.DOTALL)
+        pattern = re.compile(
+            r"var BINCOLLECTIONCHECKERFormData = \"(.*?)\";$",
+            re.MULTILINE | re.DOTALL)
         script = soup.find("script", text=pattern)
 
         response_data = pattern.search(script.text).group(1)
@@ -66,12 +79,14 @@ class Source:
         # Decode base64 encoded response data and convert to JSON
         decoded_data = base64.b64decode(response_data)
         data = json.loads(decoded_data)
-        
+
         # Extract entries
         entries = []
         for bin in data["HOUSEHOLDCOLLECTIONS_1"]["DISPLAYHOUSEHOLD2"]["propertyCollections"]["future"]:
-            dt = datetime.strptime(bin['collectionDate'], '%Y-%m-%dT%H:%M:%S.%fZ')
-            if dt.hour == 23: # Some collections are returned as 11pm night before the collection
+            dt = datetime.strptime(
+                bin['collectionDate'],
+                '%Y-%m-%dT%H:%M:%S.%fZ')
+            if dt.hour == 23:  # Some collections are returned as 11pm night before the collection
                 dt += timedelta(hours=1)
             date = dt.date()
             types = bin['wasteTypeCode'].split("|")
@@ -83,6 +98,5 @@ class Source:
                         icon=ICON_MAP.get(type),
                     )
                 )
-                    
 
         return entries

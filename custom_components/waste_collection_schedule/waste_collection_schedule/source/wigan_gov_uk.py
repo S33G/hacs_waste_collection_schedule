@@ -48,9 +48,15 @@ class Source:
 
         # Build initial search payload
         payload = {
-            "__VIEWSTATE": self.get_asp_var(soup, "__VIEWSTATE"),
-            "__VIEWSTATEGENERATOR": self.get_asp_var(soup, "__VIEWSTATEGENERATOR"),
-            "__EVENTVALIDATION": self.get_asp_var(soup, "__EVENTVALIDATION"),
+            "__VIEWSTATE": self.get_asp_var(
+                soup,
+                "__VIEWSTATE"),
+            "__VIEWSTATEGENERATOR": self.get_asp_var(
+                soup,
+                "__VIEWSTATEGENERATOR"),
+            "__EVENTVALIDATION": self.get_asp_var(
+                soup,
+                "__EVENTVALIDATION"),
             "ctl00$ContentPlaceHolder1$txtPostcode": self._postcode,
             "ctl00$ContentPlaceHolder1$btnPostcodeSearch": "Search",
         }
@@ -65,11 +71,18 @@ class Source:
             "__EVENTTARGET": "ctl00$ContentPlaceHolder1$lstAddresses",
             "__EVENTARGUMENT": "",
             "__LASTFOCUS": "",
-            "__VIEWSTATE": self.get_asp_var(soup, "__VIEWSTATE"),
-            "__VIEWSTATEGENERATOR": self.get_asp_var(soup, "__VIEWSTATEGENERATOR"),
-            "__EVENTVALIDATION": self.get_asp_var(soup, "__EVENTVALIDATION"),
+            "__VIEWSTATE": self.get_asp_var(
+                soup,
+                "__VIEWSTATE"),
+            "__VIEWSTATEGENERATOR": self.get_asp_var(
+                soup,
+                "__VIEWSTATEGENERATOR"),
+            "__EVENTVALIDATION": self.get_asp_var(
+                soup,
+                "__EVENTVALIDATION"),
             "ctl00$ContentPlaceHolder1$txtPostcode": self._postcode,
-            "ctl00$ContentPlaceHolder1$lstAddresses": "UPRN" + self._uprn,
+            "ctl00$ContentPlaceHolder1$lstAddresses": "UPRN" +
+            self._uprn,
         }
 
         # Get the collection schedule page
@@ -82,10 +95,10 @@ class Source:
         entries = []
         for bin in bin_collections:
             waste_type = bin.find("h2").text
-            waste_date = bin.find("div", {"class": "dateWrapper-next"}).get_text(
-                strip=True
-            )
-            waste_date = re.compile(REGEX_ORDINALS).sub("", waste_date.split("day")[1])
+            waste_date = bin.find(
+                "div", {"class": "dateWrapper-next"}).get_text(strip=True)
+            waste_date = re.compile(REGEX_ORDINALS).sub(
+                "", waste_date.split("day")[1])
             waste_date = datetime.strptime(waste_date, "%d%b%Y").date()
             entries.append(
                 Collection(

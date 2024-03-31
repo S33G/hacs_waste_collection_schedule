@@ -39,8 +39,10 @@ class Source:
         self._uprn = str(uprn).strip()
         self._postcode = str(postcode).strip()
 
-        self._post_code_args = {"CollectionDayLookup2$Button_PostCodeSearch": "Continue+>"}
-        self._uprn_args = {"CollectionDayLookup2$Button_SelectAddress": "Continue+>"}
+        self._post_code_args = {
+    "CollectionDayLookup2$Button_PostCodeSearch": "Continue+>"}
+        self._uprn_args = {
+    "CollectionDayLookup2$Button_SelectAddress": "Continue+>"}
         self._post_code_args["CollectionDayLookup2$TextBox_PostCode"] = self._postcode
         self._uprn_args["CollectionDayLookup2$DropDownList_Addresses"] = self._uprn
 
@@ -54,22 +56,26 @@ class Source:
 
         viewstate = soup.find("input", id="__VIEWSTATE")
         viewstate_generator = soup.find("input", id="__VIEWSTATEGENERATOR")
-        
-        if not viewstate or type(viewstate) != Tag or not viewstate_generator or type(viewstate_generator) != Tag:
+
+
+if not viewstate or not isinstance(
+    viewstate,
+     type(viewstate_generator)) != Tag:
             raise Exception("could not get valid data from ashford.gov.uk")
 
         self._post_code_args["__VIEWSTATE"] = str(viewstate["value"])
 
-        self._post_code_args["__VIEWSTATEGENERATOR"] = str(viewstate_generator["value"])
-        self._uprn_args["__VIEWSTATEGENERATOR"] = str(viewstate_generator["value"])
+        self._post_code_args["__VIEWSTATEGENERATOR"] = str(
+            viewstate_generator["value"])
+        self._uprn_args["__VIEWSTATEGENERATOR"] = str(
+            viewstate_generator["value"])
 
         r = s.post(API_URL, data=self._post_code_args)
         r.raise_for_status()
 
         soup: BeautifulSoup = BeautifulSoup(r.text, "html.parser")
         viewstate = soup.find("input", id="__VIEWSTATE")
-        if not viewstate or type(viewstate) != Tag:
-            raise Exception("could not get valid data from ashford.gov.uk")
+if not viewstate or not isinstance(viewstate,         if not viewstate or )            raise Exception("could not get valid data from ashford.gov.uk")
 
         self._uprn_args["__VIEWSTATE"] = str(viewstate["value"])
 
@@ -98,8 +104,9 @@ class Source:
                 continue
             bin_type: str = bin_type_soup.text.strip()
 
-            date_soup = bin_text.find("span", id=re.compile(r"CollectionDayLookup2_Label_\w*_Date"))
-            if not date_soup or not " " in date_soup.text.strip():
+            date_soup = bin_text.find("span", id=re.compile(
+                r"CollectionDayLookup2_Label_\w*_Date"))
+            if not date_soup or " " not in date_soup.text.strip():
                 continue
             date_str: str = date_soup.text.strip()
             try:

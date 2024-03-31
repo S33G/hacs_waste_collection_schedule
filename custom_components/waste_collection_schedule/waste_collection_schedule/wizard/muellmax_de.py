@@ -130,9 +130,9 @@ def main():
         # select city
         questions = [
             inquirer.List(
-                "mm_frm_ort_sel", choices=mm_frm_ort_sel.choices, message="Select city"
-            )
-        ]
+                "mm_frm_ort_sel",
+                choices=mm_frm_ort_sel.choices,
+                message="Select city")]
         answers = inquirer.prompt(questions)
         results.update(answers)
 
@@ -162,9 +162,9 @@ def main():
     # select street
     questions = [
         inquirer.List(
-            "mm_frm_str_sel", choices=mm_frm_str_sel.choices, message="Select street"
-        )
-    ]
+            "mm_frm_str_sel",
+            choices=mm_frm_str_sel.choices,
+            message="Select street")]
     answers = inquirer.prompt(questions)
     results.update(answers)
 

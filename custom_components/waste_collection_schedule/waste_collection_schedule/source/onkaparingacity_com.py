@@ -40,7 +40,9 @@ class Source:
         if addresses == 0:
             raise Exception("address not found")
 
-        params = {"geolocationid": addresses["Items"][0]["Id"], "ocsvclang": "en-AU"}
+        params = {
+            "geolocationid": addresses["Items"][0]["Id"],
+            "ocsvclang": "en-AU"}
 
         r = requests.get(
             f"{API_URL}/ocapi/Public/myarea/wasteservices",
@@ -71,5 +73,10 @@ class Source:
 
         entries = []
         for item in waste:
-            entries.append(Collection(item[1], item[0], icon=ICON_MAP.get(item[0])))
+            entries.append(
+                Collection(
+                    item[1],
+                    item[0],
+                    icon=ICON_MAP.get(
+                        item[0])))
         return entries

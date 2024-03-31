@@ -48,6 +48,10 @@ class Source:
                 icon = "mdi:leaf"
             next_pickup = item["nextWastePickup"]
             next_pickup_date = datetime.fromisoformat(next_pickup).date()
-            entries.append(Collection(date=next_pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=next_pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries

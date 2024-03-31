@@ -89,9 +89,14 @@ class Source:
             if "exception" in item and "replacedBy" in item["exception"]:
                 continue
 
-            date = datetime.strptime(item["timestamp"], "%Y-%m-%dT%H:%M:%S.000Z").date()
+            date = datetime.strptime(
+                item["timestamp"],
+                "%Y-%m-%dT%H:%M:%S.000Z").date()
             if item["type"] == "collection":
-                entries.append(Collection(date, item["fraction"]["name"]["en"]))
+                entries.append(
+                    Collection(
+                        date,
+                        item["fraction"]["name"]["en"]))
             elif item["type"] == "event" and self._add_events:
                 entries.append(Collection(date, item["event"]["title"]["en"]))
 

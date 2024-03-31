@@ -46,7 +46,8 @@ class Source:
         entries = []
         while bin_name_start_position != -1:
             bin_name_start_position += len(header_string)
-            bin_name_end_position = bins.find(" bin", bin_name_start_position) + 4
+            bin_name_end_position = bins.find(
+                " bin", bin_name_start_position) + 4
             bin_name = bins[bin_name_start_position:bin_name_end_position]
             bin_date_pos = bins.find("<p>", bin_name_start_position)
             bin_date_exc_day_of_week_pos = bins.find(", ", bin_date_pos) + 2
@@ -60,6 +61,7 @@ class Source:
                     icon=ICON_MAP.get(bin_name),
                 )
             )
-            bin_name_start_position = bins.find(header_string, bin_date_end_pos)
+            bin_name_start_position = bins.find(
+                header_string, bin_date_end_pos)
 
         return entries

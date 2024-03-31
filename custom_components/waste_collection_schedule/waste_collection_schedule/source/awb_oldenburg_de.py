@@ -10,12 +10,14 @@ TITLE = "AWB Oldenburg"
 DESCRIPTION = "Source for 'Abfallwirtschaftsbetrieb Stadt Oldenburg (Oldb)'."
 URL = "https://www.oldenburg.de"
 TEST_CASES = {
-    "Polizeiinspektion Oldenburg": {"street": "Friedhofsweg", "house_number": 30}
-}
+    "Polizeiinspektion Oldenburg": {
+        "street": "Friedhofsweg",
+        "house_number": 30}}
 
 API_URL = "https://www.oldenburg.de/startseite/leben-umwelt/awb/awb-von-a-bis-z/abfuhrkalender.html"
 
 _LOGGER = logging.getLogger(__name__)
+
 
 class Source:
     def __init__(self, street, house_number):
@@ -33,20 +35,16 @@ class Source:
 
         args = {
             "tx_collectioncalendar_abfuhrkalender[action]": "exportIcs",
-            "tx_collectioncalendar_abfuhrkalender[controller]": "Frontend\Export",
-            "tx_collectioncalendar_abfuhrkalender[houseNumber]": str(self._house_number).encode(
-                "utf-8"
-            ),
-            "tx_collectioncalendar_abfuhrkalender[street]": str(street_idx).encode(
-                "utf-8"
-            ),
+            "tx_collectioncalendar_abfuhrkalender[controller]": "Frontend\\Export",
+            "tx_collectioncalendar_abfuhrkalender[houseNumber]": str(
+                self._house_number).encode("utf-8"),
+            "tx_collectioncalendar_abfuhrkalender[street]": str(street_idx).encode("utf-8"),
             "tx_collectioncalendar_abfuhrkalender[wasteTypes][1]": 1,
             "tx_collectioncalendar_abfuhrkalender[wasteTypes][2]": 2,
             "tx_collectioncalendar_abfuhrkalender[wasteTypes][3]": 3,
             "tx_collectioncalendar_abfuhrkalender[wasteTypes][4]": 4,
             "tx_collectioncalendar_abfuhrkalender[wasteTypes][5]": 5,
-            "tx_collectioncalendar_abfuhrkalender[year]": year
-        }
+            "tx_collectioncalendar_abfuhrkalender[year]": year}
 
         # use '%20' instead of '+' in API_URL
         # https://stackoverflow.com/questions/21823965/use-20-instead-of-for-space-in-python-query-parameters
@@ -62,20 +60,23 @@ class Source:
             entries.append(Collection(d[0], d[1]))
         return entries
 
-    def get_street_mapping(self): # thanks @dt215git (https://github.com/mampfes/hacs_waste_collection_schedule/issues/539#issuecomment-1371413297)
+    # thanks @dt215git
+    # (https://github.com/mampfes/hacs_waste_collection_schedule/issues/539#issuecomment-1371413297)
+    def get_street_mapping(self):
         s = requests.Session()
         r = s.get(API_URL)
 
         soup = BeautifulSoup(r.text, "html.parser")
         items = soup.find_all("option")
-        items = items[2:] # first two values are not street addresses so remove them
+        # first two values are not street addresses so remove them
+        items = items[2:]
 
         streets = []
         ids = []
         for item in items:
             streets.append(item.text)  # street name
             ids.append(item.attrs["value"])  # dropdown value
-        mapping = {k:v for (k,v) in zip(streets, ids)}
+        mapping = {k: v for (k, v) in zip(streets, ids)}
 
         return mapping
 

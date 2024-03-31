@@ -30,7 +30,8 @@ MONTH_MAP = {
     "oktober": 10,
     "november": 11,
     "december": 12
-    }
+}
+
 
 class Source:
     def __init__(self, street, city):
@@ -46,7 +47,9 @@ class Source:
         addresses = soup.find_all(
             "div", attrs={"class": "wastecollections-selectedaddress"}
         )
-        infos = soup.find_all("ul", attrs={"class": "wastecollections-results"})
+        infos = soup.find_all(
+            "ul", attrs={
+                "class": "wastecollections-results"})
 
         for (addressTag, info) in zip(addresses, infos):
             street = addressTag.text.split(",")[0]
@@ -63,11 +66,15 @@ class Source:
 
         for waste_type_info in waste_types_info:
             waste_type = waste_type_info.find(
-                "strong", attrs={"class": "wastecollections-results-item-type-label"}
-            ).text
+                "strong", attrs={
+                    "class": "wastecollections-results-item-type-label"}).text
             pickup_date = self.get_date(waste_type_info)
             icon = ICON_MAP.get(waste_type)
-            entries.append(Collection(date=pickup_date, t=waste_type, icon=icon))
+            entries.append(
+                Collection(
+                    date=pickup_date,
+                    t=waste_type,
+                    icon=icon))
 
         return entries
 
@@ -79,7 +86,8 @@ class Source:
         for pickup_date_meta in pickup_date_metas:
             if "Nästa" in pickup_date_meta.text:
                 today = date.today()
-                pickup_date_array = pickup_date_meta.find("strong").text.split(" ")
+                pickup_date_array = pickup_date_meta.find(
+                    "strong").text.split(" ")
                 pickup_date_day = pickup_date_array[0]
                 pickup_date_month = MONTH_MAP[pickup_date_array[1]]
                 pickup_date_year = today.year

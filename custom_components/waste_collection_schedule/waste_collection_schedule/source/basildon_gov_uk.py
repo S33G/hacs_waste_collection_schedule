@@ -52,7 +52,8 @@ HEADERS = {
 class Source:
     def __init__(self, postcode=None, address=None, uprn=None):
         if uprn is None and (postcode is None or address is None):
-            raise ValueError("Either uprn or postcode and address must be provided")
+            raise ValueError(
+                "Either uprn or postcode and address must be provided")
 
         self._uprn = str(uprn).zfill(12) if uprn is not None else None
         self._postcode = postcode
@@ -68,7 +69,8 @@ class Source:
         r = s.post(
             "https://basildonportal.azurewebsites.net/api/listPropertiesByPostcode",
             headers=HEADERS,
-            json={"postcode": self._postcode},
+            json={
+                "postcode": self._postcode},
         )
         r.raise_for_status()
         data = r.json()

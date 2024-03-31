@@ -47,7 +47,9 @@ class Source:
 
     def fetch(self):
         # s = requests.Session()
-        params = {"action": "wealden_get_collections_for_uprn", "uprn": self._uprn}
+        params = {
+            "action": "wealden_get_collections_for_uprn",
+            "uprn": self._uprn}
         r = requests.post(API_URL, headers=HEADERS, data=params)
         json_data = json.loads(r.text)["collection"]
         entries = []

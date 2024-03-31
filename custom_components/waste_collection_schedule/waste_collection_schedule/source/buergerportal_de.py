@@ -58,32 +58,27 @@ API_HEADERS = {
 }
 Operator = Literal["cochem_zell", "alb_donau", "biedenkopf"]
 
-SERVICE_MAP = [
-    {
-        "title": "KV Cochem-Zell",
-        "url": "https://www.cochem-zell-online.de/",
-        "api_url": "https://buerger-portal-cochemzell.azurewebsites.net/api",
-        "operator": "cochem_zell",
-    },
-    {
-        "title": "Abfallwirtschaft Alb-Donau-Kreis",
-        "url": "https://www.aw-adk.de/",
-        "api_url": "https://buerger-portal-albdonaukreisabfallwirtschaft.azurewebsites.net/api",
-        "operator": "alb_donau",
-    },
-    {
-        "title": "MZV Biedenkopf",
-        "url": "https://mzv-biedenkopf.de/",
-        "api_url": "https://biedenkopfmzv.buergerportal.digital/api",
-        "operator": "biedenkopf",
-    },
-    {
-        "title": "Bürgerportal Bedburg",
-        "url": "https://www.bedburg.de/",
-        "api_url": "https://buerger-portal-bedburg.azurewebsites.net/api",
-        "operator": "bedburg",
-    },
-]
+SERVICE_MAP = [{"title": "KV Cochem-Zell",
+                "url": "https://www.cochem-zell-online.de/",
+                "api_url": "https://buerger-portal-cochemzell.azurewebsites.net/api",
+                "operator": "cochem_zell",
+                },
+               {"title": "Abfallwirtschaft Alb-Donau-Kreis",
+                "url": "https://www.aw-adk.de/",
+                "api_url": "https://buerger-portal-albdonaukreisabfallwirtschaft.azurewebsites.net/api",
+                "operator": "alb_donau",
+                },
+               {"title": "MZV Biedenkopf",
+                "url": "https://mzv-biedenkopf.de/",
+                "api_url": "https://biedenkopfmzv.buergerportal.digital/api",
+                "operator": "biedenkopf",
+                },
+               {"title": "Bürgerportal Bedburg",
+                "url": "https://www.bedburg.de/",
+                "api_url": "https://buerger-portal-bedburg.azurewebsites.net/api",
+                "operator": "bedburg",
+                },
+               ]
 
 
 # This datalcass is used for adding entries to a set and remove duplicate entries.
@@ -160,7 +155,8 @@ class Source:
         for collection in payload["d"]:
             if date_match := re.search(date_regex, collection["Termin"]):
                 timestamp = float(date_match.group())
-                date = datetime.datetime.utcfromtimestamp(timestamp / 1000).date()
+                date = datetime.datetime.utcfromtimestamp(
+                    timestamp / 1000).date()
                 waste_type = collection["Abfuhrplan"]["GefaesstarifArt"]["Abfallart"][
                     "Name"
                 ]
@@ -205,8 +201,7 @@ class Source:
         except StopIteration:
             raise ValueError(
                 "District id cannot be fetched. "
-                "Please make sure that you entered a subdistrict if there is a comma on the website."
-            )
+                "Please make sure that you entered a subdistrict if there is a comma on the website.")
 
     def fetch_street_id(self, session: requests.Session, district_id: int):
         res = session.get(

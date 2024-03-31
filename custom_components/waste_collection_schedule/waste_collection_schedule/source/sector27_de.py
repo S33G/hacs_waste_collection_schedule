@@ -64,9 +64,8 @@ class Source:
             headers=HEADERS,
         )
         r.raise_for_status()
-        streets = {
-            e["name"].strip(): e["id"] for (e) in json.loads(extractJson(r.text))
-        }
+        streets = {e["name"].strip(): e["id"]
+                   for (e) in json.loads(extractJson(r.text))}
 
         if self._street not in streets:
             raise Exception(f"street not found {self._street}")

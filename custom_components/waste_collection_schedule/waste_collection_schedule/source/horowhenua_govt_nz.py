@@ -31,7 +31,7 @@ TEST_CASES = {
 }
 
 API_URLS = {
-    "session":"https://www.horowhenua.govt.nz" ,
+    "session": "https://www.horowhenua.govt.nz",
     "search": "https://www.horowhenua.govt.nz/api/v1/myarea/search?keywords={}",
     "schedule": "https://www.horowhenua.govt.nz/ocapi/Public/myarea/wasteservices?geolocationid={}&ocsvclang=en-AU",
 }
@@ -64,18 +64,23 @@ class Source:
         # 'collection' api call seems to require an ASP.Net_sessionID, so obtain the relevant cookie
         s = requests.Session()
         q = requote_uri(str(API_URLS["session"]))
-        r0 = s.get(q, headers = HEADERS)
+        r0 = s.get(q, headers=HEADERS)
 
         # Do initial address search
-        address = "{} {} {} {}".format(self.street_number, self.street_name, self.town, self.post_code)
+        address = "{} {} {} {}".format(
+            self.street_number,
+            self.street_name,
+            self.town,
+            self.post_code)
         q = requote_uri(str(API_URLS["search"]).format(address))
-        r1 = s.get(q, headers = HEADERS)
+        r1 = s.get(q, headers=HEADERS)
         data = json.loads(r1.text)
 
         # Find the geolocation for the address
         for item in data["Items"]:
             normalized_input = Source.normalize_address(address)
-            normalized_response = Source.normalize_address(item['AddressSingleLine'])
+            normalized_response = Source.normalize_address(
+                item['AddressSingleLine'])
             if normalized_input in normalized_response:
                 locationId = item["Id"]
             break
@@ -85,7 +90,7 @@ class Source:
 
         # Retrieve the upcoming collections for location
         q = requote_uri(str(API_URLS["schedule"]).format(locationId))
-        r2 = s.get(q, headers = HEADERS)
+        r2 = s.get(q, headers=HEADERS)
         data = json.loads(r2.text)
         responseContent = data["responseContent"]
 
@@ -96,10 +101,11 @@ class Source:
 
         for item in services:
             waste_type = item.find('h3').text
-            date = datetime.datetime.strptime(item.find('div', {'class': 'next-service'}).text.strip(), "%a %d/%m/%Y").date()
+            date = datetime.datetime.strptime(item.find(
+                'div', {'class': 'next-service'}).text.strip(), "%a %d/%m/%Y").date()
             entries.append(
                 Collection(
-                    date = date,
+                    date=date,
                     t=waste_type,  # api returns Recycling, Rubbish
                     icon=ICON_MAP.get(waste_type),
                 )
@@ -115,4 +121,3 @@ class Source:
         address_str = " ".join(address_str.split())
 
         return address_str
-

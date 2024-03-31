@@ -24,6 +24,7 @@ ICON_MAP = {
     "Podback": "mdi:coffee",
 }
 
+
 class Source:
     def __init__(self, uprn: str):
         self._uprn = uprn
@@ -40,22 +41,27 @@ class Source:
         session = requests.Session()
 
         r = session.get(f"{API_URL}{self._uprn}")
-        soup = BeautifulSoup(r.json()['Results']['Next_Bin_Collections']['_'], features="html.parser")
+        soup = BeautifulSoup(
+            r.json()['Results']['Next_Bin_Collections']['_'],
+            features="html.parser")
         collections = soup.find_all("div", recursive=False)
 
         if not collections:
             raise Exception("No collections found for given UPRN")
 
         for collection in collections:
-            bintypes = re.findall(r'Green|Brown|Black|Podback', collection.find("img")["alt"])
+            bintypes = re.findall(
+                r'Green|Brown|Black|Podback',
+                collection.find("img")["alt"])
 
             for bintype in bintypes:
                 entries.append(
                     Collection(
-                        date=self._extract_date(collection.text),
-                        t=bintype if bintype == "Podback" else bintype + " bin",
+                        date=self._extract_date(
+                            collection.text),
+                        t=bintype if bintype == "Podback" else bintype +
+                        " bin",
                         icon=ICON_MAP.get(bintype),
-                    )
-                )
+                    ))
 
         return entries

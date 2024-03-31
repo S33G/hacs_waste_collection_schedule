@@ -103,48 +103,41 @@ ICON_MAP = {
     "problemmüll": "mdi:biohazard",
 }
 
-SUPPORTED_PROVIDERS = [
-    {
-        "subdomain": "ebkds",
-        "title": "Eigenbetrieb Kommunalwirtschaftliche Dienstleistungen Suhl",
-        "url": "https://www.ebkds.de/",
-    },
-    {
-        "subdomain": "erfurt",
-        "title": "Stadtwerke Erfurt, SWE",
-        "url": "https://www.stadtwerke-erfurt.de/",
-    },
-    {
-        "subdomain": "schmalkalden-meiningen",
-        "title": "Kreiswerke Schmalkalden-Meiningen GmbH",
-        "url": "https://www.kwsm.de/",
-    },
-    {
-        "subdomain": "ew",
-        "title": "Eichsfeldwerke GmbH",
-        "url": "https://www.eichsfeldwerke.de/",
-    },
-    {
-        "subdomain": "azv",
-        "title": "Abfallwirtschaftszweckverband Wartburgkreis (AZV)",
-        "url": "https://www.azv-wak-ea.de/",
-    },
-    {
-        "subdomain": "boerde",
-        "title": "Landkreis Börde AöR (KsB)",
-        "url": "https://www.ks-boerde.de",
-    },
-    {
-        "subdomain": "asc",
-        "title": "Chemnitz (ASR)",
-        "url": "https://www.asr-chemnitz.de/",
-    },
-    {"subdomain": "wesel", "title": "ASG Wesel", "url": "https://www.asg-wesel.de/"},
-]
+SUPPORTED_PROVIDERS = [{"subdomain": "ebkds",
+                        "title": "Eigenbetrieb Kommunalwirtschaftliche Dienstleistungen Suhl",
+                        "url": "https://www.ebkds.de/",
+                        },
+                       {"subdomain": "erfurt",
+                        "title": "Stadtwerke Erfurt, SWE",
+                        "url": "https://www.stadtwerke-erfurt.de/",
+                        },
+                       {"subdomain": "schmalkalden-meiningen",
+                        "title": "Kreiswerke Schmalkalden-Meiningen GmbH",
+                        "url": "https://www.kwsm.de/",
+                        },
+                       {"subdomain": "ew",
+                        "title": "Eichsfeldwerke GmbH",
+                        "url": "https://www.eichsfeldwerke.de/",
+                        },
+                       {"subdomain": "azv",
+                        "title": "Abfallwirtschaftszweckverband Wartburgkreis (AZV)",
+                        "url": "https://www.azv-wak-ea.de/",
+                        },
+                       {"subdomain": "boerde",
+                        "title": "Landkreis Börde AöR (KsB)",
+                        "url": "https://www.ks-boerde.de",
+                        },
+                       {"subdomain": "asc",
+                        "title": "Chemnitz (ASR)",
+                        "url": "https://www.asr-chemnitz.de/",
+                        },
+                       {"subdomain": "wesel",
+                        "title": "ASG Wesel",
+                        "url": "https://www.asg-wesel.de/"},
+                       ]
 
-EXTRA_INFO = [
-    {"title": p["title"], "url": p["url"], "country": "de"} for p in SUPPORTED_PROVIDERS
-]
+EXTRA_INFO = [{"title": p["title"], "url": p["url"], "country": "de"}
+              for p in SUPPORTED_PROVIDERS]
 
 
 API_URL = "https://{}.hausmuell.info/"
@@ -174,7 +167,8 @@ def replace_special_chars_with_underscore(s: str) -> str:
     )
 
 
-def replace_special_chars_args(d: dict, replace_func=replace_special_chars) -> dict:
+def replace_special_chars_args(d: dict,
+                               replace_func=replace_special_chars) -> dict:
     to_return = {}
     for k, v in d.items():
         if isinstance(v, list):
@@ -345,20 +339,22 @@ class Source:
         r = requests.post(self._search_url + "check_zusatz.php", data=args)
         id_string = BeautifulSoup(r.text, "html.parser").find("span")
         args["hidden_id_zusatz"] = (
-            args["hidden_id_hnr"] if id_string is None else id_string.text.strip()
-        )
+            args["hidden_id_hnr"] if id_string is None else id_string.text.strip())
 
         r = requests.post(self._ics_url, data=args)
         r.raise_for_status()
 
         if "Bitte geben Sie Ihre Daten korrekt an." in r.text:
-            raise ValueError("No Valid response, please check your configuration.")
+            raise ValueError(
+                "No Valid response, please check your configuration.")
 
         r.encoding = "utf-8"
         dates = self._ics.convert(r.text)
         entries = []
         for d in dates:
-            bin_type = d[1].replace("Ã¼", "ü").replace("Entsorgung:", "").strip()
+            bin_type = d[1].replace(
+                "Ã¼", "ü").replace(
+                "Entsorgung:", "").strip()
             icon = ICON_MAP.get(
                 bin_type.lower().replace("verschobene abholung:", "").strip()
             )

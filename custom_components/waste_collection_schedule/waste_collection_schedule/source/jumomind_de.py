@@ -250,8 +250,8 @@ class Source:
 
             if has_streets:
                 r = session.get(
-                    self._search_url, params={"r": "streets", "city_id": city_id}
-                )
+                    self._search_url, params={
+                        "r": "streets", "city_id": city_id})
                 r.raise_for_status()
                 streets = r.json()
 
@@ -295,14 +295,19 @@ class Source:
 
         r = session.get(
             self._dates_url,
-            params={"idx": "termins", "city_id": city_id, "area_id": area_id, "ws": 3},
+            params={
+                "idx": "termins",
+                "city_id": city_id,
+                "area_id": area_id,
+                "ws": 3},
         )
         r.raise_for_status()
 
         entries = []
         for event in r.json()[0]["_data"]:
             bin_type = bin_name_map[event["cal_garbage_type"]]
-            date = datetime.datetime.strptime(event["cal_date"], "%Y-%m-%d").date()
+            date = datetime.datetime.strptime(
+                event["cal_date"], "%Y-%m-%d").date()
             icon = ICON_MAP.get(bin_type.split(" ")[0])  # Collection icon
             entries.append(Collection(date=date, t=bin_type, icon=icon))
 
@@ -315,7 +320,9 @@ def print_md_table():
     for service, data in sorted(SERVICE_MAP.items()):
         print(f"service: {service}")
         args = {"r": "cities"}
-        r = requests.get(f"https://{service}.jumomind.com/mmapp/api.php", params=args)
+        r = requests.get(
+            f"https://{service}.jumomind.com/mmapp/api.php",
+            params=args)
         r.raise_for_status()
         table += f"|{service}|"
 

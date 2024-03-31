@@ -7,13 +7,18 @@ TITLE = "Leicester City Council"
 DESCRIPTION = "Source for city of Leicester, UK."
 URL = "https://www.leicester.gov.uk"
 TEST_CASES = {
-    "30 Mayflower Rd, Leicester LE5 5QD": {"post_code": "LE5 5QD", "number": "30"},
-    "235 Glenfield Rd, Leicester LE3 6DL": {"uprn": "002465020938"},
+    "30 Mayflower Rd, Leicester LE5 5QD": {
+        "post_code": "LE5 5QD",
+        "number": "30"},
+    "235 Glenfield Rd, Leicester LE3 6DL": {
+        "uprn": "002465020938"},
 }
 
 API_URL = "https://biffaleicester.co.uk/wp-admin/admin-ajax.php"
 
-API_ACTIONS = {"address_search": "get_uprn_api", "collection": "get_details_api"}
+API_ACTIONS = {
+    "address_search": "get_uprn_api",
+    "collection": "get_details_api"}
 
 HEADERS = {
     "user-agent": "Mozilla/5.0",
@@ -35,7 +40,9 @@ class Source:
     def fetch(self):
         # Lookup UPRN
         if not self._uprn:
-            p = {"action": API_ACTIONS["address_search"], "postcode": self._post_code}
+            p = {
+                "action": API_ACTIONS["address_search"],
+                "postcode": self._post_code}
             r = requests.post(API_URL, headers=HEADERS, data=p)
             r.raise_for_status()
             data = r.json()
@@ -67,7 +74,9 @@ class Source:
             ).date()
 
             entries.append(
-                Collection(date=next_date, t=props["alias"], icon=props["icon"])
-            )
+                Collection(
+                    date=next_date,
+                    t=props["alias"],
+                    icon=props["icon"]))
 
         return entries

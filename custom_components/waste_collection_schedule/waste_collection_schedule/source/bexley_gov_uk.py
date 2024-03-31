@@ -53,16 +53,19 @@ class Source:
         sid = sid_data['auth-session']
 
         # This request retrieves the schedule
-        timestamp = time_ns() // 1_000_000  # epoch time in milliseconds        
+        timestamp = time_ns() // 1_000_000  # epoch time in milliseconds
         payload = {
-            "formValues": { "What is your address?": {"txtUPRN": {"value": self._uprn}}}
-        }
+            "formValues": {
+                "What is your address?": {
+                    "txtUPRN": {
+                        "value": self._uprn}}}}
         schedule_request = s.post(
             f"https://mybexley.bexley.gov.uk/apibroker/runLookup?id=61320b2acf8a3&repeat_against=&noRetry=false&getOnlyTokens=undefined&log_id=&app_name=AF-Renderer::Self&_={timestamp}&sid={sid}",
             headers=HEADERS,
             json=payload
         )
-        rowdata = json.loads(schedule_request.content)['integration']['transformed']['rows_data']
+        rowdata = json.loads(schedule_request.content)[
+            'integration']['transformed']['rows_data']
 
         # Extract bin types and next collection dates
         entries = []
@@ -71,10 +74,10 @@ class Source:
                 Collection(
                     t=rowdata[item]["ContainerName"],
                     date=datetime.strptime(
-                        rowdata[item]["NextCollectionDate"], "%Y-%m-%dT%H:%M:%S"
-                    ).date(),
-                    icon=ICON_MAP.get(rowdata[item]["ContainerName"].upper()),
-                )
-            )
+                        rowdata[item]["NextCollectionDate"],
+                        "%Y-%m-%dT%H:%M:%S").date(),
+                    icon=ICON_MAP.get(
+                        rowdata[item]["ContainerName"].upper()),
+                ))
 
         return entries

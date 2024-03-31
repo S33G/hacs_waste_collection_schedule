@@ -10,7 +10,9 @@ DESCRIPTION = (
 )
 URL = "https://www.centralbedfordshire.gov.uk"
 TEST_CASES = {
-    "postcode has space": {"postcode": "SG15 6YF", "house_name": "10 Old School Walk"},
+    "postcode has space": {
+        "postcode": "SG15 6YF",
+        "house_name": "10 Old School Walk"},
     "postcode without space": {
         "postcode": "SG180LL",
         "house_name": "1 Chestnut Avenue",
@@ -43,9 +45,12 @@ class Source:
         )
         r.raise_for_status()
         soup = BeautifulSoup(r.text, features="html.parser")
-        address = soup.find("select", id="address").find(
-            "option", text=lambda value: value and value.startswith(self._house_name)
-        )
+        address = soup.find(
+            "select",
+            id="address").find(
+            "option",
+            text=lambda value: value and value.startswith(
+                self._house_name))
 
         if address is None:
             raise Exception("address not found")

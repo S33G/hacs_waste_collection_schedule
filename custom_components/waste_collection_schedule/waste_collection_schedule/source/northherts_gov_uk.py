@@ -73,7 +73,8 @@ class Source:
 
         soup = BeautifulSoup(r.text, features="html.parser")
 
-        # get first address (if you don't enter enough argument values this won't find the right address)
+        # get first address (if you don't enter enough argument values this
+        # won't find the right address)
         alink = soup.find("div", id="property_list").find("a")
 
         if alink is None:
@@ -100,13 +101,19 @@ class Source:
             entries.append(
                 Collection(
                     date=datetime.strptime(
-                        lis[1].text.replace("\n", ""), "%d/%m/%Y"
-                    ).date(),
-                    t=lis[2].text.replace("\n", ""),
+                        lis[1].text.replace(
+                            "\n",
+                            ""),
+                        "%d/%m/%Y").date(),
+                    t=lis[2].text.replace(
+                        "\n",
+                        ""),
                     icon=ICON_MAP.get(
-                        lis[2].text.replace("\n", "").replace(" Collection Service", "")
-                    ),
-                )
-            )
+                        lis[2].text.replace(
+                            "\n",
+                            "").replace(
+                                " Collection Service",
+                                "")),
+                ))
 
         return entries

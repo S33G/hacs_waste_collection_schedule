@@ -63,18 +63,22 @@ class Source:
 
         # This request retrieves the schedule
         timestamp = time_ns() // 1_000_000  # epoch time in milliseconds
-        payload = {"formValues": {"Section 1": {"case_uprn1": {"value": self._uprn}}}}
+        payload = {
+            "formValues": {
+                "Section 1": {
+                    "case_uprn1": {
+                        "value": self._uprn}}}}
         schedule_request = s.post(
             f"https://your.burnley.gov.uk/apibroker/runLookup?id=607fe757df87c&repeat_against=&noRetry=false&getOnlyTokens=undefined&log_id=&app_name=AF-Renderer::Self&_={timestamp}&sid={sid}",
             headers=HEADERS,
             json=payload,
         )
-        rowdata = json.loads(schedule_request.content)["integration"]["transformed"][
-            "rows_data"
-        ]
+        rowdata = json.loads(schedule_request.content)[
+            "integration"]["transformed"]["rows_data"]
 
         # Extract bin types and next collection dates
-        # Website doesn't return a year, so compare months to deal with collection spanning a year-end
+        # Website doesn't return a year, so compare months to deal with
+        # collection spanning a year-end
         entries = []
         current_month = datetime.strftime(datetime.now(), "%B")
         current_year = int(datetime.strftime(datetime.now(), "%Y"))

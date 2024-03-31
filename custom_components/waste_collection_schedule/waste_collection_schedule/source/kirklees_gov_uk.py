@@ -49,29 +49,38 @@ class Source:
 
     def fetch(self):
         entries = []
-        self._session.cookies.set("cookiesacceptedGDPR", "true", domain=".kirklees.gov.uk")
+        self._session.cookies.set(
+            "cookiesacceptedGDPR",
+            "true",
+            domain=".kirklees.gov.uk")
 
         r0 = self._session.get(f"{BASE_URL}/default.aspx")
         r0.raise_for_status()
         r0_bs4 = BeautifulSoup(r0.text, features="html.parser")
-        PARAMS['__VIEWSTATE'] = r0_bs4.find("input", {"id": "__VIEWSTATE"})['value']
-        PARAMS['__VIEWSTATEGENERATOR'] = r0_bs4.find("input", {"id": "__VIEWSTATEGENERATOR"})['value']
-        PARAMS['__EVENTVALIDATION'] = r0_bs4.find("input", {"id": "__EVENTVALIDATION"})['value']
+        PARAMS['__VIEWSTATE'] = r0_bs4.find(
+            "input", {"id": "__VIEWSTATE"})['value']
+        PARAMS['__VIEWSTATEGENERATOR'] = r0_bs4.find(
+            "input", {"id": "__VIEWSTATEGENERATOR"})['value']
+        PARAMS['__EVENTVALIDATION'] = r0_bs4.find(
+            "input", {"id": "__EVENTVALIDATION"})['value']
 
         PARAMS['ctl00$ctl00$cphPageBody$cphContent$thisGeoSearch$txtGeoPremises'] = self._door_num
         PARAMS['ctl00$ctl00$cphPageBody$cphContent$thisGeoSearch$txtGeoSearch'] = self._postcode
-        PARAMS['ctl00$ctl00$cphPageBody$cphContent$thisGeoSearch$butGeoSearch'] = r0_bs4.find("input", {"id": "butGeoSearch"})['value']
+        PARAMS['ctl00$ctl00$cphPageBody$cphContent$thisGeoSearch$butGeoSearch'] = r0_bs4.find(
+            "input", {"id": "butGeoSearch"})['value']
 
         r1 = self._session.get(f"{BASE_URL}/default.aspx", params=PARAMS)
         r1.raise_for_status()
         r1_bs4 = BeautifulSoup(r1.text, features="html.parser")
-        cal_link = r1_bs4.find("a", {"id": "cphPageBody_cphContent_wtcDomestic240__LnkCalendar"})['href']
+        cal_link = r1_bs4.find(
+            "a", {"id": "cphPageBody_cphContent_wtcDomestic240__LnkCalendar"})['href']
 
         r2 = self._session.get(f"{BASE_URL}/{cal_link}")
         r2.raise_for_status()
         r2_bs4 = BeautifulSoup(r2.text, features="html.parser")
 
-        for collection in r2_bs4.find_all("img", {"id": re.compile('^cphPageBody_cphContent_rptr_Sticker_rptr_Collections_[0-9]_rptr_Bins_[0-9]_img_binType_[0-9]')}):
+        for collection in r2_bs4.find_all("img", {"id": re.compile(
+                '^cphPageBody_cphContent_rptr_Sticker_rptr_Collections_[0-9]_rptr_Bins_[0-9]_img_binType_[0-9]')}):
             matches = re.findall(COLLECTION_REGEX, collection['alt'])
             entries.append(
                 Collection(

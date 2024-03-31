@@ -52,9 +52,8 @@ class Source:
             ):
                 entries += self.get_data(
                     API_URL.replace(
-                        "abfallwirtschaft", f"abfall{str(datetime.now().year)[2:]}"
-                    )
-                )
+                        "abfallwirtschaft",
+                        f"abfall{str(datetime.now().year)[2:]}"))
         except Exception:
             pass
         return entries

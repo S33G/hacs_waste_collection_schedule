@@ -39,8 +39,8 @@ def main():
     # get list of city by service
     args = {"r": "cities"}
     r = requests.get(
-        f"https://{answers['service_id']}.jumomind.com/mmapp/api.php", params=args
-    )
+        f"https://{answers['service_id']}.jumomind.com/mmapp/api.php",
+        params=args)
     cities = json.loads(r.text)
 
     # select city from list
@@ -56,9 +56,9 @@ def main():
 
     questions = [
         inquirer.List(
-            "city_id", choices=city_choices, message="Select municipality [Kommune/Ort]"
-        )
-    ]
+            "city_id",
+            choices=city_choices,
+            message="Select municipality [Kommune/Ort]")]
     answers.update(inquirer.prompt(questions))
 
     selected_city = cityData[answers["city_id"]]
@@ -69,8 +69,8 @@ def main():
         # city has streets, therefore get list of streets
         args = {"r": "streets", "city_id": answers["city_id"]}
         r = requests.get(
-            f"https://{answers['service_id']}.jumomind.com/mmapp/api.php", params=args
-        )
+            f"https://{answers['service_id']}.jumomind.com/mmapp/api.php",
+            params=args)
         streets = json.loads(r.text)
 
         # select street from list
@@ -87,8 +87,10 @@ def main():
                 house_numbers[street["area_id"]] = house_number_choices
 
         questions = [
-            inquirer.List("area_id", choices=street_choices, message="Select street")
-        ]
+            inquirer.List(
+                "area_id",
+                choices=street_choices,
+                message="Select street")]
         answers.update(inquirer.prompt(questions))
 
         if answers["area_id"] in house_numbers:

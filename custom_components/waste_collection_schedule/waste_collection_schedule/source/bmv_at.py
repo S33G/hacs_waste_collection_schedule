@@ -9,7 +9,10 @@ TITLE = "Burgenländischer Müllverband"
 DESCRIPTION = "Source for BMV, Austria"
 URL = "https://www.bmv.at"
 TEST_CASES = {
-    "Allersdorf": {"ort": "ALLERSDORF", "strasse": "HAUSNUMMER", "hausnummer": 9},
+    "Allersdorf": {
+        "ort": "ALLERSDORF",
+        "strasse": "HAUSNUMMER",
+        "hausnummer": 9},
     "Bad Sauerbrunn": {
         "ort": "BAD SAUERBRUNN",
         "strasse": "BUCHINGERWEG",
@@ -67,8 +70,8 @@ class Source:
         args["Strasse"] = "HAUSNUMMER"
         args["Hausnummer"] = 0
         r = session.post(
-            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet", data=args
-        )
+            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet",
+            data=args)
 
         args["Focus"] = "Strasse"
         args["SubmitAction"] = "changedEvent"
@@ -76,8 +79,8 @@ class Source:
         args["Strasse"] = self._strasse
         args["Hausnummer"] = 0
         r = session.post(
-            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet", data=args
-        )
+            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet",
+            data=args)
 
         args["Focus"] = "Hausnummer"
         args["SubmitAction"] = "forward"
@@ -85,8 +88,8 @@ class Source:
         args["Strasse"] = self._strasse
         args["Hausnummer"] = self._hausnummer
         r = session.post(
-            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet", data=args
-        )
+            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet",
+            data=args)
 
         args["ApplicationName"] = "com.athos.kd.udb.AbfuhrTerminModel"
         args["Focus"] = None
@@ -98,8 +101,8 @@ class Source:
         del args["Strasse"]
         del args["Hausnummer"]
         r = session.post(
-            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet", data=args
-        )
+            "https://webudb.udb.at/WasteManagementUDB/WasteManagementServlet",
+            data=args)
 
         dates = self._ics.convert(r.text)
 

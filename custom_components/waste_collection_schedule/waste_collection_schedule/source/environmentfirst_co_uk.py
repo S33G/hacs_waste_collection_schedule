@@ -9,22 +9,22 @@ TITLE = "Environment First"
 URL = "https://environmentfirst.co.uk"
 EXTRA_INFO = [
     {
-       "title": "Eastbourne Borough Council",
-       "url": "https://lewes-eastbourne.gov.uk"
+        "title": "Eastbourne Borough Council",
+        "url": "https://lewes-eastbourne.gov.uk"
     },
     {
-       "title": "Lewes District Council",
-       "url": "https://lewes-eastbourne.gov.uk"
+        "title": "Lewes District Council",
+        "url": "https://lewes-eastbourne.gov.uk"
     },
 ]
 DESCRIPTION = (
     """Consolidated source for waste collection services from:
-        Eastbourne Borough Council 
+        Eastbourne Borough Council
         Lewes District Council
         """
 )
 TEST_CASES = {
-    "houseUPRN" : {"uprn": "100060063421"},
+    "houseUPRN": {"uprn": "100060063421"},
     "houseNumber": {"post_code": "BN228SG", "number": 3},
     "houseName": {"post_code": "BN73LG", "number": "Garden Cottage"},
 }
@@ -52,7 +52,8 @@ class Source:
 
         if self._uprn:
             # GET request returns schedule for matching uprn
-            r = s.get(f"https://www.environmentfirst.co.uk/house.php?uprn={self._uprn}")
+            r = s.get(
+                f"https://www.environmentfirst.co.uk/house.php?uprn={self._uprn}")
             responseContent = r.text
 
         elif (self._post_code and self._number):
@@ -63,7 +64,9 @@ class Source:
                 "street": "",
                 "postcode": self._post_code
             }
-            r = s.post("https://www.environmentfirst.co.uk/results.php", data = payload)
+            r = s.post(
+                "https://www.environmentfirst.co.uk/results.php",
+                data=payload)
             responseContent = r.text
 
         elif (self._post_code and self._name):
@@ -74,7 +77,9 @@ class Source:
                 "street": "",
                 "postcode": self._post_code
             }
-            r = s.post("https://www.environmentfirst.co.uk/results.php", data = payload)
+            r = s.post(
+                "https://www.environmentfirst.co.uk/results.php",
+                data=payload)
             responseContent = r.text
 
             # Loop through postcode address list to find house name and uprn
@@ -86,26 +91,27 @@ class Source:
                         self._uprn = str.split(item.get('href'), "=")[1]
 
             # GET request returns schedule for matching uprn
-            r = s.get(f"https://www.environmentfirst.co.uk/house.php?uprn={self._uprn}")
+            r = s.get(
+                f"https://www.environmentfirst.co.uk/house.php?uprn={self._uprn}")
             responseContent = r.text
 
         else:
-            raise Exception("Address not found")        
+            raise Exception("Address not found")
 
         entries = []
 
         # Extract waste types and dates from responseContent
         soup = BeautifulSoup(responseContent, "html.parser")
         x = soup.findAll("p")
-        for i in x[1:-1]: # ignores elements containing address and marketing message 
+        for i in x[1:-1]:  # ignores elements containing address and marketing message
             if " day " in i.text:
                 for round_type in ICON_MAP:
                     if round_type in i.text.upper():
                         entries.append(
                             Collection(
-                                date = parse(str.split(i.text, ":")[1]).date(),
-                                t = round_type,
-                                icon = ICON_MAP.get(round_type),
+                                date=parse(str.split(i.text, ":")[1]).date(),
+                                t=round_type,
+                                icon=ICON_MAP.get(round_type),
                             )
                         )
 
